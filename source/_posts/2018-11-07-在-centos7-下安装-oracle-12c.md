@@ -91,6 +91,8 @@ Saving to: ‘/etc/pki/rpm-gpg/RPM-GPG-KEY-oracle’
 
 安装 `oracle-rdbms-server-12cR1-preinstall`
 
+<details><summary>点击显/隐内容</summary>
+<p>
 ```shell
 [root@localhost yum.repos.d]# yum install oracle-rdbms-server-12cR1-preinstall
 Loaded plugins: fastestmirror
@@ -617,6 +619,9 @@ Dependency Updated:
 Complete!
 ```
 
+</p>
+</details>
+
 安装完之后，会自动创建 oracle 用户和 oinstall 用户组。现在最好给 oracle 用户设置一下密码：
 ```shell
 [root@localhost yum.repos.d]# passwd oracle
@@ -626,6 +631,8 @@ BAD PASSWORD: The password is shorter than 8 characters
 Retype new password:
 passwd: all authentication tokens updated successfully.
 ```
+
+
 ## 前期准备
 ### 修改 hostname
 

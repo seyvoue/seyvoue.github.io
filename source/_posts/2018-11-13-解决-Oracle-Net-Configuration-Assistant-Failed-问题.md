@@ -12,6 +12,8 @@ keywords:
 description:
 ---
 
+<!--more-->
+
 ## 问题描述
 
 现象1：在安装 oracle 12c 时，出现 `Oracle Net Configuration Assistant Failed` 下图
