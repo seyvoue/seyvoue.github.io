@@ -1,11 +1,18 @@
 # 0.0.0 (2018-11-20)
 
 
+### Bug Fixes
+
+* **blog:** 补充提交 ([24eff77](https://github.com/seyvoue/seyvoue.github.io/commit/24eff77))
+
+
 ### Features
 
+* **blog:** 修改文章内连接文本样式&新增 changelog 页面 ([ae5789d](https://github.com/seyvoue/seyvoue.github.io/commit/ae5789d))
 * **blog:** 修改网站基本信息&持久化url ([02cd246](https://github.com/seyvoue/seyvoue.github.io/commit/02cd246))
 * **blog:** 创建本地博客&安装 changelog 自动化生成工具 ([af6b67f](https://github.com/seyvoue/seyvoue.github.io/commit/af6b67f))
 * **blog:** 删除主题 landscape 试图解决 github page 404 ([ca47f6a](https://github.com/seyvoue/seyvoue.github.io/commit/ca47f6a))
+* **blog:** 新增博文 ([03b3d78](https://github.com/seyvoue/seyvoue.github.io/commit/03b3d78))
 * **blog:** 绑定域名 ([71ed561](https://github.com/seyvoue/seyvoue.github.io/commit/71ed561))
 * **blog:** 补充提交 ([d2e1cd0](https://github.com/seyvoue/seyvoue.github.io/commit/d2e1cd0))
 * **blog:** 迁移历史博文到此站点 ([d11c3ed](https://github.com/seyvoue/seyvoue.github.io/commit/d11c3ed))

@@ -19,7 +19,7 @@ description:
 
 那么有没有一个终极的解决办法能在管理不同解释器版本的同时控制不同的包环境呢? 有的, 就是 `pyenv`.
 
-<!—more—>
+<!--more-->
 
 ### pyenv 是什么? 能干什么?
 
@@ -105,14 +105,14 @@ Available versions:
 
 - 问题2
 
- ```shell
+```shell
 [mac]pyenv install -l
 Available versions:
 Traceback (most recent call last):
   File "/usr/local/bin/sort", line 7, in <module>
     from sort import cli
 ModuleNotFoundError: No module named 'sort'
- ```
+```
 
 于是，`vi /usr/local/bin/sort`:
 
@@ -125,6 +125,7 @@ def cli():
 
 - 问题3
 具体的报错信息忘记了，大致包含以下关键词：
+
 ```
 [mac]pyenv install -l
 unmatched '
