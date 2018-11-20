@@ -88,5 +88,5 @@ theme: next
 deploy:
   type: git
   repo:
-    github: git@github.com:seyvoue/seyvoue.github.io.git,hexo 
-    coding: git@git.coding.net:seyvoue/seyvoue.git,hexo
+    github: git@github.com:seyvoue/seyvoue.github.io.git,master
+    coding: git@git.coding.net:seyvoue/seyvoue.git,master
