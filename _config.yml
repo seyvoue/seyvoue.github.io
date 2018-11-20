@@ -14,7 +14,7 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://www.seyvoue.com
+url: http://seyvoue.com
 root: /
 #permalink: :year/:month/:day/:title/
 permalink: posts/:category/:abbrlink.html  # “posts/” 可自行更换
@@ -33,6 +33,8 @@ category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
 skip_render:
+  - CNAME
+  - README.md
 
 # Writing
 new_post_name: :year-:month-:day-:title.md # File name of new posts
@@ -84,4 +86,7 @@ theme: next
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type:
+  type: git
+  repo:
+    github: git@github.com:seyvoue/seyvoue.github.io.git,hexo 
+    coding: git@git.coding.net:seyvoue/seyvoue.git,hexo
