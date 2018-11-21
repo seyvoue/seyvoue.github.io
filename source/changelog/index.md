@@ -1,4 +1,4 @@
-# 0.0.0 (2018-11-20)
+# 0.0.0 (2018-11-21)
 
 
 ### Bug Fixes
@@ -8,6 +8,7 @@
 
 ### Features
 
+* **_posts:** 调整历史博文的分类和标签 ([a1de35d](https://github.com/seyvoue/seyvoue.github.io/commit/a1de35d))
 * **blog:** 个性化优化 ([397e517](https://github.com/seyvoue/seyvoue.github.io/commit/397e517))
 * **blog:** 修改文章内连接文本样式&新增 changelog 页面 ([ae5789d](https://github.com/seyvoue/seyvoue.github.io/commit/ae5789d))
 * **blog:** 修改网站基本信息&持久化url ([02cd246](https://github.com/seyvoue/seyvoue.github.io/commit/02cd246))
