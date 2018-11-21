@@ -1,8 +1,8 @@
 ---
 title: '@linux man page 使用指南'
 comments: true
-categories: tech
-tags: linux
+categories: languages
+tags: shell
 abbrlink: 3c9b26ea
 date: 2018-10-08 14:17:46
 updated:

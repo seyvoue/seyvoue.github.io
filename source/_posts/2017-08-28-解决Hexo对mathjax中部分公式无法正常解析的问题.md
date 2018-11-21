@@ -1,6 +1,6 @@
 ---
 title: '@解决Hexo对mathjax中部分公式无法正常解析的问题'
-categories: tutorial
+categories: guildlines
 abbrlink: 8d6d20a0
 date: 2017-08-28 21:13:35
 updated: 2018-02-01 18:10:00

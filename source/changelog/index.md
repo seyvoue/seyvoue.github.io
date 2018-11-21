@@ -8,6 +8,7 @@
 
 ### Features
 
+* **blog:** 个性化优化 ([397e517](https://github.com/seyvoue/seyvoue.github.io/commit/397e517))
 * **blog:** 修改文章内连接文本样式&新增 changelog 页面 ([ae5789d](https://github.com/seyvoue/seyvoue.github.io/commit/ae5789d))
 * **blog:** 修改网站基本信息&持久化url ([02cd246](https://github.com/seyvoue/seyvoue.github.io/commit/02cd246))
 * **blog:** 创建本地博客&安装 changelog 自动化生成工具 ([af6b67f](https://github.com/seyvoue/seyvoue.github.io/commit/af6b67f))

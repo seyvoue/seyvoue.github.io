@@ -1,7 +1,7 @@
 ---
 title: '@Git 命令详解: checkout reset 与 revert'
 comments: true
-categories: 开发
+categories: languages
 tags: git
 abbrlink: 10b5a0f5
 date: 2018-01-26 16:57:09
