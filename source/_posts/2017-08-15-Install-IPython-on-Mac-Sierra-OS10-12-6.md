@@ -1,7 +1,7 @@
 ---
 title: '@Install IPython on Mac Sierra(OS10.12.6)'
 comments: true
-categories: tutorial
+categories: guildlines
 abbrlink: e8867155
 date: 2017-08-15 15:08:39
 updated: 2017-08-21 17:07:29

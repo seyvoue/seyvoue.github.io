@@ -1,7 +1,7 @@
 ---
 title: '@MySQL语法之 Indexes'
 comments: true
-categories: 数据库
+categories: languages
 abbrlink: b1ae4170
 date: 2017-08-06 19:21:59
 updated: 2018-01-18 03:09:31

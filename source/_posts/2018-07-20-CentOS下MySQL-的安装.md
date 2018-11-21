@@ -1,8 +1,8 @@
 ---
 title: '@CentOS下MySQL 的安装'
 comments: true
-categories: tutorial
-tags: linux
+categories: guildlines
+tags: mysql
 abbrlink: 5e99fb6d
 date: 2018-07-20 00:00:57
 updated:

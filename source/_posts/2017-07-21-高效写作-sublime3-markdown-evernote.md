@@ -1,7 +1,7 @@
 ---
 title: '@高效写作 sublime3+markdown+evernote'
 comments: true
-categories: tutorial
+categories: guildlines
 tags: markdown
 abbrlink: b67313b
 date: 2017-07-21 18:28:05

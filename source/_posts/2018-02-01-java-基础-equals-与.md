@@ -1,7 +1,7 @@
 ---
 title: '@Java 基础: equals 与 =='
 comments: true
-categories: 开发
+categories: languages
 tags: java
 abbrlink: 9edb0a2
 date: 2018-02-01 18:32:07

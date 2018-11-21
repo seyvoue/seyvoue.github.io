@@ -1,7 +1,7 @@
 ---
 title: '@Java 基础: Lambda 表达式'
 comments: true
-categories: 开发
+categories: languages
 tags: java
 abbrlink: 73ff6742
 date: 2018-01-05 00:40:50

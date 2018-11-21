@@ -1,7 +1,7 @@
 ---
 title: '@MySQL语法之JOIN'
 comments: true
-categories: 数据库
+categories: languages
 tags: mysql
 abbrlink: bd53954e
 date: 2017-07-30 23:36:09

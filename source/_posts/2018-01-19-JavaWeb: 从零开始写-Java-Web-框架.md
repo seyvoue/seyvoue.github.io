@@ -1,7 +1,7 @@
 ---
 title: '@JavaWeb: 从零开始写 Java Web 框架'
 comments: true
-categories: 开发
+categories: guildlines
 tags: java
 abbrlink: fa02af02
 date: 2018-01-19 18:33:10

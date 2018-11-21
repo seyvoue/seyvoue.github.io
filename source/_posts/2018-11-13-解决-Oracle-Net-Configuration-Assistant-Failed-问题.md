@@ -1,10 +1,8 @@
 ---
 title: '@解决 Oracle Net Configuration Assistant Failed 问题'
 comments: true
-categories: tech
-tags:
-  - oracle
-  - linux
+categories: guildlines
+tags: oracle
 abbrlink: 428b54b1
 date: 2018-11-13 09:42:32
 updated:

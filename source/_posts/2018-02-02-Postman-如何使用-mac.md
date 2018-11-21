@@ -1,7 +1,7 @@
 ---
 title: '@Postman 如何使用(mac)'
 comments: true
-categories: tutorial
+categories: guildlines
 abbrlink: f7bab520
 date: 2018-02-02 11:58:49
 updated:
