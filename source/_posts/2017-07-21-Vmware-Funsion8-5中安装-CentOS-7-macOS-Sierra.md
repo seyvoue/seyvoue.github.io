@@ -1,7 +1,7 @@
 ---
 title: '@Vmware Funsion8.5中安装 CentOS 7(macOS Sierra)'
 comments: true
-categories: tutorial
+categories: guildlines
 abbrlink: ae6c2890
 date: 2017-07-21 22:00:03
 updated: 2018-01-18 03:04:56
