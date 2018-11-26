@@ -107,10 +107,19 @@ search:
 symbols_count_time:
   # 文章内是否显示
   symbols: true
-  time: false
+  time: true
   # 网页底部是否显示
   total_symbols: true
   total_time: true
+
+leancloud_counter_security:
+  enable_sync: true
+  app_id: Ob6CW7SHh3UDjoiFsCrI7UQu-9Nh9j0Va
+  app_key: cJQr5jP7XftIjd2KOdiEug0F
+  #如留空则将在部署时询问
+  username: seyvoue
+  #建议留空以保证安全性，如留空则将在部署时询问
+  password:
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
@@ -122,4 +131,5 @@ deploy:
   repo: git@git.coding.net:seyvoue/seyvoue.git
   branch: master
 - type: baidu_url_submitter
+- type: leancloud_counter_security_sync
 
