@@ -20,7 +20,8 @@
     "hexo-renderer-ejs": "^0.3.1",
     "hexo-renderer-kramed": "^0.1.4",
     "hexo-renderer-stylus": "^0.3.3",
-    "hexo-server": "^0.3.1"
+    "hexo-server": "^0.3.1",
+    "hexo-symbols-count-time": "^0.4.4"
   },
   "devDependencies": {
     "@commitlint/cli": "^7.2.1",
