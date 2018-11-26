@@ -96,6 +96,10 @@ pagination_dir: page
 ## Themes: https://hexo.io/themes/
 theme: next
 
+#RSS 订阅插件
+plugin:
+- hexo-generator-feed
+
 #search
 search:
   path: search.xml
