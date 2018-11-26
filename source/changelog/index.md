@@ -4,6 +4,7 @@
 ### Bug Fixes
 
 * **blog:** 补充提交 ([24eff77](https://github.com/seyvoue/seyvoue.github.io/commit/24eff77))
+* **gitment:** 修复 gitment 报错[object ProgressEvent] ([6441a51](https://github.com/seyvoue/seyvoue.github.io/commit/6441a51))
 
 
 ### Features
@@ -21,11 +22,13 @@
 * **theme:** 修改代码高亮主题&添加打赏功能 ([fa95a72](https://github.com/seyvoue/seyvoue.github.io/commit/fa95a72))
 * **theme:** 博客SEO优化 ([b793247](https://github.com/seyvoue/seyvoue.github.io/commit/b793247))
 * **theme:** 支持渲染 MathJax ([685ea0f](https://github.com/seyvoue/seyvoue.github.io/commit/685ea0f))
+* **themes:** 增加 RSS 订阅功能&修改网页 logo ([24e6527](https://github.com/seyvoue/seyvoue.github.io/commit/24e6527))
 * **themes:** 增加字数统计和阅读时长功能 ([ee54c61](https://github.com/seyvoue/seyvoue.github.io/commit/ee54c61))
 * **themes:** 增加站内搜索功能，搜索方式 local search ([7d772dd](https://github.com/seyvoue/seyvoue.github.io/commit/7d772dd))
 * **themes:** 增加阅读次数统计功能 ([60b2aa2](https://github.com/seyvoue/seyvoue.github.io/commit/60b2aa2))
 * **themes:** 增加页面&设置头像&设置博客创建时间 ([d4c578d](https://github.com/seyvoue/seyvoue.github.io/commit/d4c578d))
 * **themes:** 文章末尾增加版权信息 ([7bfbc4c](https://github.com/seyvoue/seyvoue.github.io/commit/7bfbc4c))
+* **themes:** 新增 Valine 评论系统 ([335a8a8](https://github.com/seyvoue/seyvoue.github.io/commit/335a8a8))
 * **themes:** 更换博客主题为 Next ([ec29653](https://github.com/seyvoue/seyvoue.github.io/commit/ec29653))
 
 
