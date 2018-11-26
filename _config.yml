@@ -4,8 +4,8 @@
 
 # Site
 title: seyvoue
-subtitle:
-description:
+subtitle: 
+description: 
 keywords:
 author: seyvoue
 language: zh-CN
@@ -95,6 +95,13 @@ pagination_dir: page
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
 theme: next
+
+#search
+search:
+  path: search.xml
+  field: post
+  format: html
+  limit: 10000
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html

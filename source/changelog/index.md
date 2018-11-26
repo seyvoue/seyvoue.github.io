@@ -1,4 +1,4 @@
-# 0.0.0 (2018-11-22)
+# 0.0.0 (2018-11-26)
 
 
 ### Bug Fixes
@@ -19,6 +19,7 @@
 * **blog:** 补充提交 ([d2e1cd0](https://github.com/seyvoue/seyvoue.github.io/commit/d2e1cd0))
 * **blog:** 迁移历史博文到此站点 ([d11c3ed](https://github.com/seyvoue/seyvoue.github.io/commit/d11c3ed))
 * **theme:** 修改代码高亮主题&添加打赏功能 ([fa95a72](https://github.com/seyvoue/seyvoue.github.io/commit/fa95a72))
+* **theme:** 博客SEO优化 ([b793247](https://github.com/seyvoue/seyvoue.github.io/commit/b793247))
 * **theme:** 支持渲染 MathJax ([685ea0f](https://github.com/seyvoue/seyvoue.github.io/commit/685ea0f))
 * **themes:** 增加页面&设置头像&设置博客创建时间 ([d4c578d](https://github.com/seyvoue/seyvoue.github.io/commit/d4c578d))
 * **themes:** 文章末尾增加版权信息 ([7bfbc4c](https://github.com/seyvoue/seyvoue.github.io/commit/7bfbc4c))
