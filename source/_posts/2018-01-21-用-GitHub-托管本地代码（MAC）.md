@@ -32,7 +32,7 @@ xcode-select --install
 
 - step2: install homebrew
 
-如何安装请参考该文：[@HomeBrew 的安装与使用](http://seyvoue.com/posts/36d45381/#more)
+如何安装请参考该文：[@HomeBrew 的安装与使用](http://seyvoue.com/posts/guildlines/36d45381.html)
 
 - step3: install git with homebrew
 
@@ -44,7 +44,7 @@ xcode-select --install
 
 step1: 注册[Github](https://github.com) 账号
 
-step2: 创建公私钥，参考这篇文章([@SSH远程登录的实现](http://seyvoue.com/posts/68483533/))
+step2: 创建公私钥，参考这篇文章([@SSH远程登录的实现](http://seyvoue.com/posts/guildlines/68483533.html))
 
 step3: 设置 SSH Key(在GitHub中添加公钥）
 
@@ -64,7 +64,7 @@ $ pbcopy < ~/.ssh/id_rsa.pub
 
 ## git 常用命令
 
-下面列出了日常经常会用到的一些 git 指令。另外，可参考(“[@git 命令详解](http://seyvoue.com/posts/b6d2867a/#more)”)，了解git的更多操作。
+下面列出了日常经常会用到的一些 git 指令。另外，可参考(“[@git 命令详解](http://seyvoue.com/posts/languages/10b5a0f5.html)”)，了解git的更多操作。
 
 ```shell
 # 将项目克隆岛本地

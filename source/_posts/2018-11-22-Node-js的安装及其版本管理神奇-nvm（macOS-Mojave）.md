@@ -1,5 +1,5 @@
 ---
-title: '@Node.js的安装及其版本管理神奇 nvm（macOS Mojave）'
+title: '@Node.js的安装及其版本管理神器 nvm（macOS Mojave）'
 comments: true
 categories: guildlines
 tags: nodejs
