@@ -1,4 +1,8 @@
-# [0.0.0](https://github.com/seyvoue/seyvoue.github.io/compare/v1.0.0...v0.0.0) (2018-11-26)
+# [0.0.0](https://github.com/seyvoue/seyvoue.github.io/compare/v2.0.0...v0.0.0) (2018-11-26)
+
+
+
+# [2.0.0](https://github.com/seyvoue/seyvoue.github.io/compare/v1.0.0...v2.0.0) (2018-11-26)
 
 
 ### Features
