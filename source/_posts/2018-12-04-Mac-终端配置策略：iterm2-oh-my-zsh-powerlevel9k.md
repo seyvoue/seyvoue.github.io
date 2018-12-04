@@ -71,7 +71,7 @@ brew cask install font-sourcecodepro-nerd-font
 ```shell
 brew search nerd
 ```
-![](http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-12-04-033012.png)
+![](http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-12-04-075240.png)
 
 step2：修改字体
 装完后，依次`Preferences > Profiles > Text > Change Font`，将字体改成`SauceCodePro Nerd Font`或你自己下载的字体：
