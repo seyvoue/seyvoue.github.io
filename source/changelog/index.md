@@ -1,4 +1,13 @@
-# [0.0.0](https://github.com/seyvoue/seyvoue.github.io/compare/v2.0.0...v0.0.0) (2018-11-26)
+# [3.1.0](https://github.com/seyvoue/seyvoue.github.io/compare/v3.0.0...v3.1.0) (2018-11-28)
+
+
+
+# [3.0.0](https://github.com/seyvoue/seyvoue.github.io/compare/v2.0.0...v3.0.0) (2018-11-27)
+
+
+### Features
+
+* **next:** 增加404页面 ([d1ec567](https://github.com/seyvoue/seyvoue.github.io/commit/d1ec567))
 
 
 
