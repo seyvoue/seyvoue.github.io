@@ -1,3 +1,11 @@
+---
+title: changelog
+date: 2018-12-04 10:00:17
+type: "changelog"
+comments: false
+---
+
+
 # [3.1.0](https://github.com/seyvoue/seyvoue.github.io/compare/v3.0.0...v3.1.0) (2018-11-28)
 
 

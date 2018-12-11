@@ -1,7 +1,7 @@
 ---
 title: '@Octave tutorial'
 comments: true
-categories: language
+categories: languages
 abbrlink: 65516c6f
 date: 2017-09-04 09:50:29
 updated: 2018-01-18 03:16:07
