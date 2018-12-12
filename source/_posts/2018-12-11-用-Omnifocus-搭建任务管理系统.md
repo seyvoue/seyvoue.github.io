@@ -63,7 +63,7 @@ description:
 如果想保证项目比较有序，分成三个层级即可：`大的领域（Folder）- 子领域（Folder）- 项目（Project）`。
 
 例如，我的项目分级如下：
-![](http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/9pw3g.png)           
+![OmniFocus 项目分类](http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/9pw3g.png)           
 
 主要分成了5个比较大的项目：系统、学习、工作、生活、兴趣，基本上可以涵盖涉及到所有的领域了。在每个大的项目中再细分出小的项目，这个可以根据自己的需要进行积分。OmniFocus 支持无限极的项目划分，但是个人建议不要超过3层，最后一层直接是任务就可以了，这样可以保证项目层级不会过于复杂。
 
@@ -75,7 +75,7 @@ description:
 
 ### 标签的设定
 例如，我的标签如下：
-![](http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/3bylf.png)
+![OmniFocus 标签策略](http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/3bylf.png)
 
 一个任务在时间维度上应该有有截止日期（Due）和安排日期（Schedule）两个元素，Due 表示在某一天之前必须被完成，Schedule 表示被安排到某一天做，所以可以设定如下标签来完成 Schedule 的功能：
 
@@ -100,7 +100,7 @@ description:
 
 ### 过滤器设定
 例如，我的过滤器如下：
-![](http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/oqczw.png)
+![OmniFocus 过滤器策略](http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/oqczw.png)
 
 过滤器的目的就是组合各种条件，过滤出所需要的任务来，之前所有的任务上的附加元素都是为了过滤器而设定的。
 
@@ -110,16 +110,16 @@ description:
 这个过滤器主要被用于制定计划。例如：由于我每天晚上睡得比较晚，所以我创建了一个 Evening Review，来规划明天需要做的任务。
 
 过滤器的详细设定如下：
-![](http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/icpnx.png)
+![Routine 过滤器设置](http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/icpnx.png)
 
-其中，「Routine」Folder 中就是设定的具体内容：
-![](http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/a38sl.png)   
+其中，「Routines」Folder 中就是设定的具体内容：
+![Routines 文件夹中的内容](http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/a38sl.png)   
 
 这一个过滤器的设定是和我的 Workflow 紧密相连的，如果你没有做 Morning Review 之类的习惯，可以不需要设定这个过滤器。
 
 #### Today 过滤器
 这个过滤器被使用的次数最多，过滤器的详细设定如下：
-![](http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/fkfs6.png)
+![Today 过滤器设置](http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/fkfs6.png)
 
 这个过滤器将会把符合以下条件的任务过滤出来：
 - 即将截止或者标注为 Today 标签的任务
