@@ -1,7 +1,7 @@
 ---
 title: '@Mac 终端配置策略：iterm2+oh-my-zsh+powerlevel9k'
 comments: true
-categories: guildlines
+categories: manual
 tags: shell
 abbrlink: e5c8b56
 date: 2018-12-04 15:29:53

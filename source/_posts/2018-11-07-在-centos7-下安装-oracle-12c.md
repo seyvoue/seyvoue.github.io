@@ -1,7 +1,7 @@
 ---
 title: '@在 centos7 下安装 oracle 12c'
 comments: true
-categories: guildlines
+categories: manual
 tags: oracle
 abbrlink: e2a845a8
 date: 2018-11-07 12:43:19

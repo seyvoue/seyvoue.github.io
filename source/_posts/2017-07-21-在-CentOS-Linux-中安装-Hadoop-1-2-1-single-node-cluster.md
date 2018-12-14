@@ -1,7 +1,7 @@
 ---
 title: '@在 CentOS Linux 中安装 Hadoop-1.2.1 ( single-node cluster)'
 comments: true
-categories: guildlines
+categories: manual
 abbrlink: 17188a01
 date: 2017-07-21 22:00:23
 updated: 2018-01-18 03:05:03

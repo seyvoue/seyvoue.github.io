@@ -1,7 +1,7 @@
 ---
 title: '@centos7下安装ipython（python2与python3共存)'
 comments: true
-categories: guildlines
+categories: manual
 tags: python
 abbrlink: b8430542
 date: 2018-09-04 13:19:37

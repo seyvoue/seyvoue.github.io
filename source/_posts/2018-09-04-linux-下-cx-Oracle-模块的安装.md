@@ -1,7 +1,7 @@
 ---
 title: '@linux 下 cx_Oracle 模块的安装'
 comments: true
-categories: guildlines
+categories: manual
 tags: python
 abbrlink: 6b43c0d2
 date: 2018-09-04 16:03:41

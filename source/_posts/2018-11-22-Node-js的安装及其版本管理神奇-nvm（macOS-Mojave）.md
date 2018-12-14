@@ -1,7 +1,7 @@
 ---
 title: '@Node.js的安装及其版本管理神器 nvm（macOS Mojave）'
 comments: true
-categories: guildlines
+categories: manual
 tags: nodejs
 abbrlink: 9e29d568
 date: 2018-11-22 21:52:32

@@ -1,7 +1,7 @@
 ---
 title: '@用 GitHub 托管本地代码（MAC）'
 comments: true
-categories: guildlines
+categories: manual
 tags: git
 abbrlink: 7a97ce34
 date: 2018-01-21 00:24:42

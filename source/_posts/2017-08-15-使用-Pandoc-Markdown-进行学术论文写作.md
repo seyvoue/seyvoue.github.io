@@ -1,7 +1,7 @@
 ---
 title: '@使用 Pandoc Markdown 进行学术论文写作'
 comments: true
-categories: guildlines
+categories: manual
 abbrlink: fc12d89
 date: 2017-08-15 17:22:19
 updated: 2018-01-18 03:11:58
