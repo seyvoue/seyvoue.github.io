@@ -29,6 +29,7 @@
 {"title":"@MySQL语法之JOIN","url":"/languages/bd53954e.html"},
 {"title":"@JAVA基础: 异常处理","url":"/languages/be4602f2.html"},
 {"title":"@神经网络","url":"/languages/cee620b1.html"},
+{"title":"@Java 基础: JAR 包","url":"/languages/null.html"},
 {"title":"@手把手教你如何搭建个人博客（二）","url":"/manual/10566118.html"},
 {"title":"@在 CentOS Linux 中安装 Hadoop-1.2.1 ( single-node cluster)","url":"/manual/17188a01.html"},
 {"title":"@手把手教你如何搭建个人博客（一）","url":"/manual/20408dc0.html"},
@@ -64,4 +65,5 @@
 {"title":"@使用 Pandoc Markdown 进行学术论文写作","url":"/manual/fc12d89.html"},
 {"title":"@初始 Linux","url":"/operaing-system/53de7a0b.html"},
 {"title":"@Shell 的启动方式及环境变量的配置","url":"/operaing-system/896e6903.html"},
+{"title":"@测试","url":"/未分类/f50ea233.html"},
 ]
