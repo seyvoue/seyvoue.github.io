@@ -3,7 +3,7 @@ title: '@用 Omnifocus 搭建任务管理系统'
 comments: true
 categories: manual
 tags: 
- - omnifocus
+ - GTD
  - effectiveness 
 abbrlink: 4d5e7556
 date: 2018-12-11 09:30:47
