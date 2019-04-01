@@ -1,5 +1,5 @@
 ---
-title: 构建第二大脑的方法：借助 Evernote 和 OmniFocus
+title: '@构建第二大脑的方法：借助 Evernote 和 OmniFocus'
 comments: true
 categories: manual
 tags:

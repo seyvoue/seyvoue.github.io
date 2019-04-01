@@ -60,6 +60,5 @@ math:
 若 `per_page`为 true，则 hexo 默认会对所有页面渲染 MathJax；
 若 `per_page`为 false，则 hexo 只会对 markdown 文件头部包含 `mathjax: true` 的博文。## 参考链接
 
-- [如何处理Hexo和MathJax的兼容问题 | 林肯先生的Blog
-](http://2wildkids.com/2016/10/06/如何处理Hexo和MathJax的兼容问题/#小结)
+- [如何处理Hexo和MathJax的兼容问题 | 林肯先生的Blog](http://2wildkids.com/2016/10/06/如何处理Hexo和MathJax的兼容问题/#小结)
 
