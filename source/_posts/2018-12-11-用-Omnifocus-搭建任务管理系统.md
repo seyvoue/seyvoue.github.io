@@ -223,19 +223,19 @@ step2: OmniFocus 工具栏上右键, 在弹出的菜单上选择`Customize Toolb
 如果能够直接在OmniFocus中记录任务的执行时间, 并统计出任务和项目的执行时间就更好了, 所以有了本文所描述的工作。
 共三个AppleScript脚本文件: `start.scpt`, `stop.scpt`和`report.scpt`.（[下载地址](https://github.com/jeffzhangfly/of-timetracking-script)）
 
-- [start.scpt](../files/start.scpt)
+- start.scpt
 
 开始一个任务, 此脚本将在该任务的标题前添加`#Ongoing:`, 表示该任务正在进行, 并在该任务的备注 (note) 属性尾部增加一个记录时间的字符串(或修改这个记录时间的字符串, 如果该任务之前已经开始执行过).
 
 如果开始任务时该任务的 Defer Until 没有填写, 那么将其设置为当前时间, 作为报告中的任务开始时间.
 
-- [stop.scpt](../files/stop.scpt)
+- stop.scpt
 
 停止一个任务, 该脚本可以停止已经开始的任务 (标题前有”#Ongoing:” 文本的任务, 停止后删除任务标题中的”#Ongoing”文本), 并根据该任务备注 (note) 属性中的时间记录字符串计算该任务已执行时间.
 
 >注意: 任务的执行可以分为多次启动/停止, 一个任务的总执行时间是多次执行时间之和.
 
-- [report.scpt](../files/report.scpt)
+- report.scpt
 
 该脚本统计已完成的任务及其执行时间, 并累加各个项目中所有任务的执行时间作为项目执行时间.
 对原脚本 (OmniFocus> Prepare Task Completion Report Version 2.0.0) 所做的修改如下:
