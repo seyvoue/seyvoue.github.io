@@ -32,7 +32,7 @@ xcode-select --install
 
 - step2: install homebrew
 
-如何安装请参考该文：[@HomeBrew 的安装与使用](http://seyvoue.com/manual/36d45381.html)
+如何安装请参考该文：[@HomeBrew 的安装与使用](http://seyvoue.com/manual/ 36d45381.html)
 
 - step3: install git with homebrew
 

@@ -1049,7 +1049,7 @@ Preparing to launch Oracle Universal Installer from /tmp/OraInstall2018-11-12_04
 ```
 
 说明：
-- *参考我的另一篇[博文](http://seyvoue.com/posts/36d45381/)，了解 homebrew 的安装与使用*
+- *参考我的另一篇[博文](http://seyvoue.com/manual/36d45381/)，了解 homebrew 的安装与使用*
 - *参考[此文](https://medium.com/@toja/using-x11-apps-in-mac-os-x-c74b304fd128)，了解如何能在 macos 上显示 x11 apps*
 - *参考[此文](http://www.ipaomi.com/2017/11/09/%E8%BF%9C%E7%A8%8B%E6%98%BE%E7%A4%BA%E6%93%8D%E4%BD%9C-%E6%9C%8D%E5%8A%A1%E5%99%A8-gui-%E7%A8%8B%E5%BA%8F%E5%9B%BE%E5%BD%A2%E5%8C%96%E7%95%8C%E9%9D%A2-%E5%9F%BA%E4%BA%8E-x11-forwarding-centos/)，了解什么是 X Window System及其工作原理*
 
