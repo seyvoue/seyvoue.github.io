@@ -1,3 +1,13 @@
+# [3.2.0](https://github.com/seyvoue/seyvoue.github.io/compare/v3.1.0...v3.2.0) (2019-06-08)
+
+
+### Features
+
+* **hexo:** 支持 Markdown 语法画流程图 ([62c19e1](https://github.com/seyvoue/seyvoue.github.io/commit/62c19e1))
+* **next:** 文末增加分享功能 ([e6bbe68](https://github.com/seyvoue/seyvoue.github.io/commit/e6bbe68))
+
+
+
 # [3.1.0](https://github.com/seyvoue/seyvoue.github.io/compare/v3.0.0...v3.1.0) (2018-11-28)
 
 
