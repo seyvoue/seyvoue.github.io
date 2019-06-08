@@ -1,0 +1,1872 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="baidu-site-verification" content="qTlbubWUyw">
+<meta name="google-site-verification" content="Y9hBxOOKK4YNywVJN3FRwq2Xbry6ouA_XdM14MMdATU">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-alphabet_letter_s-1.ico?v=6.6.0">
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="笔者是一个自控力极差的拖延症患者，尝试了各种方式和工具都没能很好的解决这个问题，直到看到此文。 根据该文的思路，可以解决笔者目前在执行计划时常碰到的几个问题：  OmniFocus + 番茄工作法，辅助自己更好的量化任务（目标）、完成任务 使每一个被丢进todolist 的任务都会被很好的执行。而不像之前：有些任务丢进去后由于没有回顾就忘记了，事后再看见该任务的时候，已经不想做了；有些任务制定的不">
+<meta name="keywords" content="effectiveness,GTD">
+<meta property="og:type" content="article">
+<meta property="og:title" content="@用 Omnifocus 搭建任务管理系统">
+<meta property="og:url" content="http://seyvoue.com/manual/4d5e7556.html">
+<meta property="og:site_name" content="seyvoue">
+<meta property="og:description" content="笔者是一个自控力极差的拖延症患者，尝试了各种方式和工具都没能很好的解决这个问题，直到看到此文。 根据该文的思路，可以解决笔者目前在执行计划时常碰到的几个问题：  OmniFocus + 番茄工作法，辅助自己更好的量化任务（目标）、完成任务 使每一个被丢进todolist 的任务都会被很好的执行。而不像之前：有些任务丢进去后由于没有回顾就忘记了，事后再看见该任务的时候，已经不想做了；有些任务制定的不">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/9pw3g.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/3bylf.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/oqczw.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/icpnx.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/a38sl.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/fkfs6.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/ds81c.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/oado8.jpg">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/wpikt.jpg">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/ndsdd.jpg">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/8da6i.jpg">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/w1efh.jpg">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/5jh9f.jpg">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/evkqk.jpg">
+<meta property="og:updated_time" content="2019-06-08T15:25:02.761Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="@用 Omnifocus 搭建任务管理系统">
+<meta name="twitter:description" content="笔者是一个自控力极差的拖延症患者，尝试了各种方式和工具都没能很好的解决这个问题，直到看到此文。 根据该文的思路，可以解决笔者目前在执行计划时常碰到的几个问题：  OmniFocus + 番茄工作法，辅助自己更好的量化任务（目标）、完成任务 使每一个被丢进todolist 的任务都会被很好的执行。而不像之前：有些任务丢进去后由于没有回顾就忘记了，事后再看见该任务的时候，已经不想做了；有些任务制定的不">
+<meta name="twitter:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/9pw3g.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="seyvoue" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://seyvoue.com/manual/4d5e7556.html">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>@用 Omnifocus 搭建任务管理系统 | seyvoue</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">seyvoue</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">ABC-Always Be Coding.</h1>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+
+    
+
+    <a href="/" rel="section">首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+
+    
+
+    <a href="/tags/" rel="section">标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+
+    
+
+    <a href="/categories/" rel="section">分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+
+    
+
+    <a href="/archives/" rel="section">归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-changelog">
+
+    
+    
+    
+
+    
+
+    <a href="/changelog/" rel="section">变更</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://seyvoue.com/manual/4d5e7556.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seyvoue">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="seyvoue">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">@用 Omnifocus 搭建任务管理系统
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-12-11 09:30:47" itemprop="dateCreated datePublished" datetime="2018-12-11T09:30:47+08:00">2018-12-11</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-08 23:25:02" itemprop="dateModified" datetime="2019-06-08T23:25:02+08:00">2019-06-08</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/manual/" itemprop="url" rel="index"><span itemprop="name">manual</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/manual/4d5e7556.html#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count gitment-comments-count" data-xid="/manual/4d5e7556.html" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/manual/4d5e7556.html" class="leancloud_visitors" data-flag-title="@用 Omnifocus 搭建任务管理系统">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                <span title="本文字数">7.3k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                <span title="阅读时长">12 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>笔者是一个自控力极差的拖延症患者，尝试了各种方式和工具都没能很好的解决这个问题，直到看到<a href="https://sspai.com/post/49105" target="_blank" rel="noopener">此文</a>。</p>
+<p>根据<a href="https://sspai.com/post/49105" target="_blank" rel="noopener">该文</a>的思路，可以解决笔者目前在执行计划时常碰到的几个问题：</p>
+<ul>
+<li>OmniFocus + 番茄工作法，辅助自己更好的量化任务（目标）、完成任务</li>
+<li>使每一个被丢进todolist 的任务都会被很好的执行。而不像之前：有些任务丢进去后由于没有回顾就忘记了，事后再看见该任务的时候，已经不想做了；有些任务制定的不够清晰，到执行的时候感觉有难度，然后拖着拖着就不做了。</li>
+</ul>
+<a id="more"></a>
+<h2 id="什么是一个好的任务管理系统"><a href="#什么是一个好的任务管理系统" class="headerlink" title="什么是一个好的任务管理系统"></a>什么是一个好的任务管理系统</h2><p>首先，任务管理系统的目的是为了更好得完成任务，一切脱离这个基本条件的系统都是不可用的。如果你觉得一个最简单的 Todo List 就能很好地完成任务，那么这就是最适合你的任务管理系统。</p>
+<p>在我看来，一个优秀的任务管理系统至少需要满足以下条件：</p>
+<ul>
+<li>收集能力</li>
+<li>在特定的情况下知道可以做哪些事情</li>
+</ul>
+<blockquote>
+<p>为什么需要至少满足这两个条件呢，或者说这两个条件对于任务管理系统来说，重要在哪里？</p>
+</blockquote>
+<p><strong>收集能力</strong>指的是这个任务系统要能够容纳（几乎）所有的内容，一个任务、一条想法、一封未读的邮件、一个笔记、一个链接、没有报销的发票等等。</p>
+<p>如果有读过《Getting Things Done》或者了解过 GTD 理论的同学可能就知道，<strong>收集</strong> 是整个流程中最开始的一环。如果要做的任务散乱在各处，难免会有遗忘的时候，任务没有被收集到，也就没有后面的处理流程了。</p>
+<p>具体实践起来并不是真的需要把所有的东西都塞进任务系统里面，例如我使用 Evernote 作为剪裁和笔记的工具，很显然把每条笔记都复制一份到 OmniFocus 中很不现实，但是我会在 OmniFocus 中添加一个「定期清理 Evernote Inbox」的任务，这样就相当于把 Evernote 作为 OmniFocus 的子 Inbox，来统一进行管理。对于一些支持 URL Schema 的应用，完全可以在 OmniFocus 中建立一个链接直接指定，这样在 OmniFocus 中也可以直接打开其他应用中的内容了。</p>
+<p><strong>收集能力决定了要处理的内容，第二个条件则决定了一个任务系统是否是稳定可用的。</strong>具体的情境来说，你要知道早上的时候该干哪些事，工作的时候该干哪些事，无聊的时候又该干哪些事等。这样，在某一情境下，可以直接进入状态，而不是要花时间思考现在到底要做什么。</p>
+<p>一个任务系统如果做好了这两件事情，那么就不会让你身处「感觉有很多事情要做，却不知道要做什么」的尴尬境地了。</p>
+<h2 id="任务管理系统的三要素"><a href="#任务管理系统的三要素" class="headerlink" title="任务管理系统的三要素"></a>任务管理系统的三要素</h2><p>到现在为止，我还没有讲到具体工具的使用。因为工具是次要的，了解了本质的思想，使用什么工具都没有问题。纵观各种任务管理的工具：OmniFocus、Todoist、Things、org-mode，它们支持的功能也各不相同，Project、无限层级、Defer、Due、Repeat、Context、Label、Tag、Filter、Perspective 等等，有没有被这些名词给吓到？难道我们每切换一种系统都需要再重新学习一遍？</p>
+<p>抛开这些名词，我们来分析一下一个任务系统到底是由什么组成的。在我看来，一个任务系统最本质的东西只有三个：任务、附加元素和过滤器。</p>
+<p><strong>任务</strong>：一个 <em>最小可执行</em> 的单元即为一个任务。这个是最好理解的，所以不做过多解释。</p>
+<p><strong>附加元素</strong>：作用在任务上的不同维度的限制。这句话读起来有点拗口，举个简单例子，「去 XXX 取快递（截止今天 10:00）」，其中，「截止今天 10:00」就是在时间维度上对这个任务的一个限制。同样的，「项目」、「标签」等等这些都是作用在某个任务上的附加元素。</p>
+<p><strong>过滤器</strong>：组合不同附加元素的过滤规则。只有附加元素并没有什么实际的作用，但是有了过滤器之后，就可以编写不同的过滤规则来过滤指定规则的任务。例如，我想知道「最近 10 天内重要的事情」，那么过滤规则可能就是「Due date &lt; 10 and flagged」。</p>
+<p>了解了上面三个基本的概念，那么再重新审视各种任务管理工具，就可以从一个比较宏观的角度来看待了，这也可以避免切换工具造成的重新学习成本。</p>
+<p>这三个概念和 Hum 在《用更现代的方式做任务管理》提出的「LTF（列表、标签、过滤）」理论十分类似，并且 Hum 用了更大的篇幅来叙事这个概念，有兴趣的可以订阅这个栏目阅读。</p>
+<h2 id="OmniFocus-3-实践"><a href="#OmniFocus-3-实践" class="headerlink" title="OmniFocus 3 实践"></a>OmniFocus 3 实践</h2><p>把上面任务系统的基本三要素运用到 OmniFocus 上，任务就是一个个的单独 Todo item，附加元素就是 Todo item 所属的项目、Due Date、Defer Date、Tags、Flag、Repeat rule 等，过滤器就是透视（Perspective）。</p>
+<p>接下来的内容我会通过 OmniFocus 3 为载体，来具体介绍如何实现一个可靠的任务管理系统，并介绍一些实际实践过的 Workflow 流程。</p>
+<h3 id="项目的设定"><a href="#项目的设定" class="headerlink" title="项目的设定"></a>项目的设定</h3><p>如果想保证项目比较有序，分成三个层级即可：<code>大的领域（Folder）- 子领域（Folder）- 项目（Project）</code>。</p>
+<p>例如，我的项目分级如下：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/9pw3g.png" alt="OmniFocus 项目分类">           </p>
+<p>主要分成了5个比较大的项目：系统、学习、工作、生活、兴趣，基本上可以涵盖涉及到所有的领域了。在每个大的项目中再细分出小的项目，这个可以根据自己的需要进行积分。OmniFocus 支持无限极的项目划分，但是个人建议不要超过3层，最后一层直接是任务就可以了，这样可以保证项目层级不会过于复杂。</p>
+<p>可以看到很多项目下面都有用<code>[]</code>括起来的项目，这个是 Single List 项目，这样一些不属于某个项目里面的内容就可以放到这个列表里了。</p>
+<p>一些项目设定的 Tips：</p>
+<ul>
+<li>如果不是 Single List，项目需要一个既定的完成条件，在某一时刻或某一条件下，这个项目是要能够被标记为 Completed 或者 Dropped，这样可以避免一个项目长时间地呆在任务系统中；</li>
+<li>项目中的任务最好是最小可执行的，如果是比较大的任务，可以利用 OmniFocus 的无限任务层级继续细分。</li>
+</ul>
+<h3 id="标签的设定"><a href="#标签的设定" class="headerlink" title="标签的设定"></a>标签的设定</h3><p>例如，我的标签如下：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/3bylf.png" alt="OmniFocus 标签策略"></p>
+<p>一个任务在时间维度上应该有有截止日期（Due）和安排日期（Schedule）两个元素，Due 表示在某一天之前必须被完成，Schedule 表示被安排到某一天做，所以可以设定如下标签来完成 Schedule 的功能：</p>
+<ul>
+<li>Schedule：<ul>
+<li>Today：被安排到今天</li>
+<li>Recently：最近需要做的事</li>
+<li>ThisWeek：被安排到这周</li>
+<li>ThisMonth：被安排到这个月</li>
+<li>ThisYear：被安排着这年</li>
+</ul>
+</li>
+</ul>
+<p>这样在做计划的时候，打上对应的标签，就可以使用过滤器过滤出对应的任务了，比如我想看「这个月和工作相关的任务」，那么就可以指定 Project 为「Work」项目，标签为「ThisMonth」，这样对应的任务就可以使用这个过滤器过滤出来，具体的过滤器设定下面会讲到。若一项任务没有被打上 Schedule 标签，则该任务不该被认为为一项可执行的任务，因为一项未被安排的任务在未来很有可能会被你忽略，所以，对于要添加进 OmniFocus 的任务，一定要打上 Schedule 标签，否则就不要添加进去。</p>
+<p>另外一个可以借鉴的设定就是精力值标签：</p>
+<ul>
+<li>Energy<ul>
+<li>LowEnergy</li>
+<li>MediumEnergy</li>
+<li>HighFocus</li>
+</ul>
+</li>
+</ul>
+<p>例如，我们工作了一整天之后，还剩一段时间才下班，精力已经下降到一个很低的值，这个时候已经不适合完成一些需要非常专注的工作了，但是一些工作上的杂事，例如打印东西，提交报表等简单的工作可以利用这个时间来完成，这个时候我们就可以设定一个过滤器，过滤出 Project 为「Work」，标签为「LowEnergy」的任务。</p>
+<p>我们可以看到，标签系统可以极大地扩展附加元素的内容，给过滤器添加更多的过滤维度。标签系统的设定应该根据自己的需求来，<strong>如果设定的标签却没有在过滤器中用到的话，那么也仅仅是个任务添加了一个没有用上的附加元素而已，意义不大。</strong></p>
+<h3 id="过滤器设定"><a href="#过滤器设定" class="headerlink" title="过滤器设定"></a>过滤器设定</h3><p>例如，我的过滤器如下：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/oqczw.png" alt="OmniFocus 过滤器策略"></p>
+<p>过滤器的目的就是组合各种条件，过滤出所需要的任务来，之前所有的任务上的附加元素都是为了过滤器而设定的。</p>
+<p>同标签系统一样，过滤器的设定依然需要结合自己的情况来。我主要设定了以下几个过滤器，这些过滤器都是在实践中经常使用到的。</p>
+<h4 id="Routine-过滤器"><a href="#Routine-过滤器" class="headerlink" title="Routine 过滤器"></a>Routine 过滤器</h4><p>这个过滤器主要被用于制定计划。例如：由于我每天晚上睡得比较晚，所以我创建了一个 Evening Review，来规划明天需要做的任务。</p>
+<p>过滤器的详细设定如下：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/icpnx.png" alt="Routine 过滤器设置"></p>
+<p>其中，「Routines」Folder 中就是设定的具体内容：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/a38sl.png" alt="Routines 文件夹中的内容">   </p>
+<p>这一个过滤器的设定是和我的 Workflow 紧密相连的，如果你没有做 Morning Review 之类的习惯，可以不需要设定这个过滤器。</p>
+<h4 id="Today-过滤器"><a href="#Today-过滤器" class="headerlink" title="Today 过滤器"></a>Today 过滤器</h4><p>这个过滤器被使用的次数最多，过滤器的详细设定如下：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/fkfs6.png" alt="Today 过滤器设置"></p>
+<p>这个过滤器将会把符合以下条件的任务过滤出来：</p>
+<ul>
+<li>即将截止或者标注为 Today 标签的任务</li>
+<li>状态为 Available 的任务</li>
+<li>非 Routine Folder 下的任务</li>
+</ul>
+<p>显示方式以 Project 为维度显示：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/ds81c.png" alt=""></p>
+<p>对比 Forecast Perspective，它只是把对应的任务都展示了出来，在任务的层级上没有自定义的那么清晰。<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/oado8.jpg" alt=""></p>
+<h4 id="Work-过滤器"><a href="#Work-过滤器" class="headerlink" title="Work 过滤器"></a>Work 过滤器</h4><p>这个过滤器和 Today 类似，只不过指定了所属项目为「Work」文件夹下面的任务，这个主要是在工作中只想专注于和工作相关的任务。</p>
+<p>过滤器的详细设定如下：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/wpikt.jpg" alt=""></p>
+<p>除了指定了特殊的项目目录，其他的设置和 Today 的设定没有区别。</p>
+<h4 id="To-Sth-过滤器"><a href="#To-Sth-过滤器" class="headerlink" title="To-Sth 过滤器"></a>To-Sth 过滤器</h4><p>日常的使用中，我会把没有看的文章、需要写的东西、要读的书、要搜索的内容都存在 OmniFocus 中，所以需要一个过滤器能够快速过滤出这些内容。</p>
+<p>首先使用这个过滤器需要先设置一套标签系统：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/ndsdd.jpg" alt=""></p>
+<p>过滤器的详细设定如下：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/8da6i.jpg" alt=""></p>
+<p>实际的使用场景：比如我想阅读一些和 Python（一门编程语言）相关的内容，那么我只需要打开这个 Perspective，挑选标签为 <code>To-Read</code>，然后从搜索框中搜索 Python 关键字就可以了。</p>
+<h4 id="Future-过滤器"><a href="#Future-过滤器" class="headerlink" title="Future 过滤器"></a>Future 过滤器</h4><p>这个过滤器主要被用于制定计划，在 Weekly Review 和 Daily Review 中会被频繁地使用到。需要基于以下的标签设定：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/w1efh.jpg" alt=""></p>
+<p>过滤器的详细设定如下：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/5jh9f.jpg" alt=""></p>
+<h4 id="EasyDo-过滤器"><a href="#EasyDo-过滤器" class="headerlink" title="EasyDo 过滤器"></a>EasyDo 过滤器</h4><p>这个过滤器会把一些简单的或者不需要太多精力的任务过滤出来。</p>
+<p>过滤器的详细设定如下：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/evkqk.jpg" alt=""></p>
+<p>完成时间小于 15 分钟或者被标注为<code>LowEnergy</code>标签的任务会被过滤出来。</p>
+<h2 id="工作流"><a href="#工作流" class="headerlink" title="工作流"></a>工作流</h2><p>在整个 Workflow 中，主要分为三个部分：计划、执行、总结。</p>
+<p>当按照上述思路完成以 OmniFocus 对任务管理系统的搭建后：</p>
+<ul>
+<li>每天我必须要完成的具体任务全部都在 <code>Today</code> 过滤器中</li>
+<li>只需要根据<code>Routine</code>的提示，便可得到日计划、周计划、月计划</li>
+<li>当无聊或想利用碎片时间完成一些简单的事情时，只需要去 <code>EasyDo</code>过滤器中去领取就可以了</li>
+<li>阅读清单、购物清单等等只需要去<code>To-Sth</code>过滤器中找就可以了</li>
+<li>并且可以从<code>Future</code>过滤器中知道日周月计划</li>
+</ul>
+<h3 id="计划"><a href="#计划" class="headerlink" title="计划"></a>计划</h3><p>很多人都不重视计划这个环节，想到什么做什么，这样不仅会做事没有条理，也会分不清任务的优先级。</p>
+<p>一般来说，如果不知道怎么做计划的话，有一个长期计划和一个短期计划就可以了。长期计划主要是一个大体的方向，可以是年度计划或者月度计划；短期计划则需要明确具体要做哪些事情，可以是周计划或者日计划。</p>
+<p>实践过程中使用最多的就是周计划和日计划，以及月计划和年计划。在 OmniFocus 中，我设定了几个项目，分别是  <code>Morning Review</code>、<code>Evening Review</code>、<code>Weekly Review</code>、<code>Monthly Review</code>、<code>Annual Review</code>。</p>
+<ul>
+<li>Evening Review</li>
+</ul>
+<blockquote>
+<p>由于我晚上睡得比较晚，所以我会在每天晚上通过 <code>Future</code>过滤器，从<code>ThisWeek</code> 和 <code>Recently</code>标签中的任务挑出一些作为明天的任务，并将它们打上<code>Today</code>标签。</p>
+</blockquote>
+<ul>
+<li>Morning Review</li>
+</ul>
+<blockquote>
+<p>通过<code>Today</code>过滤器，知悉今天要完成的任务</p>
+</blockquote>
+<ul>
+<li>Weekly Review</li>
+</ul>
+<blockquote>
+<p>通过 <code>Future</code>过滤器，从<code>ThisMonth</code>标签中挑选出本周的任务，并将它们打上<code>ThisWeek</code>标签</p>
+</blockquote>
+<ul>
+<li>Monthly Review</li>
+</ul>
+<blockquote>
+<p>通过 <code>Future</code>过滤器，从<code>ThisYear</code>标签中挑选出本月的任务，并将它们打上<code>ThisMonth</code>标签</p>
+</blockquote>
+<h3 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h3><p>执行应该是整个 Workflow 中最重要的一个环节，如果只是计划了，但是最后任务却没有被完成，那做计划也只是白费力气。</p>
+<p>执行的关键就是要在对的时间内做对的事，这也是为什么要设置那么多过滤器的原因，在工作的时候就只展示工作相关要做的事，在没有精力的时候就只展示简单易做的事情。</p>
+<p>如果你做事情的时候很容易分心，可以参考一下番茄工作法，一般我会设置为专注 50 分钟，然后休息 10 分钟。默认的 25 分钟时间过短，可能刚进入状态就要被打断。</p>
+<p>另外可以尝试使用「结构化拖延法」（Structured Procrastination）。结构化拖延法就是忽略优先级高的事，而是从小的事，优先级比较低的事情开始做，这样慢慢地进入工作的状态，然后再去完成优先级高的事情。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>OmniFocus 3 提供了自带的 Review 透视，建立每个项目的时候可以选择多少天 Review 一次。实践上，一般工作上需要每天跟进的项目，会把 Review 的时间设置为每天一次，一般的项目设置为一周 Review 一次即可。为了防止忘记 Review，可以把这个 Review 的任务添加到 Morning Review 或者 Weekly Review 中。</p>
+<h2 id="常用的脚本"><a href="#常用的脚本" class="headerlink" title="常用的脚本"></a>常用的脚本</h2><p>脚本的安装方法：<br>step1: 将后缀为<code>scpt</code>的脚本文件拷贝到 OmniFocus 的脚本目录 (可以使用 OmniFocus 的 <code>Help-&gt;Open Scripts Folder</code> 直接打开);<br>step2: OmniFocus 工具栏上右键, 在弹出的菜单上选择<code>Customize Toolbar…</code>, 找到新增脚本对应的 icon 拖到工具栏上即可。</p>
+<h3 id="任务执行时间统计脚本"><a href="#任务执行时间统计脚本" class="headerlink" title="任务执行时间统计脚本"></a>任务执行时间统计脚本</h3><p>如果能够直接在OmniFocus中记录任务的执行时间, 并统计出任务和项目的执行时间就更好了, 所以有了本文所描述的工作。<br>共三个AppleScript脚本文件: <code>start.scpt</code>, <code>stop.scpt</code>和<code>report.scpt</code>.（<a href="https://github.com/jeffzhangfly/of-timetracking-script" target="_blank" rel="noopener">下载地址</a>）</p>
+<ul>
+<li>start.scpt</li>
+</ul>
+<p>开始一个任务, 此脚本将在该任务的标题前添加<code>#Ongoing:</code>, 表示该任务正在进行, 并在该任务的备注 (note) 属性尾部增加一个记录时间的字符串(或修改这个记录时间的字符串, 如果该任务之前已经开始执行过).</p>
+<p>如果开始任务时该任务的 Defer Until 没有填写, 那么将其设置为当前时间, 作为报告中的任务开始时间.</p>
+<ul>
+<li>stop.scpt</li>
+</ul>
+<p>停止一个任务, 该脚本可以停止已经开始的任务 (标题前有”#Ongoing:” 文本的任务, 停止后删除任务标题中的”#Ongoing”文本), 并根据该任务备注 (note) 属性中的时间记录字符串计算该任务已执行时间.</p>
+<blockquote>
+<p>注意: 任务的执行可以分为多次启动/停止, 一个任务的总执行时间是多次执行时间之和.</p>
+</blockquote>
+<ul>
+<li>report.scpt</li>
+</ul>
+<p>该脚本统计已完成的任务及其执行时间, 并累加各个项目中所有任务的执行时间作为项目执行时间.<br>对原脚本 (OmniFocus&gt; Prepare Task Completion Report Version 2.0.0) 所做的修改如下:</p>
+<ul>
+<li>增加一个属性用于设置保存报告的 Evernote 笔记本名称;</li>
+<li>统计范围中增加 Year, 并设置 Today 为默认统计范围;</li>
+<li>根据 start 和 stop 脚本记录在备注 (note) 中的时间字符串, 在报告中为任务增加执行时间数据;</li>
+<li>统计项目执行时间, 其值为项目下的所有任务执行时间之和;</li>
+<li>将报告的标题改为统计的日期范围;</li>
+<li>如果某项没有设定值, 报告中将不显示该项数据;</li>
+</ul>
+<h4 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h4><p><strong>启动任务</strong></p>
+<ul>
+<li>选中一个任务后, 点击工具栏的<code>start</code> 脚本图标.</li>
+<li>任务启动后, 会弹出任务开始执行通知.</li>
+<li>点击<code>start</code>脚本后, 任务标题前将添加<code>#Ongoing:</code>字符串, 并且任务备注 (note) 尾部将添加时间字符串.</li>
+</ul>
+<p><strong>停止任务</strong></p>
+<ul>
+<li>在任务执行一段时间需要停止时, 例如被打断或暂时休息或完成了该任务, 点击工具栏的”stop”脚本图标. 停止后的任务会记录本次任务执行的时间, 可以在备注 (note) 尾部时间字符串中看到变化.</li>
+<li>任务停止后, 会弹出任务停止执行通知.</li>
+</ul>
+<p><strong>生成报告</strong></p>
+<ul>
+<li>任何时候点击<code>report</code>脚本图标, 将会首先弹出报告时间范围选择窗口, 如下图所示.</li>
+<li>选择一个时间范围后, 点击”OK” 按钮, 将会生成统计报告并在 Evernote 的<code>Omnifocus_reports</code> 笔记本中创建一个统计报告, 如下图. 笔记本名称<code>Omnifocus_reports</code> 可以在脚本中修改.</li>
+<li>报告中, 每个任务如果使用了<code>start</code> 和<code>stop</code> 脚本记录任务执行时间, 将会显示执行时间, 并会统计一个项目的总执行时间, 如上图中下方的蓝色文本.</li>
+</ul>
+<p><strong>注意事项</strong></p>
+<ul>
+<li>使用<code>start</code>和<code>stop</code>脚本记录任务执行时间后, 将会在该任务的备注 (note) 的尾部添加时间字符串, 不要删除它或手动修改它, 并且一定不要将备注文本放在时间字符串之后, 否则会影响执行时间的统计. 统计报告中的备注文本会自动忽略掉时间字符串;</li>
+<li>任务开始后会在任务标题头部增加一个标记字符串<code>#Ongoing:</code>, 任务停止后自动删除, 不要手动修改它.</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>希望对你有帮助！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-wechatpay.jpg" alt="seyvoue 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-alipay.jpg" alt="seyvoue 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>seyvoue</li>
+  <li class="post-copyright-title">
+    <strong>本文标题：</strong>
+    @用 Omnifocus 搭建任务管理系统
+  </li>
+  <li class="post-copyright-posted">
+    <strong>发布时间：</strong>
+    2018/12/11 - 09:12
+  </li>
+  <li class="post-copyright-modified">
+      <strong>最后更新：</strong>
+      2019/06/08 - 23:06
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://seyvoue.com/manual/4d5e7556.html" title="@用 Omnifocus 搭建任务管理系统">http://seyvoue.com/manual/4d5e7556.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/effectiveness/" rel="tag"># effectiveness</a>
+          
+            <a href="/tags/GTD/" rel="tag"># GTD</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+               <div>
+                 
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+               </div>
+            
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/manual/e5c8b56.html" rel="next" title="@Mac 终端配置策略：iterm2+oh-my-zsh+powerlevel9k">
+                <i class="fa fa-chevron-left"></i> @Mac 终端配置策略：iterm2+oh-my-zsh+powerlevel9k
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/manual/b2c3d29f.html" rel="prev" title="@借助工具 OmniFocus+toggl 实践GTD">
+                @借助工具 OmniFocus+toggl 实践GTD <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div onclick="showGitment()" id="gitment-display-button">显示 Gitment 评论</div>
+        <div id="gitment-container" style="display:none"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-avatar.jpg" alt="seyvoue">
+            
+              <p class="site-author-name" itemprop="name">seyvoue</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">71</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">25</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/seyvoue" title="GitHub &rarr; https://github.com/seyvoue" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:seyvoue@qq.com" title="Mail &rarr; mailto:seyvoue@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是一个好的任务管理系统"><span class="nav-number">1.</span> <span class="nav-text">什么是一个好的任务管理系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#任务管理系统的三要素"><span class="nav-number">2.</span> <span class="nav-text">任务管理系统的三要素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OmniFocus-3-实践"><span class="nav-number">3.</span> <span class="nav-text">OmniFocus 3 实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#项目的设定"><span class="nav-number">3.1.</span> <span class="nav-text">项目的设定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标签的设定"><span class="nav-number">3.2.</span> <span class="nav-text">标签的设定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#过滤器设定"><span class="nav-number">3.3.</span> <span class="nav-text">过滤器设定</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Routine-过滤器"><span class="nav-number">3.3.1.</span> <span class="nav-text">Routine 过滤器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Today-过滤器"><span class="nav-number">3.3.2.</span> <span class="nav-text">Today 过滤器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Work-过滤器"><span class="nav-number">3.3.3.</span> <span class="nav-text">Work 过滤器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#To-Sth-过滤器"><span class="nav-number">3.3.4.</span> <span class="nav-text">To-Sth 过滤器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Future-过滤器"><span class="nav-number">3.3.5.</span> <span class="nav-text">Future 过滤器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#EasyDo-过滤器"><span class="nav-number">3.3.6.</span> <span class="nav-text">EasyDo 过滤器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工作流"><span class="nav-number">4.</span> <span class="nav-text">工作流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#计划"><span class="nav-number">4.1.</span> <span class="nav-text">计划</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行"><span class="nav-number">4.2.</span> <span class="nav-text">执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">4.3.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用的脚本"><span class="nav-number">5.</span> <span class="nav-text">常用的脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#任务执行时间统计脚本"><span class="nav-number">5.1.</span> <span class="nav-text">任务执行时间统计脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#如何使用"><span class="nav-number">5.1.1.</span> <span class="nav-text">如何使用</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-fighter-jet"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">seyvoue</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">436k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    
+    <span title="站点阅读时长">12:07</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname,
+            owner: 'seyvoue',
+            repo: 'seyvoue.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'd5896ff31d35a036d1e0a74213a66eda2e336ff7',
+            
+                client_id: '09450d7084d9e39d9d43'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      function showGitment(){
+        document.getElementById("gitment-display-button").style.display = "none";
+        document.getElementById("gitment-container").style.display = "block";
+        renderGitment();
+      }
+      
+      </script>
+    
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "Ob6CW7SHh3UDjoiFsCrI7UQu-9Nh9j0Va")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "Ob6CW7SHh3UDjoiFsCrI7UQu-9Nh9j0Va",
+                'X-LC-Key': "cJQr5jP7XftIjd2KOdiEug0F",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {equationNumbers: { autoNumber: "AMS" }}
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+          if(result)$(this).text('复制成功')
+          else $(this).text('复制失败')
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('复制')
+        }, 300)
+      }).append(e)
+    })
+  </script>
+
+
+  
+
+</body>
+</html>

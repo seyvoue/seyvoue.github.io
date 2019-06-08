@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="baidu-site-verification" content="qTlbubWUyw">
+<meta name="google-site-verification" content="Y9hBxOOKK4YNywVJN3FRwq2Xbry6ouA_XdM14MMdATU">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-alphabet_letter_s-1.ico?v=6.6.0">
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="本文内容：Shell 的3钟启动方式；不同启动方式下环境变量的加载文件及其顺序。">
+<meta name="keywords" content="linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="@Shell 的启动方式及环境变量的配置">
+<meta property="og:url" content="http://seyvoue.com/operaing-system/896e6903.html">
+<meta property="og:site_name" content="seyvoue">
+<meta property="og:description" content="本文内容：Shell 的3钟启动方式；不同启动方式下环境变量的加载文件及其顺序。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-08T15:25:02.755Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="@Shell 的启动方式及环境变量的配置">
+<meta name="twitter:description" content="本文内容：Shell 的3钟启动方式；不同启动方式下环境变量的加载文件及其顺序。">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="seyvoue" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://seyvoue.com/operaing-system/896e6903.html">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>@Shell 的启动方式及环境变量的配置 | seyvoue</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">seyvoue</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">ABC-Always Be Coding.</h1>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+
+    
+
+    <a href="/" rel="section">首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+
+    
+
+    <a href="/tags/" rel="section">标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+
+    
+
+    <a href="/categories/" rel="section">分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+
+    
+
+    <a href="/archives/" rel="section">归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-changelog">
+
+    
+    
+    
+
+    
+
+    <a href="/changelog/" rel="section">变更</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://seyvoue.com/operaing-system/896e6903.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seyvoue">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="seyvoue">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">@Shell 的启动方式及环境变量的配置
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-10-10 17:31:57" itemprop="dateCreated datePublished" datetime="2018-10-10T17:31:57+08:00">2018-10-10</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-08 23:25:02" itemprop="dateModified" datetime="2019-06-08T23:25:02+08:00">2019-06-08</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/operaing-system/" itemprop="url" rel="index"><span itemprop="name">operaing-system</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/operaing-system/896e6903.html#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count gitment-comments-count" data-xid="/operaing-system/896e6903.html" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/operaing-system/896e6903.html" class="leancloud_visitors" data-flag-title="@Shell 的启动方式及环境变量的配置">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                <span title="本文字数">5.8k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                <span title="阅读时长">10 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文内容：Shell 的3钟启动方式；不同启动方式下环境变量的加载文件及其顺序。</p>
+<a id="more"></a>
+<h2 id="Shell-是什么？"><a href="#Shell-是什么？" class="headerlink" title="Shell 是什么？"></a>Shell 是什么？</h2><blockquote>
+<p>Shell 是指操作系统中，提供访问内核服务的程序，与之相对的是操作系统的内核(linux kernel)。—维基百科</p>
+</blockquote>
+<p>我们平常使用的命令行界面的 Shell，只是众多的 Shell 的一种。通常，根据使用方式的不同 Shell 可以分成两类：命令行界面(CLI)和图形界面(GUI)。本文介绍的是命令行界面(CLI)。</p>
+<p>命令行界面 Shell(以下简称 CLI-Shell)，也是有很多种，通过运行<code>cat /etc/shells</code>命令，可以查看本机可以使用哪些 Shell。以下是 macOS 下可以使用的Shell：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># List of acceptable shells for chpass(1).</span><br><span class="line"></span><br><span class="line">/bin/bash</span><br><span class="line">/bin/csh</span><br><span class="line">/bin/ksh</span><br><span class="line">/bin/sh</span><br><span class="line">/bin/tcsh</span><br><span class="line">/bin/zsh</span><br></pre></td></tr></table></figure>
+<p>在 Linux 发行版中，默认的 Shell 就是 Bash，接下来的内容都会以 Bash 为例来进行说明。<br>在日常的工作中，经常会接触到环境变量、命令别名等概念。这些东西如何配置？如何生效？<br>这就涉及到 Shell 的启动脚本了，在介绍启动脚本前，先一起来认识下 Shell 的不同启动方式。</p>
+<h2 id="Shell-不同的启动方式"><a href="#Shell-不同的启动方式" class="headerlink" title="Shell 不同的启动方式"></a>Shell 不同的启动方式</h2><p>在你登入 Linux 系统启动一个 bash shell 时，默认情况下，bash 会在几个文件中查找命令，这些文件叫做<strong>启动文件</strong>或<strong>环境文件</strong>。而，bash 检查的启动文件取决于你启动 bash shell 的方式。启动 bash shell 有三种方式：</p>
+<ul>
+<li>登录时作为默认登录 shell（login interactive shell)</li>
+<li>作为非登录shell 的交互式shell (non-login interactive shell)</li>
+<li>作为运行脚本的非交互式 shell(non-login non-interactive shell)</li>
+</ul>
+<p>在具体说明各种启动方式前，先了解几个基本概念：</p>
+<p><strong>交互式 shell 和 非交互式 Shell ( interactive shell and non-interactive shell )</strong> </p>
+<ul>
+<li><em>交互式模式：</em> 就是在终端上执行，shell等待你的输入，并且立即执行你提交的命令。这种模式被称作交互式是因为shell与用户进行交互。这种模式也是大多数用户非常熟悉的：登录、执行一些命令、退出。当你退出后，shell也终止了。</li>
+<li><em>非交互式模式：</em> 以shell script(非交互)方式执行。在这种模式下，shell不与你进行交互，而是读取存放在文件中的命令,并且执行它们。当它读到文件的结尾EOF，shell也就终止了。</li>
+</ul>
+<p>可以通过打印<code>$-</code>变量的值(代表当前 Shell 的选项标志)，查看其中的<code>i</code>选项(表示 interactive shell)来区分交互式与非交互式 shell</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">zodas@localhost:~$ echo $-</span><br><span class="line">himBH  #这是返回的内容</span><br><span class="line">zodas@localhost:~$ ./tesh.sh echo $-</span><br><span class="line">hb #这是返回的内容</span><br></pre></td></tr></table></figure>
+<p><strong>登录 Shell 和非登录 Shell ( login shell and non-login shell )</strong></p>
+<ul>
+<li><em>登录shell：</em> 是需要用户名、密码登录后才能进入的shell（或者通过”–login”选项生成的shell）。</li>
+<li><em>非登录shell：</em> 不需要输入用户名和密码即可打开的Shell，例如：直接命令“bash”就是打开一个新的非登录shell，在Gnome或KDE中(带图形界面的 linux 中)打开一个“终端”（terminal）窗口程序也是一个非登录shell。</li>
+</ul>
+<p>执行<code>exit</code>命令，退出一个shell（登录或非登录shell）；<br>执行<code>logout</code>命令，退出登录shell（ <strong>不能</strong> 退出非登录shell）。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">zodas@localhost:~$ bash --login</span><br><span class="line">zodas@localhost:~$ logout</span><br><span class="line">zodas@localhost:~$ bash --login</span><br><span class="line">zodas@localhost:~$ exit</span><br><span class="line">logout</span><br><span class="line"></span><br><span class="line">zodas@localhost:~$ bash</span><br><span class="line">zodas@localhost:~$ logout</span><br><span class="line">bash: logout: not login shell: use ‘exit’</span><br><span class="line">zodas@localhost:~$ exit</span><br><span class="line">exit</span><br></pre></td></tr></table></figure>
+<p>那么，如何判断一个已经打开的 Shell 是 login shell 还是 non-login shell？</p>
+<blockquote>
+<p>A login shell is one whose first character of argument zero is ‘-’, or one invoked with the —login option.  from bash reference manual</p>
+</blockquote>
+<p>bash 是 login shell 时，其进程名为”-bash“ 而不是”bash”。 比如下面的命令行演示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 在 login shell 中：</span><br><span class="line">[zodas@localhost ~]$ echo $0</span><br><span class="line">-bash</span><br><span class="line">[zodas@localhost ~]$ ps -ef | grep '\-bash' | grep -v grep</span><br><span class="line">root     16823 16821  0 May06 pts/0    00:00:00 -bash</span><br><span class="line">zodas     21135 21134  0 May07 pts/1    00:00:00 -bash</span><br><span class="line"> </span><br><span class="line"><span class="meta">#</span>在一个非登陆shell中：</span><br><span class="line">zodas@localhost:~$ echo $0</span><br><span class="line">/bin/bash</span><br><span class="line">zodas@localhost:~$ ps -ef | grep '\-bash' | grep -v grep</span><br><span class="line">zodas@localhost:~$</span><br></pre></td></tr></table></figure>
+<h3 id="登录-shell（login-interactive-shell）"><a href="#登录-shell（login-interactive-shell）" class="headerlink" title="登录 shell（login interactive shell）"></a>登录 shell（login interactive shell）</h3><p>当你登录Linux系统时，bash shell 会作为登录shell启动。登录shell会从5个不同的启动文件里读取命令:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/etc/profile            &lt;==主启动文件，系统上每个用户登录时都会执行该启动文件；另外，该文件还配置了对于/etc/profile.d 目录下的所有文件也会在用户登录时被启动</span><br><span class="line">/$HOME/.bash_profile    </span><br><span class="line">/$HOME/.bashrc</span><br><span class="line">/$HOME/.bash_login</span><br><span class="line">/$HOME/.profile</span><br></pre></td></tr></table></figure></p>
+<p>另外，当你 <code>cat /etc/profile</code> 时，会发现该文件中包含下面这段脚本，它用来迭代<code>/etc/profile.d</code>目录下的所有文件，一般，我们会将特定应用程序的启动文件放置在该目录下，当用户登录时，shell 会执行这些文件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">for i in /etc/profile.d/*.sh ; do</span><br><span class="line">    if [ -r &quot;$i&quot; ]; then</span><br><span class="line">        if [ &quot;$&#123;-#*i&#125;&quot; != &quot;$-&quot; ]; then</span><br><span class="line">            . &quot;$i&quot;</span><br><span class="line">        else</span><br><span class="line">            . &quot;$i&quot; &gt;/dev/null</span><br><span class="line">        fi</span><br><span class="line">    fi</span><br><span class="line">done</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>TIPS：对全局环境变量来说(Linux系统中所有用户都需要使用的变量)，可能更倾向于将新的或修改过的变量设置放在<code>/etc/profile</code>文件中，但这可不是什么好主意。如果你升级了所用的发行版，这个文件也会跟着更新，那你所有定制过的变量设置可就都没有了。<br>最好是在<code>/etc/profile.d</code>目录中创建一个以<code>.sh</code>结尾的文件。把所有新的或修改过的全局环境变量设置放在这个文件中。<br>在大多数发行版中，存储个人用户永久性 bash shell 变量的地方是 <code>$HOME/.bashrc</code> 文件。</p>
+</blockquote>
+<h3 id="交互式-Shell-进程（non-login-interactive-shell）"><a href="#交互式-Shell-进程（non-login-interactive-shell）" class="headerlink" title="交互式 Shell 进程（non-login interactive shell）"></a>交互式 Shell 进程（non-login interactive shell）</h3><p>若你的 bash shell 不是登录时启动的，如通过在命令行提示符下乔茹 <code>bash</code> 命令时启动，那么，此时启动的就是非登录下的交互式 shell。以这种方式启动的 shell，其启动文件为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/$HOME/.bashrc</span><br></pre></td></tr></table></figure></p>
+<p>即该不会访问<code>/etc/profile</code>文件，只会检查用户目录下的 <code>.bashrc</code>文件。<br>另外，当你 <code>cat .bashrc</code>文件后，会发现该文件中包含下面这段脚本，即该启动方式登录的 shell 还会加载 <code>/etc/bashrc</code> 文件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if [ -f /etc/bashrc ]; then</span><br><span class="line">        . /etc/bashrc</span><br><span class="line">fi</span><br></pre></td></tr></table></figure></p>
+<h3 id="非交互式-Shell（non-login-non-interactive-shell）"><a href="#非交互式-Shell（non-login-non-interactive-shell）" class="headerlink" title="非交互式 Shell（non-login non-interactive shell）"></a>非交互式 Shell（non-login non-interactive shell）</h3><p>系统执行 shell 脚本时使用的就是这种shell。对于这种启动方式，bash shell提供了<code>BASH_ENV</code>环境变量。当shell启动一个非交互式shell进程时，它会检查这个环境变量来查看要执行的启动文件。如果有指定的文件，shell会执行该文件里的命令，这通常包括shell脚本变量设置。</p>
+<blockquote>
+<p>那如果BASH_ENV变量没有设置，shell脚本到哪里去获得它们的环境变量呢?</p>
+</blockquote>
+<p>对于启动子shell的脚本，如果父 shell 是登录 shell，在<code>/etc/profile</code>、<code>/etc/profile.d/*.sh</code>和<code>$HOME/.bashrc</code>文件中设置并导出了变量，用于执行脚本的子shell就能够继承这些变量。<br>对于那些不启动子shell的脚本，变量已经存在于当前shell中了。所以就算没有设置<br>BASH_ENV，也可以使用当前shell的局部变量和全局变量。</p>
+<h2 id="环境变量持久化"><a href="#环境变量持久化" class="headerlink" title="环境变量持久化"></a>环境变量持久化</h2><p>如何设置局部用户定义变量？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[zodas@localhost ~]$ my_variable=&quot;hello world&quot; &lt;==定义用户变量，注意格式。</span><br><span class="line">[zodas@localhost ~]$ echo $my_variable</span><br><span class="line">hello world</span><br><span class="line">[zodas@localhost ~]$ bash &lt;==启动一个子 shell</span><br><span class="line">[zodas@localhost ~]$ echo $my_variable &lt;== 发现输出的是空行</span><br><span class="line"></span><br><span class="line">[zodas@localhost ~]$ exit</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>tips: 所有的环境变量名均使用大写字母，这是bash shell的标准惯例。如果是你自己创建的局 部变量或是shell脚本，请使用小写字母。变量名区分大小写。在涉及用户定义的局部变量 时坚持使用小写字母，这能够避免重新定义系统环境变量可能带来的灾难。</p>
+</blockquote>
+<p>如何设置全局环境变量？<br>从上面的例子可以看到，可以通过等号该变量赋值，那么该变量就是局部用户定义变量，但若启动子 shell，子 shell 并不能继承父 shell 刚创建的局部用户定义变量，如上例，输出的是空行。那么，若要让子 shell 也能拿到父 shell 刚创建的用户变量，则需要将其变为全局环境变量。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[zodas@localhost ~]$ my_variable=&quot;hello world&quot;      &lt;==首先创建局部用户变量</span><br><span class="line">[zodas@localhost ~]$ export my_variable             &lt;==然后导出到全局环境中</span><br><span class="line">[zodas@localhost ~]$ bash               &lt;==启动子 shell</span><br><span class="line">[zodas@localhost ~]$ echo my_varialbe   &lt;==发现子 shell 已继承了在父 shell 中定义的用户变量</span><br><span class="line">hello world</span><br><span class="line">[zodas@localhost ~]$ exit</span><br></pre></td></tr></table></figure>
+<p>如何将环境变量永久化？<br>分析 shell 的三种启动方式后，我们发现比较关键的是几个启动文件为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/etc/profile        &lt;==该文件会被加载，是因为在 /etc/profile 中有相应的脚本</span><br><span class="line">/etc/profile.d/*.sh</span><br><span class="line">/$HOME/.bashrc</span><br><span class="line">/etc/bashrc         &lt;==该文件会被加载，是因为在 .bashrc 中有相应的脚本</span><br></pre></td></tr></table></figure></p>
+<p>所以，<br>对于系统环境变量，在 <code>/etc/profile</code> 中定义用户变量，并导出为全局环境变量，则该变量便会被持久化了。（注：由于系统更新时，该文件会被覆盖，导致配置过的变量丢失，所以，建议在 <code>/etc/profile.d</code>目录下添加响应的 <code>.sh</code>脚本文件的形式，添加系统环境变量，而不是以修改<code>/etc/profile</code>文件的形式添加系统环境变量。）</p>
+<p>对于用户环境变量，在 <code>/$HOME/.bashrc</code>中定义用户变量，并导出为全局环境变量，则该变量便会被持久化了。<br>当然，以上只是一些最简单的持久化方法。关键在于理解每个启动文件的加载时机，并将变量添加到合适的启动文件中，便能达到自己想要的效果。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://www.gnu.org/software/bash/manual/html_node/Invoking-Bash.html#Invoking-Bash" target="_blank" rel="noopener">Bash Reference Manual</a></li>
+<li><a href="http://www.jianshu.com/p/dff68bda9cc0" target="_blank" rel="noopener">Shell 启动详解和配置实践</a></li>
+<li><a href="https://wido.me/sunteya/understand-bashrc-and-profile" target="_blank" rel="noopener">理解 bashrc 和 profile</a></li>
+<li><a href="http://blog.csdn.net/luotuo44/article/details/8917764" target="_blank" rel="noopener">Linux 安装软件时，/etc/profile,/etc/bash.bashrc, ~/.profile, ~/.bashrc 的用途</a></li>
+<li><a href="http://www.ha97.com/4001.html" target="_blank" rel="noopener">linux 下 <code>su</code> 与 <code>su -</code> 命令的本质区别</a></li>
+<li><a href="http://fuwenchao.blog.51cto.com/6008712/1340685" target="_blank" rel="noopener">su ，su - ，sudo区别—pianzif</a></li>
+<li><a href="http://www.cnblogs.com/qcly/p/3273373.html" target="_blank" rel="noopener">login shell 与 non-login shell 的区别</a></li>
+<li><a href="http://blog.csdn.net/wangyangkobe/article/details/6595143" target="_blank" rel="noopener">linux 下的 source 命令</a></li>
+<li><a href="http://www.cnblogs.com/johnnyflute/p/3642021.html" target="_blank" rel="noopener">/etc/bashrc,用户目录下.bashrc有什么区别？—会编程的卡卡西</a></li>
+<li><a href="http://smilejay.com/2012/10/interactive-shell-login-shell/" target="_blank" rel="noopener">交互式 Shell 和非交互式 Shell，登录 Shell 和非登录 Shell 的区别—笑遍世界</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>希望对你有帮助！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-wechatpay.jpg" alt="seyvoue 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-alipay.jpg" alt="seyvoue 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>seyvoue</li>
+  <li class="post-copyright-title">
+    <strong>本文标题：</strong>
+    @Shell 的启动方式及环境变量的配置
+  </li>
+  <li class="post-copyright-posted">
+    <strong>发布时间：</strong>
+    2018/10/10 - 17:10
+  </li>
+  <li class="post-copyright-modified">
+      <strong>最后更新：</strong>
+      2019/06/08 - 23:06
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://seyvoue.com/operaing-system/896e6903.html" title="@Shell 的启动方式及环境变量的配置">http://seyvoue.com/operaing-system/896e6903.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+               <div>
+                 
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+               </div>
+            
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/languages/3c9b26ea.html" rel="next" title="@linux man page 使用指南">
+                <i class="fa fa-chevron-left"></i> @linux man page 使用指南
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/languages/41d4900b.html" rel="prev" title="@linux 命令与权限间的关系">
+                @linux 命令与权限间的关系 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div onclick="showGitment()" id="gitment-display-button">显示 Gitment 评论</div>
+        <div id="gitment-container" style="display:none"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-avatar.jpg" alt="seyvoue">
+            
+              <p class="site-author-name" itemprop="name">seyvoue</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">71</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">25</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/seyvoue" title="GitHub &rarr; https://github.com/seyvoue" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:seyvoue@qq.com" title="Mail &rarr; mailto:seyvoue@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Shell-是什么？"><span class="nav-number">1.</span> <span class="nav-text">Shell 是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shell-不同的启动方式"><span class="nav-number">2.</span> <span class="nav-text">Shell 不同的启动方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#登录-shell（login-interactive-shell）"><span class="nav-number">2.1.</span> <span class="nav-text">登录 shell（login interactive shell）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#交互式-Shell-进程（non-login-interactive-shell）"><span class="nav-number">2.2.</span> <span class="nav-text">交互式 Shell 进程（non-login interactive shell）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非交互式-Shell（non-login-non-interactive-shell）"><span class="nav-number">2.3.</span> <span class="nav-text">非交互式 Shell（non-login non-interactive shell）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境变量持久化"><span class="nav-number">3.</span> <span class="nav-text">环境变量持久化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-fighter-jet"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">seyvoue</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">436k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    
+    <span title="站点阅读时长">12:07</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname,
+            owner: 'seyvoue',
+            repo: 'seyvoue.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'd5896ff31d35a036d1e0a74213a66eda2e336ff7',
+            
+                client_id: '09450d7084d9e39d9d43'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      function showGitment(){
+        document.getElementById("gitment-display-button").style.display = "none";
+        document.getElementById("gitment-container").style.display = "block";
+        renderGitment();
+      }
+      
+      </script>
+    
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "Ob6CW7SHh3UDjoiFsCrI7UQu-9Nh9j0Va")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "Ob6CW7SHh3UDjoiFsCrI7UQu-9Nh9j0Va",
+                'X-LC-Key': "cJQr5jP7XftIjd2KOdiEug0F",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {equationNumbers: { autoNumber: "AMS" }}
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+          if(result)$(this).text('复制成功')
+          else $(this).text('复制失败')
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('复制')
+        }, 300)
+      }).append(e)
+    })
+  </script>
+
+
+  
+
+</body>
+</html>

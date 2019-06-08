@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="baidu-site-verification" content="qTlbubWUyw">
+<meta name="google-site-verification" content="Y9hBxOOKK4YNywVJN3FRwq2Xbry6ouA_XdM14MMdATU">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-alphabet_letter_s-1.ico?v=6.6.0">
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="git 三棵树：working directory（工作区）、staged snapshot（暂存区）、commit historygit 三个指针：全局HEAD、本地分支 HEAD（即本地分支名）、远程跟踪分支 HEAD(即远程分支名 默认为 origin/remoteBranchName)  其中，第一棵树是工作目录（包含隐藏 .git 文件夹的 OS 目录）中的文件和文件夹集合；第二棵树通">
+<meta name="keywords" content="git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="@Git 内部原理">
+<meta property="og:url" content="http://seyvoue.com/languages/37bfc11a.html">
+<meta property="og:site_name" content="seyvoue">
+<meta property="og:description" content="git 三棵树：working directory（工作区）、staged snapshot（暂存区）、commit historygit 三个指针：全局HEAD、本地分支 HEAD（即本地分支名）、远程跟踪分支 HEAD(即远程分支名 默认为 origin/remoteBranchName)  其中，第一棵树是工作目录（包含隐藏 .git 文件夹的 OS 目录）中的文件和文件夹集合；第二棵树通">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-26-053620.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-23-141403.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-26-061054.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-23-081716.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-23-121950.jpg">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-26-031944.jpg">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-23-131321.jpg">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-23-125347.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-23-130152.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-23-130621.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-23-130935.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-23-131505.jpg">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-23-133152.jpg">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-23-132858.jpg">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-23-134146.jpg">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-23-135516.png">
+<meta property="og:updated_time" content="2018-01-26T09:12:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="@Git 内部原理">
+<meta name="twitter:description" content="git 三棵树：working directory（工作区）、staged snapshot（暂存区）、commit historygit 三个指针：全局HEAD、本地分支 HEAD（即本地分支名）、远程跟踪分支 HEAD(即远程分支名 默认为 origin/remoteBranchName)  其中，第一棵树是工作目录（包含隐藏 .git 文件夹的 OS 目录）中的文件和文件夹集合；第二棵树通">
+<meta name="twitter:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-26-053620.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="seyvoue" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://seyvoue.com/languages/37bfc11a.html">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>@Git 内部原理 | seyvoue</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">seyvoue</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">ABC-Always Be Coding.</h1>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+
+    
+
+    <a href="/" rel="section">首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+
+    
+
+    <a href="/tags/" rel="section">标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+
+    
+
+    <a href="/categories/" rel="section">分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+
+    
+
+    <a href="/archives/" rel="section">归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-changelog">
+
+    
+    
+    
+
+    
+
+    <a href="/changelog/" rel="section">变更</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://seyvoue.com/languages/37bfc11a.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seyvoue">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="seyvoue">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">@Git 内部原理
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-01-23 20:27:35" itemprop="dateCreated datePublished" datetime="2018-01-23T20:27:35+08:00">2018-01-23</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-01-26 17:12:04" itemprop="dateModified" datetime="2018-01-26T17:12:04+08:00">2018-01-26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/languages/" itemprop="url" rel="index"><span itemprop="name">languages</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/languages/37bfc11a.html#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count gitment-comments-count" data-xid="/languages/37bfc11a.html" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/languages/37bfc11a.html" class="leancloud_visitors" data-flag-title="@Git 内部原理">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                <span title="本文字数">3.8k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                <span title="阅读时长">6 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>git 三棵树：working directory（工作区）、staged snapshot（暂存区）、commit history<br>git 三个指针：全局HEAD、本地分支 HEAD（即本地分支名）、远程跟踪分支 HEAD(即远程分支名 默认为 origin/remoteBranchName)</p>
+</blockquote>
+<p>其中，第一棵树是工作目录（包含隐藏 .git 文件夹的 OS 目录）中的文件和文件夹集合；第二棵树通常存储在.git 文件夹根目录中一个名为 index 的二进制文件中；第三棵树由代表 DAG 的 Git 对象组成，位于 .git\objects 中，也可以存储在 .git\objects\pack 的“包”文件中。</p>
+<p>全局 HEAD 指针指向本地当前分支，可以通过 <code>git checkout</code> 修改 全局HEAD 的指向；<br>本地分支HEAD 默认指向本地分支的最后一次提交，可以通过 <code>git reset</code> 命令修改 分支 HEAD 指向；另外 远程分支HEAD，是将远程仓库的分支 HEAD 下载到了本地，并以“远程跟踪分支”的形式存在。</p>
+<p>Git 是内容可寻址文件系统，因此它管理的是名为 SHA-1 的 blob 对象，而不是文件。每个 blob 对象通常是由至少一个树对象引用，反过来树对象通常是由提交对象引用。最终，Git 树对象表示暂存的文件的文件夹结构。</p>
+<p>四张图，理解 git 如何做版本管理。<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-26-053620.png" alt=""><br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-23-141403.png" alt=""><br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-26-061054.png" alt=""><br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-23-081716.png" alt=""></p>
+<p><code>.git</code> 目录结构如下图：</p>
+<p><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-23-121950.jpg" alt=""></p>
+<ul>
+<li>config: </li>
+<li>description:</li>
+<li>info:</li>
+<li>hooks:</li>
+</ul>
+<p>剩下的四个条目很重要：HEAD 文件、（尚为生成的）index 文件，和 objects 目录、refs 目录。</p>
+<ul>
+<li>objects: 目录存储所有数据内容</li>
+<li>refs: 目录存储指向数据（分支）的提交对象的指针；</li>
+<li>HEAD: 文件指示目前被检出的分支；</li>
+<li>index: 文件保存暂存区信息</li>
+</ul>
+<h2 id="git-版本管理的基本流程"><a href="#git-版本管理的基本流程" class="headerlink" title="git 版本管理的基本流程"></a>git 版本管理的基本流程</h2><p><strong>Git 所做的实质工作：</strong><br>将被改写的文件保存为 <strong>数据对象 blob</strong>，更新暂存区，记录 <strong>树对象 tree</strong>，最后创建一个指明了顶层树对象和父提交的<strong>提交对象 commit</strong>。 这三种主要的 Git 对象——数据对象、树对象、提交对象——最初均以单独文件的形式保存在 <code>.git/objects</code> 目录下。</p>
+<p>随着 git 对象的增多，git 会用 <code>zlib</code>库将对象打包到 <code>./git/objects/pack</code> 目录下的 <code>*.pack</code> 和 <code>*.idx</code> 两个文件，Git 打包对象时，会查找命名及大小相近的文件，并只保存文件不同版本之间的<strong>差异</strong>内容，以节省存储空间。</p>
+<p>当在一个新目录或已有目录执行 <code>git init</code> 时，Git 会创建一个 <code>.git</code> 目录。 这个目录包含了几乎所有 Git 存储和操作的对象。 如若想备份或复制一个版本库，只需把这个目录拷贝至另一处即可。该目录的结构如下所示：</p>
+<blockquote>
+<p><strong>假设对于下图的工作目录 <code>supply-core</code>，git 是如何对其进行版本库管理的，是如何记录它的每次提交？</strong></p>
+</blockquote>
+<p><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-26-031944.jpg" alt=""></p>
+<p>该工作目录的一级目录下有一个 <code>文件夹</code>、多个文件。</p>
+<ul>
+<li><p>首先 git 会忽视路径，计算出所有文件的哈希值（一串40位的校验和），作为文件的<code>key</code>，并将文件转换为 blob 对象，存储在 <code>.git/objects/</code> 目录下；</p>
+</li>
+<li><p>然后，会根据文件的目录结构，<code>write-tree</code> 转换成 tree 对象，也保存在 <code>.git/objects/</code> 目录下；</p>
+</li>
+<li><p>然后，git 会将本次提交的所有信息生成一个 commit 对象，也保存在<code>.git/objects/</code> 目录下，该 commit 对象包含了本次提交涉及的所有 blob 对象、tree 对象、提交信息等；</p>
+</li>
+<li><p>然后，git 会将最后一次提交的 commit 对象作为当前分支的指向，并用一个分支名，如：<code>master</code>，来指向该commit 对象，以方便记忆和 checkout；</p>
+</li>
+<li><p>同时，git 会将 HEAD 指向当前分支。</p>
+</li>
+</ul>
+<p>以上就是 git 版本管理一次提交的流程，所有的文件内容均保存在 blob 对象中，tree 对象的继承关系表征了文件的路径结构，commit 对象记录了本次提交的所有内容的引用。即用 blob 保存了文件、后两种对象只是引用。</p>
+<h2 id="几个问题"><a href="#几个问题" class="headerlink" title="几个问题"></a>几个问题</h2><p>下面通过几个问题，帮助理解 git 是如何通过 <code>.git/</code> 目录下各个文件进行版本管理的。所有的数据内容均保存在 <code>.git/objects/</code> 目录下，其它地方保存的只是引用。</p>
+<ul>
+<li><strong>克隆到本地的git项目是如何知道远程都有哪些分支？且远程的当前分支是哪个？</strong></li>
+</ul>
+<p><code>.git/refs/remotes/origin/</code> git 会在该目录下记录远程都有哪些分支，如下图：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-23-131321.jpg" alt=""><br>其中的 <code>HEAD</code> 文件，记录远程分支的当前分支。其文件内容如下：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-23-125347.png" alt=""><br>另外，当该项目若在服务器端被打包过，其远程分支的信息会被记录在 <code>.git/packed-refs</code> 文件中，其内容如下：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-23-130152.png" alt=""><br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-23-130621.png" alt=""></p>
+<ul>
+<li><strong>同样地，本地是如何知道都有哪些本地分支？且本地的当前分时又是哪个？</strong></li>
+</ul>
+<p><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-23-130935.png" alt=""><br><code>remotes</code> 目录下记录远程分支的分支引用，<code>heads</code> 目录下记录本地分支的分支引用，如下：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-23-131505.jpg" alt=""><br>然后会在 <code>.git/HEAD</code> 文件中记录本地分支的当前分支</p>
+<ul>
+<li><strong>本地项目修改的文件是 add 到哪里？</strong></li>
+</ul>
+<p>执行完 <code>git add .</code> 后，修改的内容会被放入 git 的暂存区，即<code>.git/index</code> 文件，该文件保存了所有add 到暂存区但尚未 commit 的文件。如下：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-23-133152.jpg" alt=""><br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-23-132858.jpg" alt=""></p>
+<ul>
+<li><p><strong>git是如何保存本地项目的那些文件内容的？</strong><br>所有数据内容，均保存在了 <code>.git/objects/</code> 目录下了，所以只要你commit 了代码，即使你不小心删除了分支，只要该目录下文件没有丢失，还是能够将数据恢复的，因为这里保存了文件的所有历史版本。<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-23-134146.jpg" alt=""></p>
+</li>
+<li><p><strong>假设有个文件 A，被修改了3次，每次修改只是在修改了其中的一行代码，且分别做了3次提交，我们知道，git 会将3个版本的快照都保存到仓库中，那如何这个文件有20M，那岂不是会仅仅一个文件 A，由于历史版本过多，占用了很多存储空间？</strong></p>
+</li>
+</ul>
+<p>事实上，git 在项目还很小的时候，的确是按照快照完整保存的，但随着项目项目越来越大，git 会将这些数据文件（也就是 <code>objects</code> 目录下的文件进行用 <code>zlib</code> 库进行压缩打包，并且每个文件的每个版本并不再是保存完整版本，而是基于<strong>差异</strong>进行保存）。可以查看包文件，观察它是如何节省空间的。 git verify-pack 这个底层命令可以让你查看已打包的内容：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-01-23-135516.png" alt=""><br>此处，<code>033b4</code> 这个数据对象（即某个文件的第一个版本，如果你还记得的话）引用了数据对象 <code>b042a</code>，即该文件的第二个版本。 命令输出内容的 第三列 显示的是各个对象在包文件中的 大小，可以看到 <code>b042a</code> 占用了 22K 空间，而 <code>033b4</code> 仅占用 9 字节。 指的注意的是，第二个版本完整保存了文件内容，而原始的版本反而是以<strong>差异</strong>方式保存的——这是因为大部分情况下需要快速访问文件的最新版本。</p>
+<p>另外，你可以随时重新打包。 Git 时常会自动对仓库进行重新打包以节省空间。当然你也可以随时手动执行 <code>git gc</code> 命令来这么做。（gc 是垃圾回收的意思）</p>
+<h2 id="底层命令"><a href="#底层命令" class="headerlink" title="底层命令"></a>底层命令</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> hash-object 用于生成指定内容的 key(一个长度为40位的校验和)</span><br><span class="line"><span class="meta">$</span> git hash-object -w test.txt</span><br><span class="line"><span class="meta">#</span> cat-file 读取出 object 里的内容，并返回内容的类型 blob/tree/commit</span><br><span class="line"><span class="meta">$</span> git cat-file -p d670460b4b4aece5915caf5c68d12f560a9fe3e4</span><br><span class="line"><span class="meta">#</span> update-index 将指定文件添加到暂存区</span><br><span class="line"><span class="meta">$</span> git update-index --add --cacheinfo 100644 83baae61804e65cc73a7201a7252750c76066a30 test.txt</span><br><span class="line"><span class="meta">#</span> write-tree 将暂存区中的内容写入到一个树对象上</span><br><span class="line"><span class="meta">$</span> git write-tree</span><br><span class="line"><span class="meta">#</span> read-tree 指定 --prefix 选项，将一个已有的树对象作为子树读入暂存区。即会创建一个该数的父树</span><br><span class="line"><span class="meta">$</span> git read-tree --prefix=bak d8329fc1cc938780ffdd9f94e0d364e0ea74f579</span><br><span class="line"><span class="meta">#</span> commit-tree 创建一个提交对象</span><br><span class="line"><span class="meta">$</span> git commit-tree d8329f</span><br><span class="line"><span class="meta">#</span> verify-pack 查看 objects 目录下的包文件</span><br><span class="line"><span class="meta">$</span> git verify-pack 这个底层命令可以让你查看已打包的内容</span><br></pre></td></tr></table></figure>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li>文件如何写入索引：参考<ul>
+<li><a href="http://blog.csdn.net/zssureqh/article/details/53056095" target="_blank" rel="noopener">GIT科普系列5：index in git</a></li>
+<li><a href="https://msdn.microsoft.com/zh-cn/magazine/mt493250.aspx" target="_blank" rel="noopener">DevOps - Git 内部结构：体系结构和索引文件</a></li>
+</ul>
+</li>
+<li>git 版本管理的整体认识，参考该系列<ul>
+<li><a href="https://git-scm.com/book/zh/v2/Git-%E5%86%85%E9%83%A8%E5%8E%9F%E7%90%86-%E5%BA%95%E5%B1%82%E5%91%BD%E4%BB%A4%E5%92%8C%E9%AB%98%E5%B1%82%E5%91%BD%E4%BB%A4" target="_blank" rel="noopener">10.1 Git 内部原理 - 底层命令和高层命令</a></li>
+<li><a href="https://git-scm.com/book/zh/v2/Git-%E5%86%85%E9%83%A8%E5%8E%9F%E7%90%86-Git-%E5%AF%B9%E8%B1%A1" target="_blank" rel="noopener">10.2 Git 内部原理 - Git 对象</a></li>
+<li><a href="https://git-scm.com/book/zh/v2/Git-%E5%86%85%E9%83%A8%E5%8E%9F%E7%90%86-Git-%E5%BC%95%E7%94%A8" target="_blank" rel="noopener">10.3 Git 内部原理 - Git 引用</a></li>
+<li><a href="https://git-scm.com/book/zh/v2/Git-%E5%86%85%E9%83%A8%E5%8E%9F%E7%90%86-%E5%8C%85%E6%96%87%E4%BB%B6" target="_blank" rel="noopener">10.4 Git 内部原理 - 包文件</a></li>
+<li><a href="https://git-scm.com/book/zh/v2/Git-%E5%86%85%E9%83%A8%E5%8E%9F%E7%90%86-%E5%BC%95%E7%94%A8%E8%A7%84%E6%A0%BC" target="_blank" rel="noopener">10.5 Git 内部原理 - 引用规格</a></li>
+<li><a href="https://git-scm.com/book/zh/v2/Git-%E5%86%85%E9%83%A8%E5%8E%9F%E7%90%86-%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE" target="_blank" rel="noopener">10.6 Git 内部原理 - 传输协议</a></li>
+<li><a href="https://git-scm.com/book/zh/v2/Git-%E5%86%85%E9%83%A8%E5%8E%9F%E7%90%86-%E7%BB%B4%E6%8A%A4%E4%B8%8E%E6%95%B0%E6%8D%AE%E6%81%A2%E5%A4%8D" target="_blank" rel="noopener">10.7 Git 内部原理 - 维护与数据恢复</a></li>
+</ul>
+</li>
+<li><a href="http://blog.csdn.net/hongchangfirst/article/details/45334833" target="_blank" rel="noopener">深入理解Git (五) － commit链的形成</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>希望对你有帮助！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-wechatpay.jpg" alt="seyvoue 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-alipay.jpg" alt="seyvoue 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>seyvoue</li>
+  <li class="post-copyright-title">
+    <strong>本文标题：</strong>
+    @Git 内部原理
+  </li>
+  <li class="post-copyright-posted">
+    <strong>发布时间：</strong>
+    2018/01/23 - 20:01
+  </li>
+  <li class="post-copyright-modified">
+      <strong>最后更新：</strong>
+      2018/01/26 - 17:01
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://seyvoue.com/languages/37bfc11a.html" title="@Git 内部原理">http://seyvoue.com/languages/37bfc11a.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/git/" rel="tag"># git</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+               <div>
+                 
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+               </div>
+            
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/languages/64d451f1.html" rel="next" title="@Linux 命令: 查看文件内容">
+                <i class="fa fa-chevron-left"></i> @Linux 命令: 查看文件内容
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/languages/10b5a0f5.html" rel="prev" title="@Git 命令详解: checkout reset 与 revert">
+                @Git 命令详解: checkout reset 与 revert <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div onclick="showGitment()" id="gitment-display-button">显示 Gitment 评论</div>
+        <div id="gitment-container" style="display:none"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-avatar.jpg" alt="seyvoue">
+            
+              <p class="site-author-name" itemprop="name">seyvoue</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">71</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">25</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/seyvoue" title="GitHub &rarr; https://github.com/seyvoue" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:seyvoue@qq.com" title="Mail &rarr; mailto:seyvoue@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#git-版本管理的基本流程"><span class="nav-number">1.</span> <span class="nav-text">git 版本管理的基本流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#几个问题"><span class="nav-number">2.</span> <span class="nav-text">几个问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#底层命令"><span class="nav-number">3.</span> <span class="nav-text">底层命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考链接"><span class="nav-number">4.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-fighter-jet"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">seyvoue</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">436k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    
+    <span title="站点阅读时长">12:07</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname,
+            owner: 'seyvoue',
+            repo: 'seyvoue.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'd5896ff31d35a036d1e0a74213a66eda2e336ff7',
+            
+                client_id: '09450d7084d9e39d9d43'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      function showGitment(){
+        document.getElementById("gitment-display-button").style.display = "none";
+        document.getElementById("gitment-container").style.display = "block";
+        renderGitment();
+      }
+      
+      </script>
+    
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "Ob6CW7SHh3UDjoiFsCrI7UQu-9Nh9j0Va")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "Ob6CW7SHh3UDjoiFsCrI7UQu-9Nh9j0Va",
+                'X-LC-Key': "cJQr5jP7XftIjd2KOdiEug0F",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {equationNumbers: { autoNumber: "AMS" }}
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+          if(result)$(this).text('复制成功')
+          else $(this).text('复制失败')
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('复制')
+        }, 300)
+      }).append(e)
+    })
+  </script>
+
+
+  
+
+</body>
+</html>

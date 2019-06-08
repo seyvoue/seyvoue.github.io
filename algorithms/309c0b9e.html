@@ -1,0 +1,1910 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="baidu-site-verification" content="qTlbubWUyw">
+<meta name="google-site-verification" content="Y9hBxOOKK4YNywVJN3FRwq2Xbry6ouA_XdM14MMdATU">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-alphabet_letter_s-1.ico?v=6.6.0">
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="overview: logistic regression, binary classification, decision boundary, sigmoid function(logistic function), multiclass classification.">
+<meta name="keywords" content="machine-learning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="@逻辑回归">
+<meta property="og:url" content="http://seyvoue.com/algorithms/309c0b9e.html">
+<meta property="og:site_name" content="seyvoue">
+<meta property="og:description" content="overview: logistic regression, binary classification, decision boundary, sigmoid function(logistic function), multiclass classification.">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-05-logistic-regression.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-08-011740.jpg">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-07-134449.jpg">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-08-005309.jpg">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-08-010106.jpg">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-08-multiclass-classification.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-11-020444.jpg">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-11-023038.jpg">
+<meta property="og:updated_time" content="2018-02-01T10:10:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="@逻辑回归">
+<meta name="twitter:description" content="overview: logistic regression, binary classification, decision boundary, sigmoid function(logistic function), multiclass classification.">
+<meta name="twitter:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-05-logistic-regression.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="seyvoue" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://seyvoue.com/algorithms/309c0b9e.html">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>@逻辑回归 | seyvoue</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">seyvoue</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">ABC-Always Be Coding.</h1>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+
+    
+
+    <a href="/" rel="section">首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+
+    
+
+    <a href="/tags/" rel="section">标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+
+    
+
+    <a href="/categories/" rel="section">分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+
+    
+
+    <a href="/archives/" rel="section">归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-changelog">
+
+    
+    
+    
+
+    
+
+    <a href="/changelog/" rel="section">变更</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://seyvoue.com/algorithms/309c0b9e.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seyvoue">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="seyvoue">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">@逻辑回归
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-09-08 09:05:20" itemprop="dateCreated datePublished" datetime="2017-09-08T09:05:20+08:00">2017-09-08</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-02-01 18:10:14" itemprop="dateModified" datetime="2018-02-01T18:10:14+08:00">2018-02-01</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/algorithms/" itemprop="url" rel="index"><span itemprop="name">algorithms</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/algorithms/309c0b9e.html#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count gitment-comments-count" data-xid="/algorithms/309c0b9e.html" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/algorithms/309c0b9e.html" class="leancloud_visitors" data-flag-title="@逻辑回归">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                <span title="本文字数">23k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                <span title="阅读时长">39 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>overview: logistic regression, binary classification, decision boundary, sigmoid function(logistic function), multiclass classification.</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="二分类问题"><a href="#二分类问题" class="headerlink" title="二分类问题"></a>二分类问题</h2><h3 id="建模"><a href="#建模" class="headerlink" title="建模"></a>建模</h3><h4 id="非向量形式"><a href="#非向量形式" class="headerlink" title="非向量形式"></a>非向量形式</h4><p><strong>Hypothesis</strong></p>
+<script type="math/tex; mode=display">
+\left\{
+\begin{aligned}
+h_{\theta}(x) &= g({\theta}^Tx) \\
+z &= {\theta}^Tx \\
+g(z) &= \frac{1}{1+e^{-z}}
+\end{aligned}
+\right.
+\tag{1-1}</script><p><em>$g(z)$ 的函数图像如下：</em><br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-05-logistic-regression.png" alt=""></p>
+<p>其中：</p>
+<ul>
+<li>$g(z)$ 亦称为 sigmoid function(logistic function)，其值域约束在[0,1]之间。</li>
+<li>$h_\theta(x)=P(y=1|x;\theta)$</li>
+<li>$P(y=1|x;\theta)+P(y=0|x;\theta)=1$</li>
+</ul>
+<p><strong>Cost Function</strong></p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+J(\theta) 
+&= \frac{1}{m} \sum_{i=1}^mCost(h_{\theta}(x^{(i)},y^{(i)}) \\
+&= - \frac{1}{m} \sum_{i=1}^m [y^{(i)} \log (h_{\theta}(x^{(i)}) + (1 - y^{(i)}) \log (1 - h_\theta(x^{(i)}))]
+\end{aligned}
+\tag{1-2}</script><script type="math/tex; mode=display">
+\left\{
+\begin{aligned}
+Cost(h_{\theta}(x),y)&=-\log(h_{\theta}(x)) \quad &if \; y=1 \\
+Cost(h_{\theta}(x),y)&=-\log(1-h_{\theta}(x)) \quad &if \; y=0
+\end{aligned}
+\right.</script><p><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-08-011740.jpg" alt=""></p>
+<p><strong>Gradient Descent</strong></p>
+<script type="math/tex; mode=display">
+\begin{align*}
+& Repeat \; \lbrace \quad for \; j:=0..n \newline 
+& \; \theta_j := \theta_j - \alpha \dfrac{\partial}{\partial \theta_j}J(\theta) \newline & \rbrace\end{align*}</script><p>$\Leftrightarrow$</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+& Repeat \; \lbrace \quad for \; j:=0..n \newline
+& \; \theta_j := \theta_j - \frac{\alpha}{m} \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)}) x_j^{(i)} \newline & \rbrace
+\end{align*}
+\tag{1-3}\label{1-3}</script><p><strong>式$\eqref{1-3}$的推导过程如下：</strong></p>
+<script type="math/tex; mode=display">
+\begin{align*}\sigma(x)'&=\left(\frac{1}{1+e^{-x}}\right)'=\frac{-(1+e^{-x})'}{(1+e^{-x})^2}=\frac{-1'-(e^{-x})'}{(1+e^{-x})^2}=\frac{0-(-x)'(e^{-x})}{(1+e^{-x})^2}=\frac{-(-1)(e^{-x})}{(1+e^{-x})^2}=\frac{e^{-x}}{(1+e^{-x})^2} \newline &=\left(\frac{1}{1+e^{-x}}\right)\left(\frac{e^{-x}}{1+e^{-x}}\right)=\sigma(x)\left(\frac{+1-1 + e^{-x}}{1+e^{-x}}\right)=\sigma(x)\left(\frac{1 + e^{-x}}{1+e^{-x}} - \frac{1}{1+e^{-x}}\right)=\sigma(x)(1 - \sigma(x))\end{align*}</script><script type="math/tex; mode=display">
+\begin{align*}\frac{\partial}{\partial \theta_j} J(\theta) &= \frac{\partial}{\partial \theta_j} \frac{-1}{m}\sum_{i=1}^m \left [ y^{(i)} log (h_\theta(x^{(i)})) + (1-y^{(i)}) log (1 - h_\theta(x^{(i)})) \right ] \newline&= - \frac{1}{m}\sum_{i=1}^m \left [     y^{(i)} \frac{\partial}{\partial \theta_j} log (h_\theta(x^{(i)}))   + (1-y^{(i)}) \frac{\partial}{\partial \theta_j} log (1 - h_\theta(x^{(i)}))\right ] \newline&= - \frac{1}{m}\sum_{i=1}^m \left [     \frac{y^{(i)} \frac{\partial}{\partial \theta_j} h_\theta(x^{(i)})}{h_\theta(x^{(i)})}   + \frac{(1-y^{(i)})\frac{\partial}{\partial \theta_j} (1 - h_\theta(x^{(i)}))}{1 - h_\theta(x^{(i)})}\right ] \newline&= - \frac{1}{m}\sum_{i=1}^m \left [     \frac{y^{(i)} \frac{\partial}{\partial \theta_j} \sigma(\theta^T x^{(i)})}{h_\theta(x^{(i)})}   + \frac{(1-y^{(i)})\frac{\partial}{\partial \theta_j} (1 - \sigma(\theta^T x^{(i)}))}{1 - h_\theta(x^{(i)})}\right ] \newline&= - \frac{1}{m}\sum_{i=1}^m \left [     \frac{y^{(i)} \sigma(\theta^T x^{(i)}) (1 - \sigma(\theta^T x^{(i)})) \frac{\partial}{\partial \theta_j} \theta^T x^{(i)}}{h_\theta(x^{(i)})}   + \frac{- (1-y^{(i)}) \sigma(\theta^T x^{(i)}) (1 - \sigma(\theta^T x^{(i)})) \frac{\partial}{\partial \theta_j} \theta^T x^{(i)}}{1 - h_\theta(x^{(i)})}\right ] \newline&= - \frac{1}{m}\sum_{i=1}^m \left [     \frac{y^{(i)} h_\theta(x^{(i)}) (1 - h_\theta(x^{(i)})) \frac{\partial}{\partial \theta_j} \theta^T x^{(i)}}{h_\theta(x^{(i)})}   - \frac{(1-y^{(i)}) h_\theta(x^{(i)}) (1 - h_\theta(x^{(i)})) \frac{\partial}{\partial \theta_j} \theta^T x^{(i)}}{1 - h_\theta(x^{(i)})}\right ] \newline&= - \frac{1}{m}\sum_{i=1}^m \left [     y^{(i)} (1 - h_\theta(x^{(i)})) x^{(i)}_j - (1-y^{(i)}) h_\theta(x^{(i)}) x^{(i)}_j\right ] \newline&= - \frac{1}{m}\sum_{i=1}^m \left [     y^{(i)} (1 - h_\theta(x^{(i)})) - (1-y^{(i)}) h_\theta(x^{(i)}) \right ] x^{(i)}_j \newline&= - \frac{1}{m}\sum_{i=1}^m \left [     y^{(i)} - y^{(i)} h_\theta(x^{(i)}) - h_\theta(x^{(i)}) + y^{(i)} h_\theta(x^{(i)}) \right ] x^{(i)}_j \newline&= - \frac{1}{m}\sum_{i=1}^m \left [ y^{(i)} - h_\theta(x^{(i)}) \right ] x^{(i)}_j  \newline&= \frac{1}{m}\sum_{i=1}^m \left [ h_\theta(x^{(i)}) - y^{(i)} \right ] x^{(i)}_j\end{align*}</script><h4 id="向量形式"><a href="#向量形式" class="headerlink" title="向量形式"></a>向量形式</h4><p><strong>Hypothesis</strong></p>
+<script type="math/tex; mode=display">
+h = g(X\Theta)
+\tag{1-1'}</script><p><strong>Cost Function</strong></p>
+<script type="math/tex; mode=display">
+J(\Theta)=\frac{1}{m} \cdot (-y^T\log(h)-(1-y^T)\log(1-h))
+\tag{1-2'}</script><p><strong>Gradient Descent</strong><br>$Repeat \; \lbrace$</p>
+<script type="math/tex; mode=display">
+\Theta:=\Theta-\alpha \frac{1}{m}X^T(g(X\Theta)-\overrightarrow{y})
+\tag{1-3'}</script><p>$\rbrace$</p>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><p><em>该实例来源于 coursera machine learning programming exercise2.</em></p>
+<p><strong>目的</strong><br>用逻辑回归根据学生的考试成绩来判断学生是否可以入学。</p>
+<p><strong>DataSet</strong><br>数据集的部分内容如下，完整数据集在<a href="https://raw.githubusercontent.com/seyvoue/coursera-ml/master/machine-learning-ex2/ex2/ex2data1.txt" target="_blank" rel="noopener"><strong>这里</strong></a></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Exam1 Score</th>
+<th style="text-align:center">Exam2 Score</th>
+<th style="text-align:center">Admitted/NotAdmitted</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">34.62365962451697</td>
+<td style="text-align:center">78.0246928153624</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">30.28671076822607</td>
+<td style="text-align:center">43.89499752400101</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">35.84740876993872</td>
+<td style="text-align:center">72.90219802708364</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">60.18259938620976</td>
+<td style="text-align:center">86.30855209546826</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h4><p>完整代码可在<a href="https://github.com/seyvoue/coursera-ml/tree/master/machine-learning-ex2/ex2" target="_blank" rel="noopener"><strong>这里</strong></a>下载。</p>
+<p>下面只列出其中的主程序：</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%% Machine Learning Online Class - Exercise 2: Logistic Regression</span></span><br><span class="line"><span class="comment">%% Load Data</span></span><br><span class="line"><span class="comment">%  The first two columns contains the exam scores and the third column</span></span><br><span class="line"><span class="comment">%  contains the label.</span></span><br><span class="line"></span><br><span class="line">data = load(<span class="string">'ex2data1.txt'</span>);</span><br><span class="line">X = data(:, [<span class="number">1</span>, <span class="number">2</span>]); y = data(:, <span class="number">3</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">%% ==================== Part 1: Plotting ====================</span></span><br><span class="line"><span class="comment">%  We start the exercise by first plotting the data to understand the </span></span><br><span class="line"><span class="comment">%  the problem we are working with.</span></span><br><span class="line"></span><br><span class="line">fprintf([<span class="string">'Plotting data with + indicating (y = 1) examples and o '</span> ...</span><br><span class="line">         <span class="string">'indicating (y = 0) examples.\n'</span>]);</span><br><span class="line"></span><br><span class="line">plotData(X, y);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Put some labels </span></span><br><span class="line"><span class="built_in">hold</span> on;</span><br><span class="line"><span class="comment">% Labels and Legend</span></span><br><span class="line">xlabel(<span class="string">'Exam 1 score'</span>)</span><br><span class="line">ylabel(<span class="string">'Exam 2 score'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">% Specified in plot orde</span></span><br><span class="line"><span class="built_in">legend</span>(<span class="string">'Admitted'</span>, <span class="string">'Not admitted'</span>);</span><br><span class="line"><span class="built_in">hold</span> off;</span><br><span class="line"></span><br><span class="line">fprintf(<span class="string">'\nProgram paused. Press enter to continue.\n'</span>);</span><br><span class="line">pause;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">%% ============ Part 2: Compute Cost and Gradient ============</span></span><br><span class="line"><span class="comment">%  In this part of the exercise, you will implement the cost and gradient</span></span><br><span class="line"><span class="comment">%  for logistic regression. You neeed to complete the code in </span></span><br><span class="line"><span class="comment">%  costFunction.m</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%  Setup the data matrix appropriately, and add ones for the intercept term</span></span><br><span class="line">[m, n] = <span class="built_in">size</span>(X);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Add intercept term to x and X_test</span></span><br><span class="line">X = [<span class="built_in">ones</span>(m, <span class="number">1</span>) X];</span><br><span class="line"></span><br><span class="line"><span class="comment">% Initialize fitting parameters</span></span><br><span class="line">initial_theta = <span class="built_in">zeros</span>(n + <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Compute and display initial cost and gradient</span></span><br><span class="line">[cost, grad] = costFunction(initial_theta, X, y);</span><br><span class="line"></span><br><span class="line">fprintf(<span class="string">'Cost at initial theta (zeros): %f\n'</span>, cost);</span><br><span class="line">fprintf(<span class="string">'Expected cost (approx): 0.693\n'</span>);</span><br><span class="line">fprintf(<span class="string">'Gradient at initial theta (zeros): \n'</span>);</span><br><span class="line">fprintf(<span class="string">' %f \n'</span>, grad);</span><br><span class="line">fprintf(<span class="string">'Expected gradients (approx):\n -0.1000\n -12.0092\n -11.2628\n'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Compute and display cost and gradient with non-zero theta</span></span><br><span class="line">test_theta = [<span class="number">-24</span>; <span class="number">0.2</span>; <span class="number">0.2</span>];</span><br><span class="line">[cost, grad] = costFunction(test_theta, X, y);</span><br><span class="line"></span><br><span class="line">fprintf(<span class="string">'\nCost at test theta: %f\n'</span>, cost);</span><br><span class="line">fprintf(<span class="string">'Expected cost (approx): 0.218\n'</span>);</span><br><span class="line">fprintf(<span class="string">'Gradient at test theta: \n'</span>);</span><br><span class="line">fprintf(<span class="string">' %f \n'</span>, grad);</span><br><span class="line">fprintf(<span class="string">'Expected gradients (approx):\n 0.043\n 2.566\n 2.647\n'</span>);</span><br><span class="line"></span><br><span class="line">fprintf(<span class="string">'\nProgram paused. Press enter to continue.\n'</span>);</span><br><span class="line">pause;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">%% ============= Part 3: Optimizing using fminunc  =============</span></span><br><span class="line"><span class="comment">%  In this exercise, you will use a built-in function (fminunc) to find the</span></span><br><span class="line"><span class="comment">%  optimal parameters theta.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%  Set options for fminunc</span></span><br><span class="line">options = optimset(<span class="string">'GradObj'</span>, <span class="string">'on'</span>, <span class="string">'MaxIter'</span>, <span class="number">400</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">%  Run fminunc to obtain the optimal theta</span></span><br><span class="line"><span class="comment">%  This function will return theta and the cost </span></span><br><span class="line">[theta, cost] = ...</span><br><span class="line">	fminunc(@(t)(costFunction(t, X, y)), initial_theta, options);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Print theta to screen</span></span><br><span class="line">fprintf(<span class="string">'Cost at theta found by fminunc: %f\n'</span>, cost);</span><br><span class="line">fprintf(<span class="string">'Expected cost (approx): 0.203\n'</span>);</span><br><span class="line">fprintf(<span class="string">'theta: \n'</span>);</span><br><span class="line">fprintf(<span class="string">' %f \n'</span>, theta);</span><br><span class="line">fprintf(<span class="string">'Expected theta (approx):\n'</span>);</span><br><span class="line">fprintf(<span class="string">' -25.161\n 0.206\n 0.201\n'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Plot Boundary</span></span><br><span class="line">plotDecisionBoundary(theta, X, y);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Put some labels </span></span><br><span class="line"><span class="built_in">hold</span> on;</span><br><span class="line"><span class="comment">% Labels and Legend</span></span><br><span class="line">xlabel(<span class="string">'Exam 1 score'</span>)</span><br><span class="line">ylabel(<span class="string">'Exam 2 score'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">% Specified in plot order</span></span><br><span class="line"><span class="built_in">legend</span>(<span class="string">'Admitted'</span>, <span class="string">'Not admitted'</span>)</span><br><span class="line"><span class="built_in">hold</span> off;</span><br><span class="line"></span><br><span class="line">fprintf(<span class="string">'\nProgram paused. Press enter to continue.\n'</span>);</span><br><span class="line">pause;</span><br><span class="line"></span><br><span class="line"><span class="comment">%% ============== Part 4: Predict and Accuracies ==============</span></span><br><span class="line"><span class="comment">%  After learning the parameters, you'll like to use it to predict the outcomes</span></span><br><span class="line"><span class="comment">%  on unseen data. In this part, you will use the logistic regression model</span></span><br><span class="line"><span class="comment">%  to predict the probability that a student with score 45 on exam 1 and </span></span><br><span class="line"><span class="comment">%  score 85 on exam 2 will be admitted.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%  Furthermore, you will compute the training and test set accuracies of </span></span><br><span class="line"><span class="comment">%  our model.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%  Your task is to complete the code in predict.m</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%  Predict probability for a student with score 45 on exam 1 </span></span><br><span class="line"><span class="comment">%  and score 85 on exam 2 </span></span><br><span class="line"></span><br><span class="line">prob = sigmoid([<span class="number">1</span> <span class="number">45</span> <span class="number">85</span>] * theta);</span><br><span class="line">fprintf([<span class="string">'For a student with scores 45 and 85, we predict an admission '</span> ...</span><br><span class="line">         <span class="string">'probability of %f\n'</span>], prob);</span><br><span class="line">fprintf(<span class="string">'Expected value: 0.775 +/- 0.002\n\n'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Compute accuracy on our training set</span></span><br><span class="line">p = predict(theta, X);</span><br><span class="line"></span><br><span class="line">fprintf(<span class="string">'Train Accuracy: %f\n'</span>, <span class="built_in">mean</span>(double(p == y)) * <span class="number">100</span>);</span><br><span class="line">fprintf(<span class="string">'Expected accuracy (approx): 89.0\n'</span>);</span><br><span class="line">fprintf(<span class="string">'\n'</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="代码分步讲解"><a href="#代码分步讲解" class="headerlink" title="代码分步讲解"></a>代码分步讲解</h4><blockquote>
+<p>step1: 绘制散点图，观察训练集的数据分布<br>step2: 计算 Cost Function $J(\Theta)$，以及梯度$\nabla J(\Theta)$<br>step3: 调用 Octave/Matalb’s fminunc function 找到 $J(\Theta)$ 的最优解 $\Theta$<br>step4: 绘制 Decision Boundary<br>step5: 模型的评估</p>
+</blockquote>
+<ul>
+<li><strong>step1: 绘制散点图，观察训练集的数据分布。</strong></li>
+</ul>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">data = load(<span class="string">'ex2data1.txt'</span>);</span><br><span class="line">X = data(:, [<span class="number">1</span>, <span class="number">2</span>]); y = data(:, <span class="number">3</span>);</span><br><span class="line">plotData(X, y);</span><br><span class="line"><span class="built_in">hold</span> on;</span><br><span class="line">xlabel(<span class="string">'Exam 1 score'</span>)</span><br><span class="line">ylabel(<span class="string">'Exam 2 score'</span>)</span><br><span class="line"><span class="built_in">legend</span>(<span class="string">'Admitted'</span>, <span class="string">'Not admitted'</span>);</span><br><span class="line"><span class="built_in">hold</span> off;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中<code>plotData(X,y)</code>函数的代码如下：</p>
+</blockquote>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">plotData</span><span class="params">(X, y)</span></span></span><br><span class="line"><span class="comment">%PLOTDATA Plots the data points X and y into a new figure </span></span><br><span class="line"><span class="comment">%   PLOTDATA(x,y) plots the data points with + for the positive examples</span></span><br><span class="line"><span class="comment">%   and o for the negative examples. X is assumed to be a Mx2 matrix.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Create New Figure</span></span><br><span class="line"><span class="built_in">figure</span>; <span class="built_in">hold</span> on;</span><br><span class="line"></span><br><span class="line"><span class="comment">% Find indices of Positive and Negative</span></span><br><span class="line">pos = <span class="built_in">find</span>(y==<span class="number">1</span>);</span><br><span class="line">neg = <span class="built_in">find</span>(y==<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">%Plot</span></span><br><span class="line"><span class="built_in">plot</span>(X(pos, <span class="number">1</span>), X(pos, <span class="number">2</span>), <span class="string">'k+'</span>, <span class="string">'LineWidth'</span>, <span class="number">2</span>, <span class="string">'MarkerSize'</span>, <span class="number">7</span>);</span><br><span class="line"><span class="built_in">plot</span>(X(neg, <span class="number">1</span>), X(neg, <span class="number">2</span>), <span class="string">'ko'</span>, <span class="string">'MarkerFaceColor'</span>, <span class="string">'y'</span>, <span class="string">'MarkerSize'</span>,<span class="number">7</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">hold</span> off;</span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-07-134449.jpg" alt=""></p>
+<ul>
+<li><strong>step2: 计算 Cost Function $J(\Theta)$，以及梯度$\nabla J(\Theta)$</strong></li>
+</ul>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%  Setup the data matrix appropriately, and add ones for the intercept term</span></span><br><span class="line">[m, n] = <span class="built_in">size</span>(X);</span><br><span class="line"><span class="comment">% Add intercept term to x and X_test</span></span><br><span class="line">X = [<span class="built_in">ones</span>(m, <span class="number">1</span>) X];</span><br><span class="line"><span class="comment">% Initialize fitting parameters</span></span><br><span class="line">initial_theta = <span class="built_in">zeros</span>(n + <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line"><span class="comment">% Compute and display initial cost and gradient</span></span><br><span class="line">[cost, grad] = costFunction(initial_theta, X, y);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中<code>costFunction(theta, X, y)</code>的代码如下：</p>
+</blockquote>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[J, grad]</span> = <span class="title">costFunction</span><span class="params">(theta, X, y)</span></span></span><br><span class="line"><span class="comment">%COSTFUNCTION Compute cost and gradient for logistic regression</span></span><br><span class="line"><span class="comment">%   J = COSTFUNCTION(theta, X, y) computes the cost of using theta as the</span></span><br><span class="line"><span class="comment">%   parameter for logistic regression and the gradient of the cost</span></span><br><span class="line"><span class="comment">%   w.r.t. to the parameters.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Initialize some useful values</span></span><br><span class="line">m = <span class="built_in">length</span>(y); <span class="comment">% number of training examples</span></span><br><span class="line">J = <span class="number">0</span>;</span><br><span class="line">grad = <span class="built_in">zeros</span>(<span class="built_in">size</span>(theta));</span><br><span class="line"></span><br><span class="line"><span class="comment">% Instructions: Compute the cost of a particular choice of theta.</span></span><br><span class="line">J = ( y' * <span class="built_in">log</span>(sigmoid(X*theta)) + (<span class="built_in">ones</span>(<span class="built_in">size</span>(y))-y)' * <span class="built_in">log</span>(<span class="built_in">ones</span>(<span class="built_in">size</span>(X*theta))-sigmoid(X*theta)) )/(-m);</span><br><span class="line">grad = ( X'*(sigmoid(X*theta)-y) )/m;</span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中<code>sigmoid(z)</code>的代码如下：</p>
+</blockquote>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">g</span> = <span class="title">sigmoid</span><span class="params">(z)</span></span></span><br><span class="line"><span class="comment">%SIGMOID Compute sigmoid function</span></span><br><span class="line"><span class="comment">%   g = SIGMOID(z) computes the sigmoid of z.</span></span><br><span class="line"></span><br><span class="line">g = <span class="number">1</span> ./ (<span class="built_in">ones</span>(<span class="built_in">size</span>(z)) + <span class="built_in">exp</span>(-z));</span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>step3: 调用 Octave/Matalb’s fminunc function 找到 $J(\Theta)$ 的最优解 $\Theta$</li>
+</ul>
+<p>在线性回归中，我们通过自己编写 matlab 代码,如: <a href="mweblib://15038392800368" target="_blank" rel="noopener">@线性回归</a>。<br>本文我们通过使用 Octave/Matalb 中内嵌的 fminunc function，去求得最优解 $\Theta$，而不是自己使用 Gradient descent 在 for 循环求导来计算 $\Theta$。</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%  use a built-in function (fminunc) to find the</span></span><br><span class="line"><span class="comment">%  optimal parameters theta.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%  Set options for fminunc</span></span><br><span class="line">options = optimset(<span class="string">'GradObj'</span>, <span class="string">'on'</span>, <span class="string">'MaxIter'</span>, <span class="number">400</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">%  Run fminunc to obtain the optimal theta</span></span><br><span class="line"><span class="comment">%  This function will return theta and the cost </span></span><br><span class="line">[theta, cost] = ...</span><br><span class="line">	fminunc(@(t)(costFunction(t, X, y)), initial_theta, options);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>step4: 绘制 Decision Boundary。</li>
+</ul>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% Plot Boundary</span></span><br><span class="line">plotDecisionBoundary(theta, X, y);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Put some labels </span></span><br><span class="line"><span class="built_in">hold</span> on;</span><br><span class="line"><span class="comment">% Labels and Legend</span></span><br><span class="line">xlabel(<span class="string">'Exam 1 score'</span>)</span><br><span class="line">ylabel(<span class="string">'Exam 2 score'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">% Specified in plot order</span></span><br><span class="line"><span class="built_in">legend</span>(<span class="string">'Admitted'</span>, <span class="string">'Not admitted'</span>)</span><br><span class="line"><span class="built_in">hold</span> off;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中的<code>plotDecisionBoundary(theta, X, y)</code> 函数实现代码如下：</p>
+</blockquote>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">plotDecisionBoundary</span><span class="params">(theta, X, y)</span></span></span><br><span class="line"><span class="comment">%PLOTDECISIONBOUNDARY Plots the data points X and y into a new figure with</span></span><br><span class="line"><span class="comment">%the decision boundary defined by theta</span></span><br><span class="line"><span class="comment">%   PLOTDECISIONBOUNDARY(theta, X,y) plots the data points with + for the </span></span><br><span class="line"><span class="comment">%   positive examples and o for the negative examples. X is assumed to be </span></span><br><span class="line"><span class="comment">%   a either </span></span><br><span class="line"><span class="comment">%   1) Mx3 matrix, where the first column is an all-ones column for the </span></span><br><span class="line"><span class="comment">%      intercept.</span></span><br><span class="line"><span class="comment">%   2) MxN, N&gt;3 matrix, where the first column is all-ones</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Plot Data</span></span><br><span class="line">plotData(X(:,<span class="number">2</span>:<span class="number">3</span>), y);</span><br><span class="line"><span class="built_in">hold</span> on</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">size</span>(X, <span class="number">2</span>) &lt;= <span class="number">3</span></span><br><span class="line">    <span class="comment">% Only need 2 points to define a line, so choose two endpoints</span></span><br><span class="line">    plot_x = [<span class="built_in">min</span>(X(:,<span class="number">2</span>))<span class="number">-2</span>,  <span class="built_in">max</span>(X(:,<span class="number">2</span>))+<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line">    <span class="comment">% Calculate the decision boundary line</span></span><br><span class="line">    plot_y = (<span class="number">-1.</span>/theta(<span class="number">3</span>)).*(theta(<span class="number">2</span>).*plot_x + theta(<span class="number">1</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">% Plot, and adjust axes for better viewing</span></span><br><span class="line">    <span class="built_in">plot</span>(plot_x, plot_y)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">% Legend, specific for the exercise</span></span><br><span class="line">    <span class="built_in">legend</span>(<span class="string">'Admitted'</span>, <span class="string">'Not admitted'</span>, <span class="string">'Decision Boundary'</span>)</span><br><span class="line">    axis([<span class="number">30</span>, <span class="number">100</span>, <span class="number">30</span>, <span class="number">100</span>])</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="comment">% Here is the grid range</span></span><br><span class="line">    u = <span class="built_in">linspace</span>(<span class="number">-1</span>, <span class="number">1.5</span>, <span class="number">50</span>);</span><br><span class="line">    v = <span class="built_in">linspace</span>(<span class="number">-1</span>, <span class="number">1.5</span>, <span class="number">50</span>);</span><br><span class="line"></span><br><span class="line">    z = <span class="built_in">zeros</span>(<span class="built_in">length</span>(u), <span class="built_in">length</span>(v));</span><br><span class="line">    <span class="comment">% Evaluate z = theta*x over the grid</span></span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">i</span> = <span class="number">1</span>:<span class="built_in">length</span>(u)</span><br><span class="line">        <span class="keyword">for</span> <span class="built_in">j</span> = <span class="number">1</span>:<span class="built_in">length</span>(v)</span><br><span class="line">            z(<span class="built_in">i</span>,<span class="built_in">j</span>) = mapFeature(u(<span class="built_in">i</span>), v(<span class="built_in">j</span>))*theta;</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    z = z'; <span class="comment">% important to transpose z before calling contour</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">% Plot z = 0</span></span><br><span class="line">    <span class="comment">% Notice you need to specify the range [0, 0]</span></span><br><span class="line">    contour(u, v, z, [<span class="number">0</span>, <span class="number">0</span>], <span class="string">'LineWidth'</span>, <span class="number">2</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="built_in">hold</span> off</span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中的<code>mapFeature(X1, X2)</code>函数的实现代码如下：</p>
+</blockquote>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">out</span> = <span class="title">mapFeature</span><span class="params">(X1, X2)</span></span></span><br><span class="line"><span class="comment">% MAPFEATURE Feature mapping function to polynomial features</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%   MAPFEATURE(X1, X2) maps the two input features</span></span><br><span class="line"><span class="comment">%   to quadratic features used in the regularization exercise.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%   Returns a new feature array with more features, comprising of </span></span><br><span class="line"><span class="comment">%   X1, X2, X1.^2, X2.^2, X1*X2, X1*X2.^2, etc..</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%   Inputs X1, X2 must be the same size</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"></span><br><span class="line">degree = <span class="number">6</span>;</span><br><span class="line">out = <span class="built_in">ones</span>(<span class="built_in">size</span>(X1(:,<span class="number">1</span>)));</span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span> = <span class="number">1</span>:degree</span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">j</span> = <span class="number">0</span>:<span class="built_in">i</span></span><br><span class="line">        out(:, <span class="keyword">end</span>+<span class="number">1</span>) = (X1.^(<span class="built_in">i</span>-<span class="built_in">j</span>)).*(X2.^<span class="built_in">j</span>);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-08-005309.jpg" alt=""></p>
+<ul>
+<li>step5: 模型的评估</li>
+</ul>
+<p>求得的逻辑回归模型是好还是坏呢？预测效果怎么样？需要拿一组数据测试一下，测试代码如下：</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">prob = sigmoid([<span class="number">1</span> <span class="number">45</span> <span class="number">85</span>] * theta); <span class="comment">%这是一组测试数据，第一次考试成绩为45，第二次成绩为85</span></span><br><span class="line"><span class="comment">% Compute accuracy on our training set</span></span><br><span class="line">p = predict(theta, X);<span class="comment">% 调用predict函数测试模型</span></span><br><span class="line">train_accuracy = <span class="built_in">mean</span>(double(p == y)) * <span class="number">100</span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中的 <code>predict(theta, X)</code> 函数的实现代码如下：</p>
+</blockquote>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">p</span> = <span class="title">predict</span><span class="params">(theta, X)</span></span></span><br><span class="line"><span class="comment">%PREDICT Predict whether the label is 0 or 1 using learned logistic </span></span><br><span class="line"><span class="comment">%regression parameters theta</span></span><br><span class="line"><span class="comment">%   p = PREDICT(theta, X) computes the predictions for X using a </span></span><br><span class="line"><span class="comment">%   threshold at 0.5 (i.e., if sigmoid(theta'*x) &gt;= 0.5, predict 1)</span></span><br><span class="line"></span><br><span class="line">m = <span class="built_in">size</span>(X, <span class="number">1</span>); <span class="comment">% Number of training examples</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% You need to return the following variables correctly</span></span><br><span class="line">p = <span class="built_in">zeros</span>(m, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">p = X * theta &gt;= <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>原理如下：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-08-010106.jpg" alt=""></p>
+<hr>
+<h2 id="多分类问题"><a href="#多分类问题" class="headerlink" title="多分类问题"></a>多分类问题</h2><p>逻辑回归如何处理多分类问题？</p>
+<p>所谓 one-vs-all method 就是将二分类问题的方法应用到多分类问题中。比如: 我想分成$K$类。那么就将其中一类作为<code>positive</code>，另$k-1$合起来作为<code>negative</code>，这样进行$K$个$h_{\Theta}(X)$的参数优化；</p>
+<script type="math/tex; mode=display">
+\begin{align*}& y \in \lbrace0, 1 ... n\rbrace \newline& h_\theta^{(0)}(x) = P(y = 0 | x ; \theta) \newline& h_\theta^{(1)}(x) = P(y = 1 | x ; \theta) \newline& \cdots \newline& h_\theta^{(n)}(x) = P(y = n | x ; \theta) \newline& \mathrm{prediction} = \max_i( h_\theta ^{(i)}(x) )\newline\end{align*}
+\tag{2-1}</script><p>每次得到的一个 $h_{\Theta}(X)$ 是指给定 $\Theta$ 和 $X$，它属于<code>positive</code>的类的概率。</p>
+<p>给定一个输入向量 $X$，获得 $\max h_\Theta(X)$ 的类就是 $X$ 所分到的类。</p>
+<p>所谓<strong>多分类问题</strong>，是指分类的结果为三类以上。比如，预测明天的天气结果为三类：晴(用 y==1 表示)、阴（用 y==2表示）、雨（用 y==3表示）</p>
+<p>分类的思想，其实与逻辑回归分类(默认是指二分类，binary classification)很相似，对“晴天”进行分类时，将另外两类(阴天和下雨)视为一类：(非晴天)，这样，就把一个多分类问题转化成了二分类问题。示意图如下：(图中的圆圈 表示：不属于某一类的 所有其他类)</p>
+<p><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-08-multiclass-classification.png" alt=""></p>
+<h3 id="应用-1"><a href="#应用-1" class="headerlink" title="应用"></a>应用</h3><p><strong>目的</strong><br>用逻辑回归实现多分类问题：识别手写的阿拉伯数字(0~9)。</p>
+<p><strong>DataSet</strong><br>完整数据集在<a href="https://github.com/seyvoue/coursera-ml/blob/master/machine-learning-ex3/ex3/ex3data1.mat" target="_blank" rel="noopener"><strong>这里</strong></a>下载。<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-11-020444.jpg" alt=""><br>一共有 5000 个训练样本，每个样本是400维的向量（$20\times20$像素的 grayscale image），用矩阵 $X$ 保存。样本的结果(label of training set)保存在向量 $\overrightarrow{y}$ 中，$\overrightarrow{y}$ 是一个 $5000 \times 1$ 的列向量。</p>
+<h4 id="完整代码-1"><a href="#完整代码-1" class="headerlink" title="完整代码"></a>完整代码</h4><p>完整代码可在<a href="https://github.com/seyvoue/coursera-ml/tree/master/machine-learning-ex3/ex3" target="_blank" rel="noopener"><strong>这里</strong></a>下载。</p>
+<p>下面只列出其中的主程序：</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%% Machine Learning Online Class - Exercise 3 | Part 1: One-vs-all</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%% Setup the parameters you will use for this part of the exercise</span></span><br><span class="line">input_layer_size  = <span class="number">400</span>;  <span class="comment">% 20x20 Input Images of Digits</span></span><br><span class="line">num_labels = <span class="number">10</span>;          <span class="comment">% 10 labels, from 1 to 10</span></span><br><span class="line">                          <span class="comment">% (note that we have mapped "0" to label 10)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%% =========== Part 1: Loading and Visualizing Data =============</span></span><br><span class="line"><span class="comment">%  We start the exercise by first loading and visualizing the dataset.</span></span><br><span class="line"><span class="comment">%  You will be working with a dataset that contains handwritten digits.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Load Training Data</span></span><br><span class="line">fprintf(<span class="string">'Loading and Visualizing Data ...\n'</span>)</span><br><span class="line"></span><br><span class="line">load(<span class="string">'ex3data1.mat'</span>); <span class="comment">% training data stored in arrays X, y</span></span><br><span class="line">m = <span class="built_in">size</span>(X, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Randomly select 100 data points to display</span></span><br><span class="line">rand_indices = randperm(m);</span><br><span class="line">sel = X(rand_indices(<span class="number">1</span>:<span class="number">100</span>), :);</span><br><span class="line"></span><br><span class="line">displayData(sel);</span><br><span class="line"></span><br><span class="line">fprintf(<span class="string">'Program paused. Press enter to continue.\n'</span>);</span><br><span class="line">pause;</span><br><span class="line"></span><br><span class="line"><span class="comment">%% ============ Part 2a: Vectorize Logistic Regression ============</span></span><br><span class="line"><span class="comment">%  In this part of the exercise, you will reuse your logistic regression</span></span><br><span class="line"><span class="comment">%  code from the last exercise. You task here is to make sure that your</span></span><br><span class="line"><span class="comment">%  regularized logistic regression implementation is vectorized. After</span></span><br><span class="line"><span class="comment">%  that, you will implement one-vs-all classification for the handwritten</span></span><br><span class="line"><span class="comment">%  digit dataset.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Test case for lrCostFunction</span></span><br><span class="line">fprintf(<span class="string">'\nTesting lrCostFunction() with regularization'</span>);</span><br><span class="line"></span><br><span class="line">theta_t = [<span class="number">-2</span>; <span class="number">-1</span>; <span class="number">1</span>; <span class="number">2</span>];</span><br><span class="line">X_t = [<span class="built_in">ones</span>(<span class="number">5</span>,<span class="number">1</span>) <span class="built_in">reshape</span>(<span class="number">1</span>:<span class="number">15</span>,<span class="number">5</span>,<span class="number">3</span>)/<span class="number">10</span>];</span><br><span class="line">y_t = ([<span class="number">1</span>;<span class="number">0</span>;<span class="number">1</span>;<span class="number">0</span>;<span class="number">1</span>] &gt;= <span class="number">0.5</span>);</span><br><span class="line">lambda_t = <span class="number">3</span>;</span><br><span class="line">[J grad] = lrCostFunction(theta_t, X_t, y_t, lambda_t);</span><br><span class="line"></span><br><span class="line">fprintf(<span class="string">'\nCost: %f\n'</span>, J);</span><br><span class="line">fprintf(<span class="string">'Expected cost: 2.534819\n'</span>);</span><br><span class="line">fprintf(<span class="string">'Gradients:\n'</span>);</span><br><span class="line">fprintf(<span class="string">' %f \n'</span>, grad);</span><br><span class="line">fprintf(<span class="string">'Expected gradients:\n'</span>);</span><br><span class="line">fprintf(<span class="string">' 0.146561\n -0.548558\n 0.724722\n 1.398003\n'</span>);</span><br><span class="line"></span><br><span class="line">fprintf(<span class="string">'Program paused. Press enter to continue.\n'</span>);</span><br><span class="line">pause;</span><br><span class="line"><span class="comment">%% ============ Part 2b: One-vs-All Training ============</span></span><br><span class="line">fprintf(<span class="string">'\nTraining One-vs-All Logistic Regression...\n'</span>)</span><br><span class="line"></span><br><span class="line">lambda = <span class="number">0.1</span>;</span><br><span class="line">[all_theta] = oneVsAll(X, y, num_labels, lambda);</span><br><span class="line"></span><br><span class="line">fprintf(<span class="string">'Program paused. Press enter to continue.\n'</span>);</span><br><span class="line">pause;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">%% ================ Part 3: Predict for One-Vs-All ================</span></span><br><span class="line"></span><br><span class="line">pred = predictOneVsAll(all_theta, X);</span><br><span class="line"></span><br><span class="line">fprintf(<span class="string">'\nTraining Set Accuracy: %f\n'</span>, <span class="built_in">mean</span>(double(pred == y)) * <span class="number">100</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="代码分步讲解-1"><a href="#代码分步讲解-1" class="headerlink" title="代码分步讲解"></a>代码分步讲解</h4><blockquote>
+<p>step1: 样本数据的可视化<br>step2: 计算 Cost Function $J(\Theta)$，以及梯度$\nabla J(\Theta)$<br>step3: 用 one-vs-all 方法实现多分类。调用 Octave/Matalb’s <code>fminuncg</code> function 求出所有分类器的最优解 $\Theta$<br>step4: 模型的评估</p>
+</blockquote>
+<ul>
+<li><strong>step1: 样本数据的可视化</strong></li>
+</ul>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">load(<span class="string">'ex3data1.mat'</span>); <span class="comment">% training data stored in arrays X, y</span></span><br><span class="line">m = <span class="built_in">size</span>(X, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Randomly select 100 data points to display</span></span><br><span class="line">rand_indices = randperm(m);</span><br><span class="line">sel = X(rand_indices(<span class="number">1</span>:<span class="number">100</span>), :);</span><br><span class="line">displayData(sel);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中 <code>displayData(X, example_width)</code> 代码如下：</p>
+</blockquote>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[h, display_array]</span> = <span class="title">displayData</span><span class="params">(X, example_width)</span></span></span><br><span class="line"><span class="comment">%DISPLAYDATA Display 2D data in a nice grid</span></span><br><span class="line"><span class="comment">%   [h, display_array] = DISPLAYDATA(X, example_width) displays 2D data</span></span><br><span class="line"><span class="comment">%   stored in X in a nice grid. It returns the figure handle h and the </span></span><br><span class="line"><span class="comment">%   displayed array if requested.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Set example_width automatically if not passed in</span></span><br><span class="line"><span class="keyword">if</span> ~exist(<span class="string">'example_width'</span>, <span class="string">'var'</span>) || <span class="built_in">isempty</span>(example_width) </span><br><span class="line">	example_width = <span class="built_in">round</span>(<span class="built_in">sqrt</span>(<span class="built_in">size</span>(X, <span class="number">2</span>)));</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Gray Image</span></span><br><span class="line">colormap(gray);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Compute rows, cols</span></span><br><span class="line">[m n] = <span class="built_in">size</span>(X);</span><br><span class="line">example_height = (n / example_width);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Compute number of items to display</span></span><br><span class="line">display_rows = <span class="built_in">floor</span>(<span class="built_in">sqrt</span>(m));</span><br><span class="line">display_cols = <span class="built_in">ceil</span>(m / display_rows);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Between images padding</span></span><br><span class="line">pad = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">% Setup blank display</span></span><br><span class="line">display_array = - <span class="built_in">ones</span>(pad + display_rows * (example_height + pad), ...</span><br><span class="line">                       pad + display_cols * (example_width + pad));</span><br><span class="line"></span><br><span class="line"><span class="comment">% Copy each example into a patch on the display array</span></span><br><span class="line">curr_ex = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">for</span> <span class="built_in">j</span> = <span class="number">1</span>:display_rows</span><br><span class="line">	<span class="keyword">for</span> <span class="built_in">i</span> = <span class="number">1</span>:display_cols</span><br><span class="line">		<span class="keyword">if</span> curr_ex &gt; m, </span><br><span class="line">			<span class="keyword">break</span>; </span><br><span class="line">		<span class="keyword">end</span></span><br><span class="line">		<span class="comment">% Copy the patch</span></span><br><span class="line">		</span><br><span class="line">		<span class="comment">% Get the max value of the patch</span></span><br><span class="line">		max_val = <span class="built_in">max</span>(<span class="built_in">abs</span>(X(curr_ex, :)));</span><br><span class="line">		display_array(pad + (<span class="built_in">j</span> - <span class="number">1</span>) * (example_height + pad) + (<span class="number">1</span>:example_height), ...</span><br><span class="line">		              pad + (<span class="built_in">i</span> - <span class="number">1</span>) * (example_width + pad) + (<span class="number">1</span>:example_width)) = ...</span><br><span class="line">						<span class="built_in">reshape</span>(X(curr_ex, :), example_height, example_width) / max_val;</span><br><span class="line">		curr_ex = curr_ex + <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	<span class="keyword">if</span> curr_ex &gt; m, </span><br><span class="line">		<span class="keyword">break</span>; </span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Display Image</span></span><br><span class="line">h = imagesc(display_array, [<span class="number">-1</span> <span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Do not show axis</span></span><br><span class="line">axis image off</span><br><span class="line"></span><br><span class="line">drawnow;</span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p><em>随机选择100个样本数据，使用Matlab可视化的结果如下：</em><br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-11-023038.jpg" alt=""></p>
+<ul>
+<li><strong>step2: 计算 Cost Function $J(\Theta)$，以及梯度$\nabla J(\Theta)$</strong></li>
+</ul>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[J, grad]</span> = <span class="title">lrCostFunction</span><span class="params">(theta, X, y, lambda)</span></span></span><br><span class="line"><span class="comment">%LRCOSTFUNCTION Compute cost and gradient for logistic regression with </span></span><br><span class="line"><span class="comment">%regularization</span></span><br><span class="line"><span class="comment">%   J = LRCOSTFUNCTION(theta, X, y, lambda) computes the cost of using</span></span><br><span class="line"><span class="comment">%   theta as the parameter for regularized logistic regression and the</span></span><br><span class="line"><span class="comment">%   gradient of the cost w.r.t. to the parameters. </span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Initialize some useful values</span></span><br><span class="line">m = <span class="built_in">length</span>(y); <span class="comment">% number of training examples</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% You need to return the following variables correctly </span></span><br><span class="line">J = <span class="number">0</span>;</span><br><span class="line">grad = <span class="built_in">zeros</span>(<span class="built_in">size</span>(theta));</span><br><span class="line"></span><br><span class="line">h = sigmoid(X*theta);</span><br><span class="line"></span><br><span class="line">J = ( y'*<span class="built_in">log</span>(h)+(<span class="built_in">ones</span>(<span class="built_in">size</span>(y))-y)'*<span class="built_in">log</span>(<span class="built_in">ones</span>(<span class="built_in">size</span>(h))-h) )/(-m) + lambda/(<span class="number">2</span>*m)*(theta(<span class="number">2</span>:<span class="built_in">length</span>(theta)))'*(theta(<span class="number">2</span>:<span class="built_in">length</span>(theta)));</span><br><span class="line"></span><br><span class="line">grad = ( X' * ( h-y ) )/m + ( lambda / m ) * ( [<span class="number">0</span>; <span class="built_in">ones</span>( <span class="built_in">length</span>(theta) - <span class="number">1</span> , <span class="number">1</span> )].*theta );</span><br><span class="line"></span><br><span class="line">grad = grad(:);</span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>用 one-vs-all 方法实现多分类。调用 Octave/Matalb’s <code>fminuncg</code> function 求出所有分类器的最优解 $\Theta$</strong></li>
+</ul>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lambda = <span class="number">0.1</span>;</span><br><span class="line">[all_theta] = oneVsAll(X, y, num_labels, lambda);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中 <code>oneVsAll(X, y, num_labels, lambda)</code> 的代码如下：</p>
+</blockquote>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[all_theta]</span> = <span class="title">oneVsAll</span><span class="params">(X, y, num_labels, lambda)</span></span></span><br><span class="line"><span class="comment">%ONEVSALL trains multiple logistic regression classifiers and returns all</span></span><br><span class="line"><span class="comment">%the classifiers in a matrix all_theta, where the i-th row of all_theta </span></span><br><span class="line"><span class="comment">%corresponds to the classifier for label i</span></span><br><span class="line"><span class="comment">%   [all_theta] = ONEVSALL(X, y, num_labels, lambda) trains num_labels</span></span><br><span class="line"><span class="comment">%   logistic regression classifiers and returns each of these classifiers</span></span><br><span class="line"><span class="comment">%   in a matrix all_theta, where the i-th row of all_theta corresponds </span></span><br><span class="line"><span class="comment">%   to the classifier for label i</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Some useful variables</span></span><br><span class="line">m = <span class="built_in">size</span>(X, <span class="number">1</span>);</span><br><span class="line">n = <span class="built_in">size</span>(X, <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% You need to return the following variables correctly </span></span><br><span class="line">all_theta = <span class="built_in">zeros</span>(num_labels, n + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Add ones to the X data matrix</span></span><br><span class="line">X = [<span class="built_in">ones</span>(m, <span class="number">1</span>) X];</span><br><span class="line"></span><br><span class="line">initial_theta = <span class="built_in">zeros</span>(n+<span class="number">1</span>,<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">options = optimset(<span class="string">'GradObj'</span>,<span class="string">'on'</span>,<span class="string">'MaxIter'</span>,<span class="number">50</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> c = <span class="number">1</span>:num_labels <span class="comment">%num_labels 为逻辑回归训练器的个数，num of logistic regression classifiers</span></span><br><span class="line">	all_theta(c, :) = fmincg(@(t)(lrCostFunction(t, X, (y == c),lambda)), initial_theta,options );</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>step4: 模型的评估</strong><br>对于 $N$ 分类问题(N&gt;=3)，就需要 $N$ 个假设函数(预测模型)，也即需要 $N$ 组模型参数 $\Theta$（$\Theta$一般是一个向量）</li>
+</ul>
+<p>然后，对于每个样本实例，依次使用每个模型预测输出，选取输出值最大的那组模型所对应的预测结果作为最终结果。</p>
+<p>因为模型的输出值，在sigmoid函数作用下，其实是一个概率值。</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pred = predictOneVsAll(all_theta, X);</span><br><span class="line">tarin_accuracy = <span class="built_in">mean</span>(double(pred == y)) * <span class="number">100</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中 <code>predictOneVsAll(all_theta, X)</code> 代码如下：</p>
+</blockquote>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">p</span> = <span class="title">predictOneVsAll</span><span class="params">(all_theta, X)</span></span></span><br><span class="line"><span class="comment">%PREDICT Predict the label for a trained one-vs-all classifier. The labels </span></span><br><span class="line"><span class="comment">%are in the range 1..K, where K = size(all_theta, 1). </span></span><br><span class="line"><span class="comment">%  p = PREDICTONEVSALL(all_theta, X) will return a vector of predictions</span></span><br><span class="line"><span class="comment">%  for each example in the matrix X. Note that X contains the examples in</span></span><br><span class="line"><span class="comment">%  rows. all_theta is a matrix where the i-th row is a trained logistic</span></span><br><span class="line"><span class="comment">%  regression theta vector for the i-th class. You should set p to a vector</span></span><br><span class="line"><span class="comment">%  of values from 1..K (e.g., p = [1; 3; 1; 2] predicts classes 1, 3, 1, 2</span></span><br><span class="line"><span class="comment">%  for 4 examples) </span></span><br><span class="line"></span><br><span class="line">m = <span class="built_in">size</span>(X, <span class="number">1</span>);</span><br><span class="line">num_labels = <span class="built_in">size</span>(all_theta, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% You need to return the following variables correctly </span></span><br><span class="line">p = <span class="built_in">zeros</span>(<span class="built_in">size</span>(X, <span class="number">1</span>), <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Add ones to the X data matrix</span></span><br><span class="line">X = [<span class="built_in">ones</span>(m, <span class="number">1</span>) X];</span><br><span class="line"></span><br><span class="line">[~,p] = <span class="built_in">max</span>( X * all_theta',[],<span class="number">2</span>); <span class="comment">% 求矩阵(X*all_theta')每行的最大值，p 记录矩阵每行的最大值的索引</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="关于优化算法"><a href="#关于优化算法" class="headerlink" title="关于优化算法"></a>关于优化算法</h2><p>Optimization Algorithms:</p>
+<ul>
+<li>Gradient Descent</li>
+<li>Conjugate Descent</li>
+<li>BFGS</li>
+<li>L-BFGS</li>
+</ul>
+<p>后三种算法相比于 Gradient Descent：<br>Advantages:</p>
+<ul>
+<li>No need to manually pick $\alpha$</li>
+<li>often faster than Gradient Descent</li>
+</ul>
+<p>Disadvantage:</p>
+<ul>
+<li>more complex</li>
+</ul>
+<p><strong>Note:</strong> 在线性回归和逻辑回归中，我们用到了两种优化算法 Gradient Descent(梯度下降法)和 Normal Equation(正规方程)。</p>
+<hr>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><a href="http://www.cnblogs.com/hapjin/archive/2016/11/18/6078530.html" target="_blank" rel="noopener">Stanford coursera Andrew Ng 机器学习课程编程作业（Exercise 2）及总结</a></li>
+<li><a href="https://www.coursera.org/learn/machine-learning/resources/Zi29t" target="_blank" rel="noopener">ML Week 3 Lecture Notes — Stanford coursera Andrew Ng</a></li>
+<li><a href="http://www.cnblogs.com/hapjin/p/6085278.html" target="_blank" rel="noopener">stanford coursera 机器学习编程作业 exercise 3（逻辑回归实现多分类问题）</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>希望对你有帮助！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-wechatpay.jpg" alt="seyvoue 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-alipay.jpg" alt="seyvoue 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>seyvoue</li>
+  <li class="post-copyright-title">
+    <strong>本文标题：</strong>
+    @逻辑回归
+  </li>
+  <li class="post-copyright-posted">
+    <strong>发布时间：</strong>
+    2017/09/08 - 09:09
+  </li>
+  <li class="post-copyright-modified">
+      <strong>最后更新：</strong>
+      2018/02/01 - 18:02
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://seyvoue.com/algorithms/309c0b9e.html" title="@逻辑回归">http://seyvoue.com/algorithms/309c0b9e.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/machine-learning/" rel="tag"># machine-learning</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+               <div>
+                 
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+               </div>
+            
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/languages/65516c6f.html" rel="next" title="@Octave tutorial">
+                <i class="fa fa-chevron-left"></i> @Octave tutorial
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/algorithms/bec21aa6.html" rel="prev" title="@过拟合问题">
+                @过拟合问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div onclick="showGitment()" id="gitment-display-button">显示 Gitment 评论</div>
+        <div id="gitment-container" style="display:none"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-avatar.jpg" alt="seyvoue">
+            
+              <p class="site-author-name" itemprop="name">seyvoue</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">71</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">25</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/seyvoue" title="GitHub &rarr; https://github.com/seyvoue" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:seyvoue@qq.com" title="Mail &rarr; mailto:seyvoue@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#二分类问题"><span class="nav-number">1.</span> <span class="nav-text">二分类问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#建模"><span class="nav-number">1.1.</span> <span class="nav-text">建模</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#非向量形式"><span class="nav-number">1.1.1.</span> <span class="nav-text">非向量形式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#向量形式"><span class="nav-number">1.1.2.</span> <span class="nav-text">向量形式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用"><span class="nav-number">1.2.</span> <span class="nav-text">应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#完整代码"><span class="nav-number">1.2.1.</span> <span class="nav-text">完整代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码分步讲解"><span class="nav-number">1.2.2.</span> <span class="nav-text">代码分步讲解</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多分类问题"><span class="nav-number">2.</span> <span class="nav-text">多分类问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#应用-1"><span class="nav-number">2.1.</span> <span class="nav-text">应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#完整代码-1"><span class="nav-number">2.1.1.</span> <span class="nav-text">完整代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码分步讲解-1"><span class="nav-number">2.1.2.</span> <span class="nav-text">代码分步讲解</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于优化算法"><span class="nav-number">3.</span> <span class="nav-text">关于优化算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考链接"><span class="nav-number">4.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-fighter-jet"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">seyvoue</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">436k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    
+    <span title="站点阅读时长">12:07</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname,
+            owner: 'seyvoue',
+            repo: 'seyvoue.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'd5896ff31d35a036d1e0a74213a66eda2e336ff7',
+            
+                client_id: '09450d7084d9e39d9d43'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      function showGitment(){
+        document.getElementById("gitment-display-button").style.display = "none";
+        document.getElementById("gitment-container").style.display = "block";
+        renderGitment();
+      }
+      
+      </script>
+    
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "Ob6CW7SHh3UDjoiFsCrI7UQu-9Nh9j0Va")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "Ob6CW7SHh3UDjoiFsCrI7UQu-9Nh9j0Va",
+                'X-LC-Key': "cJQr5jP7XftIjd2KOdiEug0F",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {equationNumbers: { autoNumber: "AMS" }}
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+          if(result)$(this).text('复制成功')
+          else $(this).text('复制失败')
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('复制')
+        }, 300)
+      }).append(e)
+    })
+  </script>
+
+
+  
+
+</body>
+</html>

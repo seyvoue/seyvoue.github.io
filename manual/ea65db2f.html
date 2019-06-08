@@ -1,0 +1,1930 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="baidu-site-verification" content="qTlbubWUyw">
+<meta name="google-site-verification" content="Y9hBxOOKK4YNywVJN3FRwq2Xbry6ouA_XdM14MMdATU">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-alphabet_letter_s-1.ico?v=6.6.0">
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="本文将以 Next 主题为例，教你如何进一步定制/优化自己的博客，扩展博客的功能。环境：1234os: macOS Majavehexo: 1.1.0node: 10.13.0theme: NexT.Mist v6.5.0">
+<meta name="keywords" content="hexo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="@手把手教你如何搭建个人博客（四）">
+<meta property="og:url" content="http://seyvoue.com/manual/ea65db2f.html">
+<meta property="og:site_name" content="seyvoue">
+<meta property="og:description" content="本文将以 Next 主题为例，教你如何进一步定制/优化自己的博客，扩展博客的功能。环境：1234os: macOS Majavehexo: 1.1.0node: 10.13.0theme: NexT.Mist v6.5.0">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-20-110537.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-053709.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-053754.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-054542.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-053920.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-055332.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-064308.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-055749.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-055923.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-Screen_Shot_2018-11-26_at_16_33_17.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-Screen_Shot_2018-11-26_at_16_38_22.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-Screen%20Shot%202018-11-26%20at%2016.46.41.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-Screen_Shot_2018-11-26_at_16_46_08-2.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-Screen_Shot_2018-11-26_at_16_46_22.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-143435.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-144107.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-115938.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-120232.png">
+<meta property="og:updated_time" content="2019-06-08T15:25:02.760Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="@手把手教你如何搭建个人博客（四）">
+<meta name="twitter:description" content="本文将以 Next 主题为例，教你如何进一步定制/优化自己的博客，扩展博客的功能。环境：1234os: macOS Majavehexo: 1.1.0node: 10.13.0theme: NexT.Mist v6.5.0">
+<meta name="twitter:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-20-110537.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="seyvoue" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://seyvoue.com/manual/ea65db2f.html">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>@手把手教你如何搭建个人博客（四） | seyvoue</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">seyvoue</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">ABC-Always Be Coding.</h1>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+
+    
+
+    <a href="/" rel="section">首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+
+    
+
+    <a href="/tags/" rel="section">标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+
+    
+
+    <a href="/categories/" rel="section">分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+
+    
+
+    <a href="/archives/" rel="section">归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-changelog">
+
+    
+    
+    
+
+    
+
+    <a href="/changelog/" rel="section">变更</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://seyvoue.com/manual/ea65db2f.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seyvoue">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="seyvoue">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">@手把手教你如何搭建个人博客（四）
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-11-22 15:42:26" itemprop="dateCreated datePublished" datetime="2018-11-22T15:42:26+08:00">2018-11-22</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-08 23:25:02" itemprop="dateModified" datetime="2019-06-08T23:25:02+08:00">2019-06-08</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/manual/" itemprop="url" rel="index"><span itemprop="name">manual</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/manual/ea65db2f.html#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count gitment-comments-count" data-xid="/manual/ea65db2f.html" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/manual/ea65db2f.html" class="leancloud_visitors" data-flag-title="@手把手教你如何搭建个人博客（四）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                <span title="本文字数">21k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                <span title="阅读时长">35 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文将以 Next 主题为例，教你如何进一步定制/优化自己的博客，扩展博客的功能。<br>环境：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">os: macOS Majave</span><br><span class="line">hexo: 1.1.0</span><br><span class="line">node: 10.13.0</span><br><span class="line">theme: NexT.Mist v6.5.0</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">$ hexo --version</span><br><span class="line">hexo: 3.8.0</span><br><span class="line">hexo-cli: 1.1.0</span><br><span class="line">os: Darwin 18.2.0 darwin x64</span><br><span class="line">http_parser: 2.8.0</span><br><span class="line">node: 10.13.0</span><br><span class="line">v8: 6.8.275.32-node.36</span><br><span class="line">uv: 1.23.2</span><br><span class="line">zlib: 1.2.11</span><br><span class="line">ares: 1.14.0</span><br><span class="line">modules: 64</span><br><span class="line">nghttp2: 1.34.0</span><br><span class="line">napi: 3</span><br><span class="line">openssl: 1.1.0i</span><br><span class="line">icu: 62.1</span><br><span class="line">unicode: 11.0</span><br><span class="line">cldr: 33.1</span><br><span class="line">tz: 2018e</span><br></pre></td></tr></table></figure>
+<p><strong>建议：</strong> 在定制博客前完成博客的备份工作，方便回滚和记录博客的变更。</p>
+<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><blockquote>
+<p>授之于鱼不如授之于渔<br>希望我们都能够理解其源码，制作出属于自己专属的个性化博客(•̀ᴗ•́)</p>
+</blockquote>
+<p>我们需要改的文件其实也就那么几个，大部分是不需要更改的，NexT 都已经帮我们配置好了~</p>
+<h3 id="了解-hexo-引擎博客的目录结构"><a href="#了解-hexo-引擎博客的目录结构" class="headerlink" title="了解 hexo 引擎博客的目录结构"></a>了解 hexo 引擎博客的目录结构</h3><p>默认目录结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── .deploy_git</span><br><span class="line">├── public</span><br><span class="line">├── scaffolds</span><br><span class="line">├── scripts</span><br><span class="line">├── source</span><br><span class="line">|   ├── _drafts</span><br><span class="line">|   └── _posts</span><br><span class="line">├── themes</span><br><span class="line">├── _config.yml</span><br><span class="line">└── package.json</span><br></pre></td></tr></table></figure>
+<ul>
+<li>.deploy_git：执行 <code>hexo deploy</code> 命令部署到GitHub上的内容目录</li>
+<li>public：执行 <code>hexo generate</code> 命令，输出的静态网页内容目录</li>
+<li>scaffolds：layout模板文件目录，其中的 <code>md</code>文件可以添加编辑</li>
+<li>scripts：扩展脚本目录，这里可以自定义一些 javascript 脚本</li>
+<li>source：文章源码目录，该目录下的 markdown 和 html 文件均会被 Hexo 处理。该页面对应 repo 的根目录，404文件、favicon.ico 文件，CNAME 文件等都应该放这里，该目录下可新建页面目录。<ul>
+<li>drafts：草稿文章</li>
+<li>posts：发布文章</li>
+</ul>
+</li>
+<li>themes：主题文件目录</li>
+<li>_config.yml：<strong>全局配置文件</strong>，大多数的设置都在这里</li>
+<li>package.json：应用程序数据，指明 Hexo 的版本、已安装插件等信息，类似于一般软件中的关于按钮</li>
+</ul>
+<p>我们最先修改的应该是在 Hexo 根目录下的配置文件 <code>_config.yml</code> 文件，这里是配置整个站点的配置信息。</p>
+<p>其次就是我们的<strong>主题配置文件</strong>，在对应的主题下的 <code>_config.yml</code> 因为我使用的是 NexT 主题，所以目录的路径为 <code>blog\themes\next\_config.yml</code> 这里配置的是使用主题的配置文件，这个配置文件的东西就有点多了，我们大部分的修改也是在这个文件下完成的。比如说使用集成的第三方插件，默认为 false，我们需要将其改为 true 并且配置相应的app_key 就可以使用该插件了~有木有很方便(^ ◕ᴥ◕ ^)</p>
+<p>然后我们需要修改样式的话是需要设置 css 和甚至是修改模板。页面展现的全部逻辑都在每个主题中控制，源代码在 <code>hexo\themes\你使用的主题\</code> 中。</p>
+<h3 id="NexT-主题的目录结构"><a href="#NexT-主题的目录结构" class="headerlink" title="NexT 主题的目录结构"></a>NexT 主题的目录结构</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">├── .github            #git信息</span><br><span class="line">├── languages          #多语言</span><br><span class="line">|   ├── default.yml    #默认语言</span><br><span class="line">|   └── zh-Hans.yml    #简体中文</span><br><span class="line">|   └── zh-tw.yml      #繁体中文</span><br><span class="line">|   └── ...</span><br><span class="line">├── layout             #布局，根目录下的*.ejs文件是对主页，分页，存档等的控制</span><br><span class="line">|   ├── _custom        #可以自己修改的模板，覆盖原有模板</span><br><span class="line">|   |   ├── _header.swig    #头部样式</span><br><span class="line">|   |   ├── _sidebar.swig   #侧边栏样式</span><br><span class="line">|   ├── _macro        #可以自己修改的模板，覆盖原有模板</span><br><span class="line">|   |   ├── post.swig    #文章模板</span><br><span class="line">|   |   ├── reward.swig    #打赏模板</span><br><span class="line">|   |   ├── sidebar.swig   #侧边栏模板</span><br><span class="line">|   ├── _partial       #局部的布局</span><br><span class="line">|   |   ├── head       #头部模板</span><br><span class="line">|   |   ├── search     #搜索模板</span><br><span class="line">|   |   ├── share      #分享模板</span><br><span class="line">|   ├── _script        #局部的布局</span><br><span class="line">|   ├── _third-party   #第三方模板</span><br><span class="line">|   ├── _layout.swig   #主页面模板</span><br><span class="line">|   ├── index.swig     #主页面模板</span><br><span class="line">|   ├── page.swig      #页面模板</span><br><span class="line">|   └── tag.swig       #tag模板</span><br><span class="line">├── scripts            #script源码</span><br><span class="line">|   ├── tags           #tags的script源码</span><br><span class="line">|   ├── marge.js       #页面模板</span><br><span class="line">├── source             #源码</span><br><span class="line">|   ├── css            #css源码</span><br><span class="line">|   |   ├── _common    #*.styl基础css</span><br><span class="line">|   |   ├── _custom    #*.styl局部css</span><br><span class="line">|   |   └── _mixins    #mixins的css</span><br><span class="line">|   ├── fonts          #字体</span><br><span class="line">|   ├── images         #图片</span><br><span class="line">|   └── js             #javascript源代码</span><br><span class="line">├── _config.yml        #主题配置文件</span><br><span class="line">└── README.md          #用GitHub的都知道</span><br></pre></td></tr></table></figure>
+<h2 id="定制博客"><a href="#定制博客" class="headerlink" title="定制博客"></a>定制博客</h2><h3 id="添加-changelog-页"><a href="#添加-changelog-页" class="headerlink" title="添加 changelog 页"></a>添加 changelog 页</h3><p><strong>建议：</strong>先给博客增加 changelog 页，即使你不想增加这个页面，其中的 git commit 规范对你也会很有帮助。</p>
+<p>changelog 符合 <code>AngularJS</code> 规范，借助工具基于 git commit message 自动生成。相关介绍可参考：</p>
+<ul>
+<li><a href="http://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html" target="_blank" rel="noopener">Commit message 和 Change log 编写指南, from 阮一峰</a></li>
+<li><a href="https://github.com/angular/angular/blob/master/CONTRIBUTING.md#type" target="_blank" rel="noopener">Contributing to Angular，from github</a></li>
+<li><a href="https://www.my-fe.pub/post/git-commit-specification.html" target="_blank" rel="noopener">git-commit的规范</a></li>
+<li><a href="https://juejin.im/post/5bd2debfe51d457abc710b57" target="_blank" rel="noopener">规范你的 commit message 并且根据 commit 自动生成 CHANGELOG.md</a></li>
+<li><a href="https://juejin.im/post/5b624d42f265da0fa1223ffa" target="_blank" rel="noopener">如何打造规范的开源项目workflow</a></li>
+<li><a href="http://lyn.s76.org/2017/06/04/commit-format-rules/" target="_blank" rel="noopener">如何规范 commit comment</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/34223150" target="_blank" rel="noopener">优雅的提交你的 Git Commit Message</a></li>
+<li><a href="https://github.com/commitizen/cz-cli" target="_blank" rel="noopener">commitizen, from github</a></li>
+<li><a href="https://github.com/marionebl/commitlint" target="_blank" rel="noopener">commitlint, from github</a></li>
+<li><a href="https://github.com/typicode/husky" target="_blank" rel="noopener">husky, from github</a></li>
+</ul>
+<blockquote>
+<p>step1: 自动化生成符合 Angular 规范的 changelog，所需的插件安装</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>Installing the command line tool</span><br><span class="line"><span class="meta">$</span> npm install -g commitizen</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>Install your preferred commitizen adapter globally</span><br><span class="line"><span class="meta">$</span> npm install -g cz-conventional-changelog</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>Create a .czrc file in your home directory, with path referring to the preferred, globally installed, commitizen adapter</span><br><span class="line"><span class="meta">$</span> echo '&#123; "path": "cz-conventional-changelog" &#125;' &gt; ~/.czrc</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>OR initialize your project to use the cz-conventional-changelog adapter by typing: </span><br><span class="line"><span class="meta">$</span> commitizen init cz-conventional-changelog --save-dev --save-exact</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>Install commitlint cli and conventional config</span><br><span class="line"><span class="meta">$</span> npm install --save-dev @commitlint/&#123;config-conventional,cli&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>Configure commitlint to use conventional config</span><br><span class="line"><span class="meta">$</span> echo "module.exports = &#123;extends: ['@commitlint/config-conventional']&#125;" &gt; commitlint.config.js</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>install husky</span><br><span class="line"><span class="meta">$</span> npm install husky --save-dev</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>install conventional-changelog-cli</span><br><span class="line"><span class="meta">$</span> npm install -g conventional-changelog-cli</span><br></pre></td></tr></table></figure>
+<p>step2：在 <code>blog/package.json</code> 中添加：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"husky"</span>: &#123;</span><br><span class="line">    <span class="attr">"hooks"</span>: &#123;</span><br><span class="line">      <span class="attr">"commit-msg"</span>: <span class="string">"commitlint -E HUSKY_GIT_PARAMS"</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"scripts"</span>: &#123;</span><br><span class="line">    <span class="attr">"changelog"</span>: <span class="string">"conventional-changelog -p angular -i /Users/seyvoue/google-drive/blog/source/changelog/index.md -s -w -r 0"</span>,</span><br><span class="line">    <span class="attr">"addChangeLog"</span>: <span class="string">"conventional-changelog -p angular -i /Users/seyvoue/google-drive/blog/source/changelog/index.md -s"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>step3: 博客增加 changelog 页面<br>首先，新建页面：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> hexo new page changelog</span><br></pre></td></tr></table></figure></p>
+<p>执行完后，删除<code>blog/source/changelog</code>下刚生成的<code>index.md</code>文件。</p>
+<p>然后，修改主题配置文件<code>blog/themes/next/_config.yml</code>，增加<code>changelog</code><br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line"><span class="attr">  home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">home</span></span><br><span class="line"><span class="attr">  tags:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">tags</span></span><br><span class="line"><span class="attr">  categories:</span> <span class="string">/categories/</span> <span class="string">||</span> <span class="string">th</span></span><br><span class="line"><span class="attr">  archives:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">archive</span></span><br><span class="line"><span class="attr">  changelog:</span> <span class="string">/changelog/</span></span><br></pre></td></tr></table></figure></p>
+<p>然后，修改<code>blog/themes/next/languages/zh-CN.yml</code>，增加<code>changelog</code><br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line"><span class="attr">  home:</span> <span class="string">首页</span></span><br><span class="line"><span class="attr">  archives:</span> <span class="string">归档</span></span><br><span class="line"><span class="attr">  categories:</span> <span class="string">分类</span></span><br><span class="line">  <span class="comment">#告知 hexo 将 changelog 翻译为 “变更”</span></span><br><span class="line"><span class="attr">  changelog:</span> <span class="string">变更</span></span><br><span class="line"><span class="attr">  tags:</span> <span class="string">标签</span></span><br><span class="line"><span class="attr">  about:</span> <span class="string">关于</span></span><br><span class="line"><span class="attr">  search:</span> <span class="string">搜索</span></span><br><span class="line"><span class="attr">  schedule:</span> <span class="string">日程表</span></span><br><span class="line"><span class="attr">  sitemap:</span> <span class="string">站点地图</span></span><br><span class="line"><span class="attr">  commonweal:</span> <span class="string">公益</span> <span class="number">404</span></span><br></pre></td></tr></table></figure></p>
+<p>然后，生成 changelog，你只需执行：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> conventional-changelog -p angular -i /Users/seyvoue/google-drive/blog/source/changelog/index.md -s -w -r 0</span><br></pre></td></tr></table></figure></p>
+<p>执行<code>hexo clean; hexo g; hexo d</code>将博客发布，即可在博客中看到新增了一个名为<code>变更</code>的页面，里面的内容即为刚刚生成的 changelog。</p>
+<p><strong>以后只需执行以下代码，即可自动生成 changelog。</strong><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>全部重新生成changlog</span><br><span class="line"><span class="meta">$</span> npm run changelog</span><br><span class="line">增量生成changelog 不会覆盖以前的changelog</span><br><span class="line"><span class="meta">$</span> npm run addChangeLog</span><br></pre></td></tr></table></figure></p>
+<h3 id="添加标签页"><a href="#添加标签页" class="headerlink" title="添加标签页"></a>添加标签页</h3><p>step1: 新建页面<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> hexo new page tags</span><br></pre></td></tr></table></figure></p>
+<p>执行上述命令，将会在 <code>blog/source/</code> 下新增 <code>tages</code> 目录，且在该目录下会新增文件<code>index.md</code></p>
+<p>step2: 修改<code>blog/source/tags/index.md</code>的内容为如下：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: tags</span><br><span class="line">date: 2018-11-20 05:40:58</span><br><span class="line">type: "tags"</span><br><span class="line">comments: false</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<p>step3: 修改 <code>博客根目录/themes/next/_config.yml</code><br>添加 <code>tags</code> 到 <code>menu</code>中<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line"><span class="attr">  home:</span> <span class="string">/</span></span><br><span class="line"><span class="attr">  archives:</span> <span class="string">/archives/</span></span><br><span class="line"><span class="attr">  tags:</span> <span class="string">/tags/</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="添加分类页"><a href="#添加分类页" class="headerlink" title="添加分类页"></a>添加分类页</h3><p>同 添加标签页，故略。</p>
+<h3 id="设置头像"><a href="#设置头像" class="headerlink" title="设置头像"></a>设置头像</h3><p>修改 <code>blog/themes/next/_config.yml</code> 中 <code>url</code>字段：<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Sidebar Avatar</span></span><br><span class="line"><span class="attr">avatar:</span> </span><br><span class="line">  <span class="comment">#url 为你头像的路径</span></span><br><span class="line"><span class="attr">  url:</span> <span class="attr">http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-avatar.jpg</span></span><br><span class="line"><span class="attr">  rounded:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">  opacity:</span> <span class="number">1</span></span><br><span class="line"><span class="attr">  rotated:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
+<p>其中的 <code>rounded</code> 控制头像为圆形/正方形，<code>rotated</code>字段控制鼠标悬停时头像是否旋转。</p>
+<p>Note：本文将头像上传到了图床，故 <code>url</code> 为网址，你也可以参考<a href="https://juejin.im/post/58eb2fd2a0bb9f006928f8c7" target="_blank" rel="noopener">此文</a>将头像上传到本地，并指定为本地的路径。</p>
+<h3 id="侧边栏添加社交信息"><a href="#侧边栏添加社交信息" class="headerlink" title="侧边栏添加社交信息"></a>侧边栏添加社交信息</h3><p>修改 <code>blog/_config.yml</code> 中的 <code>social</code>字段：<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">social:</span></span><br><span class="line">  <span class="comment">#在这里添加你的社交链接</span></span><br><span class="line"><span class="attr">  GitHub:</span> <span class="attr">https://github.com/yourname</span> <span class="string">||</span> <span class="string">github</span></span><br><span class="line"><span class="attr">  E-Mail:</span> <span class="attr">mailto:your</span> <span class="string">eamil</span> <span class="string">address</span> <span class="string">||</span> <span class="string">envelope</span></span><br><span class="line">  <span class="comment">#Weibo: https://weibo.com/yourname || weibo</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 控制是否显示社交图标  </span></span><br><span class="line"><span class="attr">social_icons:</span></span><br><span class="line"><span class="attr">  enable:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">  icons_only:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">  transition:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="修改博客底部建站时间和图标"><a href="#修改博客底部建站时间和图标" class="headerlink" title="修改博客底部建站时间和图标"></a>修改博客底部建站时间和图标</h3><p>这个时间将在站点的底部显示，例如 <code>© 2013 - 2015</code>。 编辑 <code>blog/themes/next/_config.yml</code>。其中 icon 的内容去<code>https://fontawesome.com/v4.7.0/icons</code>找一个自己喜欢的 icon，如：将 icon name 替换为<code>fighter-jet</code></p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在这里修改建站时间</span></span><br><span class="line"><span class="attr">since:</span> <span class="number">2016</span></span><br><span class="line"></span><br><span class="line"><span class="attr">icon:</span></span><br><span class="line">    <span class="comment"># Icon name 去上面提到的那个网站找</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">fighter-jet</span></span><br><span class="line">    <span class="comment"># 控制图标动画</span></span><br><span class="line"><span class="attr">    animated:</span> <span class="literal">true</span></span><br><span class="line">    <span class="comment"># 控制图标颜色</span></span><br><span class="line"><span class="attr">    color:</span> <span class="string">"#808080"</span></span><br></pre></td></tr></table></figure>
+<h3 id="设置代码高亮主题"><a href="#设置代码高亮主题" class="headerlink" title="设置代码高亮主题"></a>设置代码高亮主题</h3><p>修改主题配置文件<code>bolg/themes/next/_config.yml</code></p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 支持的主题有: normal | night | night eighties | night blue | </span></span><br><span class="line"><span class="attr">highlight_theme:</span> <span class="string">night</span></span><br></pre></td></tr></table></figure>
+<h3 id="增加代码块复制功能"><a href="#增加代码块复制功能" class="headerlink" title="增加代码块复制功能"></a>增加代码块复制功能</h3><p>修改主题配置文件<code>blog/themes/next/_config.yml</code><br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">codeblock:</span></span><br><span class="line"><span class="attr">  border_radius:</span></span><br><span class="line">  <span class="comment">#在代码块的右上角添加悬浮显示的复制按钮</span></span><br><span class="line"><span class="attr">  copy_button:</span></span><br><span class="line"><span class="attr">    enable:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">    show_result:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="增加代码块折叠功能"><a href="#增加代码块折叠功能" class="headerlink" title="增加代码块折叠功能"></a>增加代码块折叠功能</h3><p>关于如何实现 hexo next 显示/隐藏代码块？大多用的都是<a href="https://blog.rmiao.top/hexo-fold-block/" target="_blank" rel="noopener">此文</a>的方法，该方法太过于繁琐，其实 markdown 本身便支持显示/隐藏代码块功能，语法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;details&gt;&lt;summary&gt;点击显/隐内容&lt;/summary&gt;</span><br><span class="line">&lt;p&gt;</span><br><span class="line"></span><br><span class="line">此处为要显示/隐的内容，亦可在此添加代码块，注意上下各空一行，</span><br><span class="line"></span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;/details&gt;</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<details><summary>点击显/隐内容</summary>
+<p>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">"hello world!"</span>)</span><br></pre></td></tr></table></figure>
+
+</p>
+</details>
+
+<p>注意：<code>&lt;p&gt;&lt;/p&gt;</code>之间需要隐藏的内容要空一行。</p>
+<h3 id="文章末尾增加版权信息页"><a href="#文章末尾增加版权信息页" class="headerlink" title="文章末尾增加版权信息页"></a>文章末尾增加版权信息页</h3><p>step1: 查看并确认 <code>blog/themes/next/layout/_macro/post.swig</code>的内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;% if theme.creative_commons.license and theme.creative_commons.post and not is_index %&#125;</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &#123;% include &apos;../_partials/post-copyright.swig&apos; with &#123; post: post &#125; %&#125;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+<p>从这段代码可以看出，是否显示版权信息，依赖三个变量的值，分别是：</p>
+<ul>
+<li><code>theme.creative_commons.license</code> 不为空</li>
+<li><code>theme.creative_commons.post</code> 应为 true</li>
+<li><code>is_index</code> 不是 index 页</li>
+</ul>
+<p>以上三个变量可在<code>blog/themes/next/_config.yml</code>进行修改。</p>
+<p>step2: 修改<code>博客根目录/themes/next/_config.yml</code>为：<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">creative_commons:</span></span><br><span class="line"><span class="attr">  license:</span> <span class="string">by-nc-sa</span> <span class="comment"># &lt;--看这里！！！</span></span><br><span class="line"><span class="attr">  sidebar:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">  post:</span> <span class="literal">true</span> <span class="comment"># &lt;--看这里！！！</span></span><br></pre></td></tr></table></figure></p>
+<p>step3: 修改 <code>blog/themes/next/languages/zh-CN.yml</code>中 <code>copyright</code>字段下的内容：<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">post:</span></span><br><span class="line">  <span class="string">...</span></span><br><span class="line"><span class="attr">  copy_success:</span> <span class="string">复制成功</span></span><br><span class="line"><span class="attr">  copy_failure:</span> <span class="string">复制失败</span></span><br><span class="line"><span class="attr">  copyright:</span> <span class="comment"># &lt;--看这里！！！修改为以下内容</span></span><br><span class="line"><span class="attr">    author:</span> <span class="string">本文作者</span></span><br><span class="line"><span class="attr">    title:</span> <span class="string">本文标题</span></span><br><span class="line"><span class="attr">    posted:</span> <span class="string">发布时间</span></span><br><span class="line"><span class="attr">    modified:</span> <span class="string">最后更新</span></span><br><span class="line"><span class="attr">    link:</span> <span class="string">本文链接</span></span><br><span class="line"><span class="attr">    license_title:</span> <span class="string">版权声明</span></span><br><span class="line"><span class="attr">    license_content:</span> <span class="string">"本博客所有文章除特别声明外，均采用 %s 许可协议。转载请注明出处！"</span></span><br></pre></td></tr></table></figure></p>
+<p>step4: 确认<code>themes/next/source/css/_common/components/post/</code>下有<code>post-copyright.styl</code>和 <code>post.style</code></p>
+<p>若没有，则手动添加这两个文件。</p>
+<ul>
+<li><code>post-copyright.styl</code>的内容如下：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">.post-copyright &#123;</span><br><span class="line">  margin: $post-copyright.margin;</span><br><span class="line">  padding: $post-copyright.padding;</span><br><span class="line">  border-left: $post-copyright.border.width $post-copyright.border.style $post-copyright.border.color;</span><br><span class="line">  background-color: $post-copyright.bg;</span><br><span class="line">  list-style: none;</span><br><span class="line"></span><br><span class="line">  i.fa &#123;</span><br><span class="line">    font-size: 15px;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>post.style</code>含有以下代码段：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@import &quot;post-copyright&quot; if hexo-config(&apos;creative_commons.post&apos;);</span><br></pre></td></tr></table></figure>
+<p>step5: 确认并修改<code>blog/themes/next/layout/_partials/post-copyright.swig</code>为以下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">&#123;% set ccLicense = theme.creative_commons.license | lower %&#125;</span><br><span class="line">&#123;% set ccIcon = &apos;&lt;i class=&quot;fa fa-fw fa-creative-commons&quot;&gt;&lt;/i&gt;&apos; %&#125;</span><br><span class="line">&#123;% set ccText = ccLicense | upper %&#125;</span><br><span class="line">&#123;% if ccLicense === &apos;zero&apos; %&#125;</span><br><span class="line">  &#123;% set ccType = &apos;publicdomain/zero/1.0/&apos; %&#125;</span><br><span class="line">&#123;% else %&#125;</span><br><span class="line">  &#123;% set ccType = &apos;licenses/&apos; + ccLicense + &apos;/4.0/&apos; %&#125;</span><br><span class="line">&#123;% endif %&#125;</span><br><span class="line">&#123;% set ccURL = &apos;https://creativecommons.org/&apos; + ccType %&#125;</span><br><span class="line"></span><br><span class="line">//版权页的内容由以下部分控制，故想定制自己版权页显示的内容可在此修改</span><br><span class="line">&lt;ul class=&quot;post-copyright&quot;&gt;</span><br><span class="line">  &lt;li class=&quot;post-copyright-author&quot;&gt;</span><br><span class="line">    &lt;strong&gt;&#123;&#123; __(&apos;post.copyright.author&apos;) + __(&apos;symbol.colon&apos;) &#125;&#125; &lt;/strong&gt;&#123;#</span><br><span class="line">  #&#125;&#123;&#123; post.author || author &#125;&#125;&#123;#</span><br><span class="line">#&#125;&lt;/li&gt;</span><br><span class="line">  &lt;li class=&quot;post-copyright-title&quot;&gt;</span><br><span class="line">    &lt;strong&gt;&#123;&#123; __(&apos;post.copyright.title&apos;) + __(&apos;symbol.colon&apos;) &#125;&#125;&lt;/strong&gt;</span><br><span class="line">    &#123;&#123; page.title &#125;&#125;</span><br><span class="line">  &lt;/li&gt;</span><br><span class="line">  &lt;li class=&quot;post-copyright-posted&quot;&gt;</span><br><span class="line">    &lt;strong&gt;&#123;&#123; __(&apos;post.copyright.posted&apos;) + __(&apos;symbol.colon&apos;) &#125;&#125;&lt;/strong&gt;</span><br><span class="line">    &#123;&#123; page.date.format(&quot;YYYY/MM/DD - HH:MM&quot;) &#125;&#125;</span><br><span class="line">  &lt;/li&gt;</span><br><span class="line">  &lt;li class=&quot;post-copyright-modified&quot;&gt;</span><br><span class="line">      &lt;strong&gt;&#123;&#123; __(&apos;post.copyright.modified&apos;) + __(&apos;symbol.colon&apos;) &#125;&#125;&lt;/strong&gt;</span><br><span class="line">      &#123;&#123; page.updated.format(&quot;YYYY/MM/DD - HH:MM&quot;) &#125;&#125;</span><br><span class="line">  &lt;/li&gt;</span><br><span class="line">  &lt;li class=&quot;post-copyright-link&quot;&gt;</span><br><span class="line">    &lt;strong&gt;&#123;&#123; __(&apos;post.copyright.link&apos;) + __(&apos;symbol.colon&apos;) &#125;&#125;&lt;/strong&gt;</span><br><span class="line">    &#123;% set postURL = post.url || post.permalink %&#125;</span><br><span class="line">    &#123;&#123; next_url(postURL, postURL, &#123;title: post.title&#125;) &#125;&#125;</span><br><span class="line">  &lt;/li&gt;</span><br><span class="line">  &lt;li class=&quot;post-copyright-license&quot;&gt;</span><br><span class="line">    &lt;strong&gt;&#123;&#123; __(&apos;post.copyright.license_title&apos;) + __(&apos;symbol.colon&apos;) &#125;&#125; &lt;/strong&gt;&#123;#</span><br><span class="line">  #&#125;&#123;&#123; __(&apos;post.copyright.license_content&apos;, next_url(ccURL, ccIcon + ccText)) &#125;&#125;&#123;#</span><br><span class="line">#&#125;&lt;/li&gt;</span><br><span class="line">&lt;/ul&gt;</span><br></pre></td></tr></table></figure>
+<p>经过以上五步后，发布的每篇博文都会在文章末尾添加版权信息，其样式如下图所示：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-20-110537.png" alt=""></p>
+<h3 id="添加打赏功能"><a href="#添加打赏功能" class="headerlink" title="添加打赏功能"></a>添加打赏功能</h3><p>修改主题配置文件<code>blog/themes/next/_config.yml</code>:<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">reward:</span></span><br><span class="line"><span class="attr">  enable:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">  comment:</span> <span class="string">希望对你有帮助！</span></span><br><span class="line"><span class="attr">  wechatpay:</span> <span class="attr">http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-wechatpay.jpg</span></span><br><span class="line"><span class="attr">  alipay:</span> <span class="attr">http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-alipay.jpg</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="唯一化链接"><a href="#唯一化链接" class="headerlink" title="唯一化链接"></a>唯一化链接</h3><p>也许你会数次更改文章题目或者变更文章发布时间，在默认设置下，文章链接都会改变，不利于搜索引擎收录，也不利于分享。唯一永久链接才是更好的选择。安装插件<code>hexo-abbrlink</code>后，不要在 <code>hexo s</code> 模式下更改文章文件名，否则文章将成空白。</p>
+<p>修改前每篇博文的链接形式为<code>http://yoursite.com/posts/文章标题</code>，若博文包含中文或标点符号，则链接会变得很丑且若文章标题发生变更，则之前的链接可能会失效。通过以下配置，给每篇博文生成一个固定的<code>abbrlink</code>，可解决上述问题。<br>修改后博文的链接变更为<code>http://yoursite.com/posts/:categories/:abbrlink.html</code>。<br>如：<code>http://www.seyvoue.com/posts/tech/e2a845a8.html</code></p>
+<p>step1: 安装 <code>hexo-abbrlink</code> 插件<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> npm install hexo-abbrlink --save</span><br></pre></td></tr></table></figure></p>
+<p>step2: 修改 <code>blog/_config.yml</code> 为以下：<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">url:</span> <span class="attr">http://yoursite.com</span></span><br><span class="line"><span class="attr">root:</span> <span class="string">/</span></span><br><span class="line"><span class="attr">permalink:</span> <span class="string">posts/:category/:abbrlink.html</span>  <span class="comment"># “posts/:category” 可自行更换</span></span><br><span class="line"><span class="attr">permalink_defaults:</span></span><br><span class="line"><span class="comment"># abbrlink config</span></span><br><span class="line"><span class="attr">abbrlink:</span></span><br><span class="line"><span class="attr">  alg:</span> <span class="string">crc32</span>  <span class="comment"># 算法：crc16(default) and crc32</span></span><br><span class="line"><span class="attr">  rep:</span> <span class="string">hex</span>    <span class="comment"># 进制：dec(default) and hex</span></span><br></pre></td></tr></table></figure></p>
+<p>其中的 <code>permalink</code> 也可以为 <code>posts/:abbrlink</code>，但还是建议在末尾加上<code>html</code>，便于被识别为静态网页。</p>
+<h3 id="修改文章内链接文本样式"><a href="#修改文章内链接文本样式" class="headerlink" title="修改文章内链接文本样式"></a>修改文章内链接文本样式</h3><p>打开文件<code>themes\next\source\css\_common\components\post\post.styl</code>，在末尾添加以下css样式:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 文章内链接文本样式</span><br><span class="line">.post-body p a&#123;</span><br><span class="line">  color: #0593d3;</span><br><span class="line">  border-bottom: none;</span><br><span class="line">  border-bottom: 1px solid #0593d3;</span><br><span class="line">  &amp;:hover &#123;</span><br><span class="line">    color: #fc6423;</span><br><span class="line">    border-bottom: none;</span><br><span class="line">    border-bottom: 1px solid #fc6423;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中颜色可以自定义,在这里选中状态为橙色,链接样式为蓝色。选择<code>.post-body</code>是为了不影响标题，选择<code>p</code>是为了不影响首页 “阅读全文” 的显示样式。</p>
+<h3 id="添加博文搜索功能"><a href="#添加博文搜索功能" class="headerlink" title="添加博文搜索功能"></a>添加博文搜索功能</h3><p>静态站关于实现站内搜索的方式，它有两种方式：一是本地建立索引，二是采用第三方线上服务。在 next 主题所在目录下的 <code>/layout/_partials/search</code> 目录中分别有三个文件：<code>localsearch.swig</code>、<code>swiftype.swig</code>、<code>tinysou.swig</code> ，其中 <code>tinysou</code> 这个项目已经很长时间没在维护了，不推荐使用。剩下的两个就是本地搜索和第三方线上服务。然而 <code>swiftype</code> 不再提供免费账户(老用户还可以免费用)了，那剩下的就只有 <code>localsearch</code> 这条路了。</p>
+<p>step1：安装插件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure>
+<p>step2：在 <code>blog/_config.yml</code>中添加以下内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#search</span><br><span class="line">search:</span><br><span class="line">  path: search.xml</span><br><span class="line">  field: post</span><br><span class="line">  format: html</span><br><span class="line">  limit: 10000</span><br></pre></td></tr></table></figure></p>
+<p>step3：编辑主题配置文件<code>blog/themes/next/_config.yml</code>，弃用本地搜索功能：<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Local search</span></span><br><span class="line"><span class="attr">local_search:</span></span><br><span class="line"><span class="attr">  enable:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="添加文章字数统计功能"><a href="#添加文章字数统计功能" class="headerlink" title="添加文章字数统计功能"></a>添加文章字数统计功能</h3><p>step1：安装插件 <code>hexo-symbols-count-time</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-symbols-count-time --save</span><br></pre></td></tr></table></figure>
+<p>step2：在<code>blog/_config.yml</code>中添加以下内容：<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#wordcount</span></span><br><span class="line"><span class="attr">symbols_count_time:</span></span><br><span class="line">  <span class="comment"># 文章内是否显示</span></span><br><span class="line"><span class="attr">  symbols:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">  time:</span> <span class="literal">false</span></span><br><span class="line">  <span class="comment"># 网页底部是否显示</span></span><br><span class="line"><span class="attr">  total_symbols:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">  total_time:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure></p>
+<p>step3：在<code>blog/themes/next/_config.yml</code> 修改<code>symbols_count_time</code> 下的内容为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># Post wordcount display settings</span><br><span class="line"># Dependencies: https://github.com/theme-next/hexo-symbols-count-time</span><br><span class="line">symbols_count_time:</span><br><span class="line">  separated_meta: true</span><br><span class="line">  #文章中的显示是否显示文字（本文字数|阅读时长）</span><br><span class="line">  item_text_post: false</span><br><span class="line">  #网页底部的显示是否显示文字（站点总字数|站点阅读时长）</span><br><span class="line">  item_text_total: true</span><br><span class="line">  # Average Word Length (chars count in word)</span><br><span class="line">  awl: 2</span><br><span class="line">  # Words Per Minute</span><br><span class="line">  wpm: 300</span><br></pre></td></tr></table></figure>
+<p><strong>Note：</strong> 字段<code>awl</code>和<code>wpm</code>的设置可参考<code>https://github.com/theme-next/hexo-symbols-count-time</code></p>
+<h3 id="添加文章阅读次数统计功能"><a href="#添加文章阅读次数统计功能" class="headerlink" title="添加文章阅读次数统计功能"></a>添加文章阅读次数统计功能</h3><p>关于这部分内容也可参考：</p>
+<ul>
+<li><a href="https://leaferx.online/2018/02/11/lc-security/" target="_blank" rel="noopener">Leancloud访客统计插件重大安全漏洞修复指南</a></li>
+<li><a href="https://www.alankeene.com/2018/0412/next-problems.html" target="_blank" rel="noopener">【NexT】用hexo框架NexT主题搭建博客踩过的坑</a></li>
+<li><a href="https://notes.doublemine.me/2015-10-21-%E4%B8%BANexT%E4%B8%BB%E9%A2%98%E6%B7%BB%E5%8A%A0%E6%96%87%E7%AB%A0%E9%98%85%E8%AF%BB%E9%87%8F%E7%BB%9F%E8%AE%A1%E5%8A%9F%E8%83%BD.html" target="_blank" rel="noopener">为NexT主题添加文章阅读量统计功能</a></li>
+</ul>
+<p>step1：前往 <a href="https://leancloud.cn/" target="_blank" rel="noopener">Leancloud</a> 官网进行注册，并登陆。</p>
+<p>step2：然后依次点击<code>控制台-&gt;创建应用</code>，应用名称随意，这里命名为<code>seyvoue-blog</code>：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-053709.png" alt=""></p>
+<p>创建完成后，会出现：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-053754.png" alt=""></p>
+<p>step3：设置Web安全域名确保域名调用安全，依次点击<code>设置-&gt;安全中心</code>，然后再 web 安全域名中填入你自己的域名：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-054542.png" alt=""></p>
+<p>step4：依次点击<code>设置-&gt;存储-&gt;创建 class</code>，新建一个名为<code>Counter</code>的 Class，并指定为<code>无限制</code>，如下图：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-053920.png" alt=""></p>
+<p>step5：依次点击<code>设置-&gt;应用 key</code>，将会看到该应用的 <code>APP ID</code> 和 <code>APP KEY</code><br>粘贴<code>App ID</code>和<code>App Key</code>到主题配置文件·<code>blog/themes/next/_config.yml</code>对应位置：<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">leancloud_visitors:</span></span><br><span class="line"><span class="attr">  enable:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">  app_id:</span> <span class="string">粘贴到这</span> <span class="comment">#&lt;app_id&gt;</span></span><br><span class="line"><span class="attr">  app_key:</span> <span class="string">粘贴到这</span> <span class="comment">#&lt;app_key&gt;</span></span><br><span class="line"><span class="attr">  security:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">  betterPerformance:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure></p>
+<p>以上五步便可完成阅读次数统计的功能，接下类的内容为可选项，目的是为了保证阅读次数统计功能的安全性以及放置被恶意篡改。</p>
+<h4 id="部署云引擎以保证访客数量不被随意篡改（可选，建议设置）"><a href="#部署云引擎以保证访客数量不被随意篡改（可选，建议设置）" class="headerlink" title="部署云引擎以保证访客数量不被随意篡改（可选，建议设置）"></a>部署云引擎以保证访客数量不被随意篡改（可选，建议设置）</h4><p>step1：依次点击<code>云引擎-&gt;部署-&gt;在线编辑</code>：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-055332.png" alt=""></p>
+<p>step2：点击创建函数，按下图完成函数的创建：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-064308.png" alt=""><br>其中的代码为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var query = new AV.Query(&quot;Counter&quot;);</span><br><span class="line">if (request.object.updatedKeys.indexOf(&apos;time&apos;) !== -1) &#123;</span><br><span class="line">    return query.get(request.object.id).then(function (obj) &#123;</span><br><span class="line">        if (obj.get(&quot;time&quot;) + 1 !== request.object.get(&quot;time&quot;)) &#123;</span><br><span class="line">            throw new AV.Cloud.Error(&apos;Invalid update!&apos;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>step3：部署到生产环境，如下图，点击<code>部署</code>：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-055749.png" alt=""></p>
+<p>等待出现<code>部署成功</code>字样后，关闭<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-055923.png" alt=""></p>
+<p>以上，便完成了云引擎的部署，任何非法的访客数量更改请求都将失败。</p>
+<h4 id="进一步设置权限（可选，建议设置）"><a href="#进一步设置权限（可选，建议设置）" class="headerlink" title="进一步设置权限（可选，建议设置）"></a>进一步设置权限（可选，建议设置）</h4><p>step1：修改主题配置文件<code>blog/themes/next/_config.yml</code>，将其中的<code>security</code>字段设为 true<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">leancloud_visitors:</span></span><br><span class="line"><span class="attr">  enable:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">  app_id:</span> <span class="string">TyFNsWV8F6tFUPr7cq0lXU32-9Nh9j0Va</span> <span class="comment">#&lt;app_id&gt;</span></span><br><span class="line"><span class="attr">  app_key:</span> <span class="string">TW5MEsTnMVUdznvEagcTrSBa</span> <span class="comment">#&lt;app_key&gt;</span></span><br><span class="line"><span class="attr">  security:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">  betterPerformance:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure></p>
+<p>step2：安装插件<code>hexo-leancloud-counter-security</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-leancloud-counter-security --save</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>对<code>betterPerformance</code>选项的说明：<br>由于Leancloud免费版的云引擎存在请求线程数和运行时间限制以及休眠机制，很多时候访客<br>数量加载会很慢。如果设置betterPerformance为true，则网页则会在提交请求之前直接显<br>示访客人数为查询到的人数+1，以增加用户体验。</p>
+</blockquote>
+<p>step3：在全局配置文件<code>blog/_config.yml</code>中添加：<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">leancloud_counter_security:</span></span><br><span class="line"><span class="attr">  enable_sync:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">  app_id:</span> <span class="string">&lt;&lt;your</span> <span class="string">app</span> <span class="string">id&gt;&gt;</span></span><br><span class="line"><span class="attr">  app_key:</span> <span class="string">&lt;&lt;your</span> <span class="string">app</span> <span class="string">key&gt;</span></span><br><span class="line"><span class="attr">  username:</span> </span><br><span class="line"><span class="attr">  password:</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>Note：</strong> 将 <code>username</code> 和 <code>password</code> 替换为你自己的用户名和密码（不必与<code>leancloud</code>的账号）相同。此用户名和密码将在hexo部署时使用。</p>
+<p>step4：安装插件 <code>hexo-leancloud-counter-security</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-leancloud-counter-security --save</span><br></pre></td></tr></table></figure>
+<p>step5：使用插件 <code>hexo-leancloud-counter-security</code> 设定部署使时的用户</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo lc-counter register &lt;&lt;username&gt;&gt; &lt;&lt;password&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p>step6：修改全局配置文件<code>blog/_config.yml</code>，将<code>username</code>和<code>password</code>替换为你刚刚设置的用户名和密码，但建议将 <code>password</code> 留空<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">leancloud_counter_security:</span></span><br><span class="line"><span class="attr">  enable_sync:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">  app_id:</span> <span class="string">&lt;&lt;your</span> <span class="string">app</span> <span class="string">id&gt;&gt;</span></span><br><span class="line"><span class="attr">  app_key:</span> <span class="string">&lt;&lt;your</span> <span class="string">app</span> <span class="string">key&gt;</span></span><br><span class="line"><span class="attr">  username:</span> <span class="string">&lt;&lt;your</span> <span class="string">username&gt;&gt;</span> <span class="comment">#如留空则将在部署时询问</span></span><br><span class="line"><span class="attr">  password:</span> <span class="string">&lt;&lt;your</span> <span class="string">password&gt;&gt;</span> <span class="comment">#建议留空以保证安全性，如留空则将在部署时询问</span></span><br></pre></td></tr></table></figure></p>
+<p>step7：在全局配置文件<code>blog/_config.yml</code>的<code>deploy</code>下添加：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="comment"># other deployer</span></span><br><span class="line"><span class="attr">  - type:</span> <span class="string">leancloud_counter_security_sync</span></span><br></pre></td></tr></table></figure>
+<p>step8：返回 <code>LeanCloud 控制台</code>页面，依次点击<code>存储-&gt;_User</code>，发现<code>_User</code>表中会新增一条记录，如下：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-Screen_Shot_2018-11-26_at_16_33_17.png" alt=""><br>若没有新增记录，最简单的办法重头来过，严格按照本教程的顺序操作。</p>
+<p>step8：在<code>LeanCloud 控制台</code>页面，依次点击<code>存储-&gt;Counter</code>，进入 <code>Counter</code>表，打开权限设置：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-Screen_Shot_2018-11-26_at_16_38_22.png" alt=""></p>
+<ul>
+<li><p>设置 <code>addField</code> 权限为：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-Screen%20Shot%202018-11-26%20at%2016.46.41.png" alt=""></p>
+</li>
+<li><p>设置 <code>Create</code> 权限为：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-Screen_Shot_2018-11-26_at_16_46_08-2.png" alt=""></p>
+</li>
+<li><p>设置 <code>Delete</code> 权限为：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-Screen_Shot_2018-11-26_at_16_46_22.png" alt=""></p>
+</li>
+</ul>
+<p>至此权限已设置完成，数据库记录只能在本地增删。<br>每次运行 <code>hexo d</code> 部署的时候，插件都会扫描本地source/_posts下的文章并与数据库对比，然后在数据库创建没有录入数据库的文章记录。<br>如果在博客配置文件中留空username或password，则在部署过程中程序会要求输入。</p>
+<h4 id="关于-ERROR-Too-many-requests-429"><a href="#关于-ERROR-Too-many-requests-429" class="headerlink" title="关于 ERROR Too many requests 429"></a>关于 ERROR Too many requests 429</h4><p>出现这个问题的报错信息是too many requests,原因是我们使用leanCloud的免费版本线程数是十分受限的,在我们deploy的时候发送了太多的同步请求导致线程栈溢出而报错，解决方法：</p>
+<p>step1：删除<code>blog/public/leancloud.memo</code><br>step2：执行<code>hexo d</code></p>
+<p>如果你博文很多的话，step2 后，可能还是会报 <code>429</code> 错误，忽略此时的报错，继续执行<code>hexo d</code>知道不报<code>429</code>错误为止，你会发现没多执行一次<code>hexo d</code>，<code>leancloud.memo</code>中的记录就会多一些。</p>
+<h3 id="文末添加评论功能"><a href="#文末添加评论功能" class="headerlink" title="文末添加评论功能"></a>文末添加评论功能</h3><p>Hexo的评论系统有很多，常见的有以下几个：</p>
+<ul>
+<li><del>多说</del></li>
+<li><del>网易云跟帖</del></li>
+<li>畅言（来自国内，需要备案号）</li>
+<li>来必力（来自韩国，使用邮箱注册）</li>
+<li>Disqus</li>
+<li>Hypercomments（来自俄罗斯的评论系统，使用谷歌账号注册。）</li>
+<li>valine（基于Leancloud的极简风评论系统）</li>
+<li>gitment</li>
+</ul>
+<p>国内主流评论服务多说，网易云跟帖，停止服务，其次畅言需要备案，Disqus，Hypercomments和LiveRe都是国外的，加载速度贼慢，甚至有被墙的可能。</p>
+<h4 id="使用-gitment"><a href="#使用-gitment" class="headerlink" title="使用 gitment"></a>使用 gitment</h4><p><code>Gitment</code> 是作者实现的一款基于 <code>GitHub Issues</code> 的评论系统。支持在前端直接引入，不需要任何后端代码。可以在页面进行登录、查看、评论、点赞等操作，同时有完整的 <code>Markdown / GFM</code> 和 代码高亮支持。尤为适合各种基于 GitHub Pages 的静态博客或项目页面。</p>
+<p>step1：<a href="Register a new OAuth application">Register a new OAuth application</a>，即登录 github 后，依次点击<code>settings-&gt;Developer Settings-&gt;New Oauth App</code></p>
+<p><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-143435.png" alt=""></p>
+<ul>
+<li>Application name：随意</li>
+<li>Homepage URL：你的博客域名或<code>https://xxx.github.io</code></li>
+<li>Application description：随意</li>
+<li>Authorization callback URL：一般与 <code>Homepage URL</code> 相同</li>
+</ul>
+<p><strong>Note：</strong>在初次注册的时候，如何你指定<code>Homepage URL</code>为你购买的域名时，可能会报<code>unvalid url</code>，此时你可以先指定为<code>https://xxx.github.io</code>，等注册完成后，再去修改。</p>
+<p>stpe2：修改主题配置文件<code>blog/themes/next/_config.yml</code>中 <code>gitment</code>下的内容为：<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">gitment:</span></span><br><span class="line"><span class="attr">  enable:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">  mint:</span> <span class="literal">true</span> </span><br><span class="line"><span class="attr">  count:</span> <span class="literal">true</span> </span><br><span class="line"><span class="attr">  lazy:</span> <span class="literal">true</span> </span><br><span class="line"><span class="attr">  cleanly:</span> <span class="literal">false</span> </span><br><span class="line"><span class="attr">  language:</span> </span><br><span class="line"><span class="attr">  github_user:</span> <span class="string">seyvoue</span> <span class="comment"># 你的 github 用户名</span></span><br><span class="line"><span class="attr">  github_repo:</span> <span class="string">seyvoue.github.io</span> <span class="comment"># 你存放评论的 github 仓库地址。方便起见，可选择你的静态博客仓库地址</span></span><br><span class="line"><span class="attr">  client_id:</span> <span class="comment">#见 step1 的截图</span></span><br><span class="line"><span class="attr">  client_secret:</span> <span class="comment"># 见 step1 的截图</span></span><br><span class="line"><span class="attr">  proxy_gateway:</span> <span class="comment"># Address of api proxy, See: https://github.com/aimingoo/intersect</span></span><br><span class="line"><span class="attr">  redirect_protocol:</span></span><br></pre></td></tr></table></figure></p>
+<p>step3：安装插件 <code>gitment</code><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i --save gitment</span><br></pre></td></tr></table></figure></p>
+<p>以上便完成了 <code>gitment</code> 的配置，接下来你需要随机打开一片博文，滚动到评论区，登录你的 github 账号，然后点击<code>Initialize Comments</code>即可，如下图：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-144107.png" alt=""></p>
+<h5 id="可能会碰到的问题"><a href="#可能会碰到的问题" class="headerlink" title="可能会碰到的问题"></a>可能会碰到的问题</h5><p>使用 <code>gitment</code>，要先在评论区登录 github，否则显示<code>Error: Comments Not Initialized</code>(中文显示评论不可用之类)；登录后点击<code>Initialize Comments</code>。另外可能会报错<code>[object ProgressEvent]</code>或者<code>gh-oauth.imsun.net</code>链接不上。这是因为<code>gh-oauth.imsun.net</code>网站证书失效了！解决方法（可参看<a href="https://github.com/imsun/gitment/issues/102" target="_blank" rel="noopener">imsun/gitment/issues#102</a>，<a href="https://github.com/imsun/gitment/issues/170" target="_blank" rel="noopener">object ProgressEvent</a>）：</p>
+<ul>
+<li>方案一：单独访问这个网站 <code>https://gh-oauth.imsun.net/</code>，加入例外，允许浏览器访问。但这个方案，别人看你博客的人不一定知道要加，所以不好。</li>
+<li>方案二（推荐）：更改<code>node_modules/gitment/dist/gitment.js</code>中<code>https://gh-oauth.imsun.net</code>，直接改为请求 github 认证的接口<code>https://github.com/login/oauth/access_token</code></li>
+</ul>
+<h4 id="使用-Valine（方便，但邮件提醒不方便）"><a href="#使用-Valine（方便，但邮件提醒不方便）" class="headerlink" title="使用 Valine（方便，但邮件提醒不方便）"></a>使用 Valine（方便，但邮件提醒不方便）</h4><p>step1：首先你需要拥有 LeanCloud 账号。具体操作同本文<code>添加文章阅读次数统计功能</code>的 <code>step1-step3</code></p>
+<p>step2：修改主题配置文件 <code>blog/themes/next/_config.yml</code> 中 <code>Valine</code>下的内容为：<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">valine:</span></span><br><span class="line"><span class="attr">  enable:</span> <span class="literal">true</span>   </span><br><span class="line"><span class="attr">  appid:</span>  <span class="comment"># your leancloud application appid</span></span><br><span class="line"><span class="attr">  appkey:</span> <span class="comment"># your leancloud application appkey</span></span><br><span class="line"><span class="attr">  notify:</span> <span class="literal">false</span> <span class="comment"># mail notifier , https://github.com/xCss/Valine/wiki</span></span><br><span class="line"><span class="attr">  verify:</span> <span class="literal">false</span> <span class="comment"># Verification code</span></span><br><span class="line"><span class="attr">  placeholder:</span> <span class="string">昵称--即你的网名；邮箱--请告知我联系你的方式；网址--你正在浏览的这个页面</span> </span><br><span class="line"><span class="attr">  avatar:</span> <span class="string">mm</span> </span><br><span class="line"><span class="attr">  guest_info:</span> <span class="string">nick,mail,link</span> </span><br><span class="line"><span class="attr">  pageSize:</span> <span class="number">10</span> </span><br><span class="line"><span class="attr">  visitor:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure></p>
+<p>将 <code>enalbe</code> 置为 <code>true</code>，并在<code>appid</code>和<code>appkey</code>填入你<code>step1</code>所创建应用的<code>APP ID</code> 和 <code>APP KEY</code></p>
+<p>至此，执行<code>hexo d</code>部署后，便可在文章的末尾看到新增的 <code>Valine</code> 评论了：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-115938.png" alt=""></p>
+<p>每当新增一条评论，都会在 <code>LeanCloud</code> 的<code>存储-&gt;Comments</code>表中新增一条记录。</p>
+<h5 id="Valine-评论增加邮件提醒功能（未实践）"><a href="#Valine-评论增加邮件提醒功能（未实践）" class="headerlink" title="Valine 评论增加邮件提醒功能（未实践）"></a>Valine 评论增加邮件提醒功能（未实践）</h5><p>首先需要确保 Valine 的基础功能是正常的，即已经可以在文末发起评论，并且当你登录 LeanCloud，可在<code>存储-&gt;Comments</code>表中看到新增的评论，如下图：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-11-26-120232.png" alt=""></p>
+<p>接下来的配置过程，可参考：</p>
+<ul>
+<li><a href="https://panjunwen.com/valine-admin-document/" target="_blank" rel="noopener">https://panjunwen.com/valine-admin-document/</a></li>
+<li><a href="https://github.com/panjunwen/Valine-Admin" target="_blank" rel="noopener">https://github.com/panjunwen/Valine-Admin</a></li>
+<li><a href="https://cloud.tencent.com/developer/article/1142490" target="_blank" rel="noopener">Hexo 优化 —- 支持邮件通知的评论 Valine 增强版</a></li>
+<li><a href="https://panjunwen.com/valine-admin-document/" target="_blank" rel="noopener">Valine Admin 配置手册</a></li>
+</ul>
+<h3 id="增加友情链接功能"><a href="#增加友情链接功能" class="headerlink" title="增加友情链接功能"></a>增加友情链接功能</h3><p>在主题配置文件中找到 <code>links</code> 属性，修改 <code>links_title</code> 属性的值为“友情链接”（也可以是其他文字），然后添加上好友的博客名称和博客地址，其格式如下：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Blog rolls</span></span><br><span class="line"><span class="attr">links_title:</span> <span class="string">友情链接</span></span><br><span class="line"><span class="comment">#links_layout: block</span></span><br><span class="line"><span class="attr">links_layout:</span> <span class="string">inline</span></span><br><span class="line"><span class="attr">links:</span></span><br><span class="line"><span class="attr">  seyvoue:</span> <span class="attr">https://www.seyvoue.com/</span></span><br></pre></td></tr></table></figure>
+<h3 id="设置网页-logo"><a href="#设置网页-logo" class="headerlink" title="设置网页 logo"></a>设置网页 logo</h3><p>主题配置文件<code>blog/themes/next/_config.yml</code>关于网页<code>logo</code>是由<code>favicon</code>控制的，默认提供了四种类型，只需将你的 logo 放入<code>blog/themes/next/source/images/</code>下即可。你也可以将 logo 上传到图床，然后将链接贴到响应类型的后面即可。<br><strong>Note：</strong>一般来说，我们只需要更改 <code>medium</code> 字段的值即可。<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">favicon:</span> </span><br><span class="line">  <span class="comment">#small: /images/favicon-16x16-next.png</span></span><br><span class="line">  <span class="comment">#medium: /images/favicon-32x32-next.png</span></span><br><span class="line">  <span class="comment">#apple_touch_icon: /images/apple-touch-icon-next.png</span></span><br><span class="line">  <span class="comment">#safari_pinned_tab: /images/logo.svg</span></span><br><span class="line">  <span class="comment">#android_manifest: /images/manifest.json</span></span><br><span class="line">  <span class="comment">#ms_browserconfig: /images/browserconfig.xml</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="增加-RSS-订阅功能"><a href="#增加-RSS-订阅功能" class="headerlink" title="增加 RSS 订阅功能"></a>增加 RSS 订阅功能</h3><p>step1：安装<code>hexo-generator-feed</code>插件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> npm install hexo-generator-feed --save</span><br></pre></td></tr></table></figure>
+<p>step2：在 <code>blog/_config.yml</code> 中，增加以下内容：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#RSS 订阅插件</span></span><br><span class="line"><span class="attr">plugin:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">hexo-generator-feed</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#RSS 插件配置</span></span><br><span class="line"><span class="attr">feed:</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">rss2</span></span><br><span class="line"><span class="attr">  path:</span> <span class="string">rss.xml</span></span><br><span class="line"><span class="attr">  limit:</span> <span class="number">20</span></span><br><span class="line"><span class="attr">  hub:</span></span><br><span class="line"><span class="attr">  content:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<h3 id="增加-404-页面"><a href="#增加-404-页面" class="headerlink" title="增加 404 页面"></a>增加 404 页面</h3><p>step1：创建404页面<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page 404</span><br></pre></td></tr></table></figure></p>
+<p>step2：修改<code>blog/source/404/index.md</code>为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 404 Not Found</span><br><span class="line">comments: false</span><br><span class="line">permalink: /404</span><br><span class="line">---</span><br></pre></td></tr></table></figure></p>
+<p>经过上面的设置后，404界面已生效，其编辑方式与一般文章无异。我们可以在.md文件正文中插入一些 CSS 样式，使得该页面与博客中的一般文章有所区别。</p>
+<p>参考：<a href="http://moxfive.xyz/2015/10/16/hexo-404-page/" target="_blank" rel="noopener">在 Hexo 中创建匹配主题的404页面</a></p>
+<h3 id="文末增加分享功能"><a href="#文末增加分享功能" class="headerlink" title="文末增加分享功能"></a>文末增加分享功能</h3><p>修改主题配置文件<code>blog/themes/next/_config.yml</code>的<code>baidushare</code>字段：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">baidushare:</span><br><span class="line">    type: button</span><br></pre></td></tr></table></figure>
+<h3 id="博客增加支持-Markdown-语法画流程图"><a href="#博客增加支持-Markdown-语法画流程图" class="headerlink" title="博客增加支持 Markdown 语法画流程图"></a>博客增加支持 Markdown 语法画流程图</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save hexo-filter-flowchart</span><br></pre></td></tr></table></figure>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="noopener">hexo 官方文档</a></li>
+<li><a href="https://wsgzao.github.io/post/hexo-jacman/#内容发布" target="_blank" rel="noopener">Jacman基于Pacman修改的Hexo主题</a></li>
+<li><a href="https://juejin.im/post/58eb2fd2a0bb9f006928f8c7" target="_blank" rel="noopener">hexo高阶教程：next主题优化之加入网易云音乐、网易云跟帖、炫酷动态背景、自定义样式，打造属于你自己的定制化博客</a></li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>希望对你有帮助！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-wechatpay.jpg" alt="seyvoue 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-alipay.jpg" alt="seyvoue 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>seyvoue</li>
+  <li class="post-copyright-title">
+    <strong>本文标题：</strong>
+    @手把手教你如何搭建个人博客（四）
+  </li>
+  <li class="post-copyright-posted">
+    <strong>发布时间：</strong>
+    2018/11/22 - 15:11
+  </li>
+  <li class="post-copyright-modified">
+      <strong>最后更新：</strong>
+      2019/06/08 - 23:06
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://seyvoue.com/manual/ea65db2f.html" title="@手把手教你如何搭建个人博客（四）">http://seyvoue.com/manual/ea65db2f.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/hexo/" rel="tag"># hexo</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+               <div>
+                 
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+               </div>
+            
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/manual/5d48c24a.html" rel="next" title="@手把手教你如何搭建个人博客（三）">
+                <i class="fa fa-chevron-left"></i> @手把手教你如何搭建个人博客（三）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/manual/9e29d568.html" rel="prev" title="@Node.js的安装及其版本管理神器 nvm（macOS Mojave）">
+                @Node.js的安装及其版本管理神器 nvm（macOS Mojave） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div onclick="showGitment()" id="gitment-display-button">显示 Gitment 评论</div>
+        <div id="gitment-container" style="display:none"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-avatar.jpg" alt="seyvoue">
+            
+              <p class="site-author-name" itemprop="name">seyvoue</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">71</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">25</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/seyvoue" title="GitHub &rarr; https://github.com/seyvoue" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:seyvoue@qq.com" title="Mail &rarr; mailto:seyvoue@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#写在前面"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#了解-hexo-引擎博客的目录结构"><span class="nav-number">1.1.</span> <span class="nav-text">了解 hexo 引擎博客的目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NexT-主题的目录结构"><span class="nav-number">1.2.</span> <span class="nav-text">NexT 主题的目录结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定制博客"><span class="nav-number">2.</span> <span class="nav-text">定制博客</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加-changelog-页"><span class="nav-number">2.1.</span> <span class="nav-text">添加 changelog 页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加标签页"><span class="nav-number">2.2.</span> <span class="nav-text">添加标签页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加分类页"><span class="nav-number">2.3.</span> <span class="nav-text">添加分类页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置头像"><span class="nav-number">2.4.</span> <span class="nav-text">设置头像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#侧边栏添加社交信息"><span class="nav-number">2.5.</span> <span class="nav-text">侧边栏添加社交信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改博客底部建站时间和图标"><span class="nav-number">2.6.</span> <span class="nav-text">修改博客底部建站时间和图标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置代码高亮主题"><span class="nav-number">2.7.</span> <span class="nav-text">设置代码高亮主题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增加代码块复制功能"><span class="nav-number">2.8.</span> <span class="nav-text">增加代码块复制功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增加代码块折叠功能"><span class="nav-number">2.9.</span> <span class="nav-text">增加代码块折叠功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文章末尾增加版权信息页"><span class="nav-number">2.10.</span> <span class="nav-text">文章末尾增加版权信息页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加打赏功能"><span class="nav-number">2.11.</span> <span class="nav-text">添加打赏功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#唯一化链接"><span class="nav-number">2.12.</span> <span class="nav-text">唯一化链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改文章内链接文本样式"><span class="nav-number">2.13.</span> <span class="nav-text">修改文章内链接文本样式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加博文搜索功能"><span class="nav-number">2.14.</span> <span class="nav-text">添加博文搜索功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加文章字数统计功能"><span class="nav-number">2.15.</span> <span class="nav-text">添加文章字数统计功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加文章阅读次数统计功能"><span class="nav-number">2.16.</span> <span class="nav-text">添加文章阅读次数统计功能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#部署云引擎以保证访客数量不被随意篡改（可选，建议设置）"><span class="nav-number">2.16.1.</span> <span class="nav-text">部署云引擎以保证访客数量不被随意篡改（可选，建议设置）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进一步设置权限（可选，建议设置）"><span class="nav-number">2.16.2.</span> <span class="nav-text">进一步设置权限（可选，建议设置）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于-ERROR-Too-many-requests-429"><span class="nav-number">2.16.3.</span> <span class="nav-text">关于 ERROR Too many requests 429</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文末添加评论功能"><span class="nav-number">2.17.</span> <span class="nav-text">文末添加评论功能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-gitment"><span class="nav-number">2.17.1.</span> <span class="nav-text">使用 gitment</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#可能会碰到的问题"><span class="nav-number">2.17.1.1.</span> <span class="nav-text">可能会碰到的问题</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-Valine（方便，但邮件提醒不方便）"><span class="nav-number">2.17.2.</span> <span class="nav-text">使用 Valine（方便，但邮件提醒不方便）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Valine-评论增加邮件提醒功能（未实践）"><span class="nav-number">2.17.2.1.</span> <span class="nav-text">Valine 评论增加邮件提醒功能（未实践）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增加友情链接功能"><span class="nav-number">2.18.</span> <span class="nav-text">增加友情链接功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置网页-logo"><span class="nav-number">2.19.</span> <span class="nav-text">设置网页 logo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增加-RSS-订阅功能"><span class="nav-number">2.20.</span> <span class="nav-text">增加 RSS 订阅功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增加-404-页面"><span class="nav-number">2.21.</span> <span class="nav-text">增加 404 页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文末增加分享功能"><span class="nav-number">2.22.</span> <span class="nav-text">文末增加分享功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#博客增加支持-Markdown-语法画流程图"><span class="nav-number">2.23.</span> <span class="nav-text">博客增加支持 Markdown 语法画流程图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-fighter-jet"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">seyvoue</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">436k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    
+    <span title="站点阅读时长">12:07</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname,
+            owner: 'seyvoue',
+            repo: 'seyvoue.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'd5896ff31d35a036d1e0a74213a66eda2e336ff7',
+            
+                client_id: '09450d7084d9e39d9d43'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      function showGitment(){
+        document.getElementById("gitment-display-button").style.display = "none";
+        document.getElementById("gitment-container").style.display = "block";
+        renderGitment();
+      }
+      
+      </script>
+    
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "Ob6CW7SHh3UDjoiFsCrI7UQu-9Nh9j0Va")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "Ob6CW7SHh3UDjoiFsCrI7UQu-9Nh9j0Va",
+                'X-LC-Key': "cJQr5jP7XftIjd2KOdiEug0F",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {equationNumbers: { autoNumber: "AMS" }}
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+          if(result)$(this).text('复制成功')
+          else $(this).text('复制失败')
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('复制')
+        }, 300)
+      }).append(e)
+    })
+  </script>
+
+
+  
+
+</body>
+</html>

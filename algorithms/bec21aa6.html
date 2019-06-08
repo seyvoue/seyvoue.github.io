@@ -1,0 +1,1859 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="baidu-site-verification" content="qTlbubWUyw">
+<meta name="google-site-verification" content="Y9hBxOOKK4YNywVJN3FRwq2Xbry6ouA_XdM14MMdATU">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-alphabet_letter_s-1.ico?v=6.6.0">
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="overview: regularized linear and logistic regression, overfitting.">
+<meta name="keywords" content="machine-learning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="@过拟合问题">
+<meta property="og:url" content="http://seyvoue.com/algorithms/bec21aa6.html">
+<meta property="og:site_name" content="seyvoue">
+<meta property="og:description" content="overview: regularized linear and logistic regression, overfitting.">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-08-715283-20161118191729545-602958584.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-08-715283-20161118193423920-1528615002.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-08-715283-20161118194003810-1506207063.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-08-084558.jpg">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-08-124454.jpg">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-08-084626.jpg">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-08-131130.jpg">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-08-124524.jpg">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-08-010106.jpg">
+<meta property="og:updated_time" content="2018-02-01T10:10:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="@过拟合问题">
+<meta name="twitter:description" content="overview: regularized linear and logistic regression, overfitting.">
+<meta name="twitter:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-08-715283-20161118191729545-602958584.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="seyvoue" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://seyvoue.com/algorithms/bec21aa6.html">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>@过拟合问题 | seyvoue</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">seyvoue</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">ABC-Always Be Coding.</h1>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+
+    
+
+    <a href="/" rel="section">首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+
+    
+
+    <a href="/tags/" rel="section">标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+
+    
+
+    <a href="/categories/" rel="section">分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+
+    
+
+    <a href="/archives/" rel="section">归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-changelog">
+
+    
+    
+    
+
+    
+
+    <a href="/changelog/" rel="section">变更</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://seyvoue.com/algorithms/bec21aa6.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seyvoue">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="seyvoue">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">@过拟合问题
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-09-08 13:33:41" itemprop="dateCreated datePublished" datetime="2017-09-08T13:33:41+08:00">2017-09-08</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-02-01 18:10:10" itemprop="dateModified" datetime="2018-02-01T18:10:10+08:00">2018-02-01</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/algorithms/" itemprop="url" rel="index"><span itemprop="name">algorithms</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/algorithms/bec21aa6.html#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count gitment-comments-count" data-xid="/algorithms/bec21aa6.html" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/algorithms/bec21aa6.html" class="leancloud_visitors" data-flag-title="@过拟合问题">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                <span title="本文字数">14k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                <span title="阅读时长">23 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>overview: regularized linear and logistic regression, overfitting.</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>一般而言，当模型的特征 (feature variables) 非常多，而训练的样本数目 (training set) 又比较少的时候，训练得到的假设函数 (hypothesis function) 能够非常好地匹配训练集中的数据，此时的代价函数 (cost function) 几乎为0。下图中最右侧的那个模型 就是一个过拟合的模型。</p>
+<p><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-08-715283-20161118191729545-602958584.png" alt=""></p>
+<p>过拟合模型的弊端：尽管它几乎能完美匹配训练集中的每一个样本，但其不能很好地对未知的 (新样本实例)input instance 进行预测。通俗地说，就是过拟合模型的预测能力差。</p>
+<blockquote>
+<p><strong>正则化 (Regularization)</strong>可以解决过拟合问题。</p>
+</blockquote>
+<p>前面提到，正是因为 feature variable 非常多，导致 hypothesis function 的幂次很高，hypothesis function 变得很复杂(弯弯曲曲的)，从而能穿过每一个样本点(完美匹配每个样本)。如果添加一个”正则化项”，减少高幂次的特征变量的影响，hypothesis function 不就变得平滑了吗？</p>
+<p><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-08-715283-20161118193423920-1528615002.png" alt=""></p>
+<p>正如前面提到，梯度下降算法的目标是最小化 cost function，而现在把 $\theta_3$ 和 $\theta_4$ 的系数设置为1000，设得很大，求偏导数时，相应地得到的 $\theta_3$ 和 $\theta_4$ 就都约等于0了。</p>
+<p>更一般地，我们对每一个 $\theta_j \;(j&gt;=1)$ 进行正则化(注：不对 $\theta_0$ 正则化)，就得到了一个新的的代价函数 $\eqref{1-1}$：其中的 $\lambda$ 为正则化参数(regularization parameter)</p>
+<p><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-08-715283-20161118194003810-1506207063.png" alt=""></p>
+<p>从上面的 $J(\theta)$ 可以看出：如果 $\lambda=0$ ，则表示没有使用正则化；如果 $\lambda$ 过大，使得模型的各个参数都变得很小，导致$h(x)=\theta_0$，从而造成欠拟合；如果 $\lambda$ 很小，则未充分起到正则化的效果。因此，$\lambda$ 的值要合适。</p>
+<h2 id="建模"><a href="#建模" class="headerlink" title="建模"></a>建模</h2><h3 id="线性回归的过拟合问题"><a href="#线性回归的过拟合问题" class="headerlink" title="线性回归的过拟合问题"></a>线性回归的过拟合问题</h3><p><strong>Hypothesis:</strong></p>
+<script type="math/tex; mode=display">
+h_\theta(x)=\theta_0+\theta_1x_1+\theta_2x_2+\cdots
+\tag{1-1}\label{1-1}</script><p><strong>Cost Function</strong></p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&J(\theta) = \dfrac{1}{2m}\  \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})^2 + \lambda\ \sum_{j=1}^n \theta_j^2 \\
+&\min_\theta J(\theta)
+\end{aligned}
+\tag{1-2}\label{1-2}</script><p><strong>Gradient Descent</strong></p>
+<script type="math/tex; mode=display">
+\begin{align*}
+& \text{Repeat}\ \lbrace \newline
+& \ \ \ \ \theta_0 := \theta_0 - \alpha\ \frac{1}{m}\ \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})x_0^{(i)} \newline
+& \ \ \ \ \theta_j := \theta_j - \alpha\ \left[ \left( \frac{1}{m}\ \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})x_j^{(i)} \right) + \frac{\lambda}{m}\theta_j \right] &\ \ \ \ \ \ \ \ \ \ j \in \lbrace 1,2...n\rbrace\newline
+& \ \ \ \ \ \ \, \ = \theta_j(1 - \alpha\frac{\lambda}{m}) - \alpha\frac{1}{m} \sum_{i=1}^m(h_\theta(x^{(i)}) - y^{(i)})x_j^{(i)} \newline
+& \rbrace
+\end{align*}
+\tag{1-3}\label{1-3}</script><p>另外$\eqref{1-3}$中，</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^m(h_\theta(x^{(i)}) - y^{(i)})x_j^{(i)}
+\Rightarrow
+\text{向量形式为：}X^T(g(X\Theta)-\overrightarrow{y})</script><p><strong>Normal Equation</strong></p>
+<script type="math/tex; mode=display">
+\begin{align*}
+& \theta = \left( X^TX + \lambda \cdot L \right)^{-1} X^Ty \newline
+& \text{where}\ \ L = \begin{bmatrix} 
+0 & & & & \newline 
+& 1 & & & \newline 
+& & 1 & & \newline 
+& & & \ddots & \newline 
+& & & & 1 \newline
+\end{bmatrix}
+\end{align*}
+\tag{1-4}\label{1-4}</script><p><em>Note: 在这里同时列出了 gradient descent 和 normal equation 两种求解 $J(\Theta)$ 最优解 $\Theta$ 的方法，具体可参考这篇文章(<a href="http://seyvoue.com/posts/91fff0b1/#more">@线性回归</a>)</em></p>
+<h3 id="逻辑回归的过拟合问题"><a href="#逻辑回归的过拟合问题" class="headerlink" title="逻辑回归的过拟合问题"></a>逻辑回归的过拟合问题</h3><p><strong>Hypothesis:</strong></p>
+<script type="math/tex; mode=display">
+h_\theta(x)=g(\theta_0+\theta_1x_1+\theta_2x_2+\theta_3x_1^2+\theta_4x_1x_2+\theta_5x_2^2+\theta_6x_1^3+\cdots)</script><p><strong>Cost Function</strong></p>
+<script type="math/tex; mode=display">
+J(\theta) = - \frac{1}{m} \sum_{i=1}^m \large[ y^{(i)}\ \log (h_\theta (x^{(i)})) + (1 - y^{(i)})\ \log (1 - h_\theta(x^{(i)}))\large] + \frac{\lambda}{2m}\sum_{j=1}^n \theta_j^2
+\tag{2-1}\label{2-1}</script><blockquote>
+<p><strong>Note:</strong> $\sum_{j=1}^n \theta_j^2$中是不包含 $\theta_0$ 项的。 换句话说，$\overrightarrow{\theta}$是一个$(\theta_0..\theta_n)$的$n+1$维列向量，但公式中第二个$\sum$ 是从$\theta_1$开始的，不包含 $\theta_0$。</p>
+</blockquote>
+<p><strong>Gradient Descent</strong></p>
+<script type="math/tex; mode=display">
+\begin{align*}
+& \text{Repeat}\ \lbrace \newline
+& \ \ \ \ \theta_0 := \theta_0 - \alpha\ \frac{1}{m}\ \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})x_0^{(i)} \newline
+& \ \ \ \ \theta_j := \theta_j - \alpha \frac{\partial}{\partial \theta_j} J(
+\theta) \newline
+& \ \ \ \ \ \ \ \, = \theta_j - \alpha\ \left[ \left( \frac{1}{m}\ \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})x_j^{(i)} \right) + \frac{\lambda}{m}\theta_j \right] &\ \ \ \ \ \ \ \ \ \ j \in \lbrace 1,2...n\rbrace\newline
+& \rbrace
+\end{align*}
+\tag{2-2}\label{2-2}</script><h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p><em>该实例来源于 coursera machine learning programming exercise2.</em></p>
+<p><strong>目的</strong><br>用逻辑回归根据芯片的两次测试结果判断芯片是否合格。</p>
+<p><strong>DataSet</strong><br>数据集的部分内容如下，完整数据集在<a href="https://raw.githubusercontent.com/seyvoue/coursera-ml/master/machine-learning-ex2/ex2/ex2data2.txt" target="_blank" rel="noopener"><strong>这里</strong></a></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">microchip test1</th>
+<th style="text-align:center">microchip test2</th>
+<th style="text-align:center">Accepted/Rejected</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0.051267</td>
+<td style="text-align:center">0.69956</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">-0.092742</td>
+<td style="text-align:center">0.68494</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">0.18376</td>
+<td style="text-align:center">0.93348</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">1.0709</td>
+<td style="text-align:center">0.10015</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+<td style="text-align:center">…</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h3><p>完整代码可在<a href="https://github.com/seyvoue/coursera-ml/tree/master/machine-learning-ex2/ex2" target="_blank" rel="noopener"><strong>这里</strong></a>下载。</p>
+<p>下面只列出其中的主程序：</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%% Machine Learning Online Class - Exercise 2: Logistic Regression Regularization</span></span><br><span class="line"><span class="comment">%% Load Data</span></span><br><span class="line"><span class="comment">%  The first two columns contains the X values and the third column</span></span><br><span class="line"><span class="comment">%  contains the label (y).</span></span><br><span class="line"></span><br><span class="line">data = load(<span class="string">'ex2data2.txt'</span>);</span><br><span class="line">X = data(:, [<span class="number">1</span>, <span class="number">2</span>]); y = data(:, <span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">plotData(X, y);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Put some labels</span></span><br><span class="line"><span class="built_in">hold</span> on;</span><br><span class="line"></span><br><span class="line"><span class="comment">% Labels and Legend</span></span><br><span class="line">xlabel(<span class="string">'Microchip Test 1'</span>)</span><br><span class="line">ylabel(<span class="string">'Microchip Test 2'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">% Specified in plot order</span></span><br><span class="line"><span class="built_in">legend</span>(<span class="string">'y = 1'</span>, <span class="string">'y = 0'</span>)</span><br><span class="line"><span class="built_in">hold</span> off;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">%% =========== Part 1: Regularized Logistic Regression ============</span></span><br><span class="line"><span class="comment">%  In this part, you are given a dataset with data points that are not</span></span><br><span class="line"><span class="comment">%  linearly separable. However, you would still like to use logistic</span></span><br><span class="line"><span class="comment">%  regression to classify the data points.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%  To do so, you introduce more features to use -- in particular, you add</span></span><br><span class="line"><span class="comment">%  polynomial features to our data matrix (similar to polynomial</span></span><br><span class="line"><span class="comment">%  regression).</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Add Polynomial Features</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Note that mapFeature also adds a column of ones for us, so the intercept</span></span><br><span class="line"><span class="comment">% term is handled</span></span><br><span class="line">X = mapFeature(X(:,<span class="number">1</span>), X(:,<span class="number">2</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">% Initialize fitting parameters</span></span><br><span class="line">initial_theta = <span class="built_in">zeros</span>(<span class="built_in">size</span>(X, <span class="number">2</span>), <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Set regularization parameter lambda to 1</span></span><br><span class="line">lambda = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">% Compute and display initial cost and gradient for regularized logistic</span></span><br><span class="line"><span class="comment">% regression</span></span><br><span class="line">[cost, grad] = costFunctionReg(initial_theta, X, y, lambda);</span><br><span class="line"></span><br><span class="line">fprintf(<span class="string">'Cost at initial theta (zeros): %f\n'</span>, cost);</span><br><span class="line">fprintf(<span class="string">'Expected cost (approx): 0.693\n'</span>);</span><br><span class="line">fprintf(<span class="string">'Gradient at initial theta (zeros) - first five values only:\n'</span>);</span><br><span class="line">fprintf(<span class="string">' %f \n'</span>, grad(<span class="number">1</span>:<span class="number">5</span>));</span><br><span class="line">fprintf(<span class="string">'Expected gradients (approx) - first five values only:\n'</span>);</span><br><span class="line">fprintf(<span class="string">' 0.0085\n 0.0188\n 0.0001\n 0.0503\n 0.0115\n'</span>);</span><br><span class="line"></span><br><span class="line">fprintf(<span class="string">'\nProgram paused. Press enter to continue.\n'</span>);</span><br><span class="line">pause;</span><br><span class="line"></span><br><span class="line"><span class="comment">% Compute and display cost and gradient</span></span><br><span class="line"><span class="comment">% with all-ones theta and lambda = 10</span></span><br><span class="line">test_theta = <span class="built_in">ones</span>(<span class="built_in">size</span>(X,<span class="number">2</span>),<span class="number">1</span>);</span><br><span class="line">[cost, grad] = costFunctionReg(test_theta, X, y, <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">fprintf(<span class="string">'\nCost at test theta (with lambda = 10): %f\n'</span>, cost);</span><br><span class="line">fprintf(<span class="string">'Expected cost (approx): 3.16\n'</span>);</span><br><span class="line">fprintf(<span class="string">'Gradient at test theta - first five values only:\n'</span>);</span><br><span class="line">fprintf(<span class="string">' %f \n'</span>, grad(<span class="number">1</span>:<span class="number">5</span>));</span><br><span class="line">fprintf(<span class="string">'Expected gradients (approx) - first five values only:\n'</span>);</span><br><span class="line">fprintf(<span class="string">' 0.3460\n 0.1614\n 0.1948\n 0.2269\n 0.0922\n'</span>);</span><br><span class="line"></span><br><span class="line">fprintf(<span class="string">'\nProgram paused. Press enter to continue.\n'</span>);</span><br><span class="line">pause;</span><br><span class="line"></span><br><span class="line"><span class="comment">%% ============= Part 2: Regularization and Accuracies =============</span></span><br><span class="line"><span class="comment">%  Optional Exercise:</span></span><br><span class="line"><span class="comment">%  In this part, you will get to try different values of lambda and</span></span><br><span class="line"><span class="comment">%  see how regularization affects the decision coundart</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%  Try the following values of lambda (0, 1, 10, 100).</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%  How does the decision boundary change when you vary lambda? How does</span></span><br><span class="line"><span class="comment">%  the training set accuracy vary?</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Initialize fitting parameters</span></span><br><span class="line">initial_theta = <span class="built_in">zeros</span>(<span class="built_in">size</span>(X, <span class="number">2</span>), <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Set regularization parameter lambda to 1 (you should vary this)</span></span><br><span class="line">lambda = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">% Set Options</span></span><br><span class="line">options = optimset(<span class="string">'GradObj'</span>, <span class="string">'on'</span>, <span class="string">'MaxIter'</span>, <span class="number">400</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Optimize</span></span><br><span class="line">[theta, J, exit_flag] = ...</span><br><span class="line">	fminunc(@(t)(costFunctionReg(t, X, y, lambda)), initial_theta, options);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Plot Boundary</span></span><br><span class="line">plotDecisionBoundary(theta, X, y);</span><br><span class="line"><span class="built_in">hold</span> on;</span><br><span class="line">title(sprintf(<span class="string">'lambda = %g'</span>, lambda))</span><br><span class="line"></span><br><span class="line"><span class="comment">% Labels and Legend</span></span><br><span class="line">xlabel(<span class="string">'Microchip Test 1'</span>)</span><br><span class="line">ylabel(<span class="string">'Microchip Test 2'</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">legend</span>(<span class="string">'y = 1'</span>, <span class="string">'y = 0'</span>, <span class="string">'Decision boundary'</span>)</span><br><span class="line"><span class="built_in">hold</span> off;</span><br><span class="line"></span><br><span class="line"><span class="comment">% Compute accuracy on our training set</span></span><br><span class="line">p = predict(theta, X);</span><br><span class="line"></span><br><span class="line">fprintf(<span class="string">'Train Accuracy: %f\n'</span>, <span class="built_in">mean</span>(double(p == y)) * <span class="number">100</span>);</span><br><span class="line">fprintf(<span class="string">'Expected accuracy (with lambda = 1): 83.1 (approx)\n'</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="代码分步讲解"><a href="#代码分步讲解" class="headerlink" title="代码分步讲解"></a>代码分步讲解</h3><blockquote>
+<p>step1: 绘制散点图，观察训练集的数据分布。<br>step2: mapFeature。对特征$X$进行预处理，增加 feature 的个数<br>step3: 计算 cost function $J(\Theta)$ 以及 $\nabla J(\Theta)$<br>step4: 调用 Octave/Matalb’s fminunc function 找到 &gt; $J(\Theta)$ 的最优解$\Theta$<br>step5: 绘制 Decision Boundary。<br>step6: 模型评估</p>
+</blockquote>
+<ul>
+<li><strong>step1: 绘制散点图，观察训练集的数据分布。</strong></li>
+</ul>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">data = load(<span class="string">'ex2data2.txt'</span>);</span><br><span class="line">X = data(:, [<span class="number">1</span>, <span class="number">2</span>]); y = data(:, <span class="number">3</span>);</span><br><span class="line">plotData(X, y);</span><br><span class="line"></span><br><span class="line"><span class="built_in">hold</span> on;</span><br><span class="line">xlabel(<span class="string">'Microchip Test 1'</span>)</span><br><span class="line">ylabel(<span class="string">'Microchip Test 2'</span>)</span><br><span class="line"><span class="built_in">legend</span>(<span class="string">'y = 1'</span>, <span class="string">'y = 0'</span>)</span><br><span class="line"><span class="built_in">hold</span> off;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中<code>plotData(X,y)</code>函数的代码如下：</p>
+</blockquote>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">plotData</span><span class="params">(X, y)</span></span></span><br><span class="line"><span class="comment">%PLOTDATA Plots the data points X and y into a new figure </span></span><br><span class="line"><span class="comment">%   PLOTDATA(x,y) plots the data points with + for the positive examples</span></span><br><span class="line"><span class="comment">%   and o for the negative examples. X is assumed to be a Mx2 matrix.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Create New Figure</span></span><br><span class="line"><span class="built_in">figure</span>; <span class="built_in">hold</span> on;</span><br><span class="line"></span><br><span class="line"><span class="comment">% Find indices of Positive and Negative</span></span><br><span class="line">pos = <span class="built_in">find</span>(y==<span class="number">1</span>);</span><br><span class="line">neg = <span class="built_in">find</span>(y==<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">%Plot</span></span><br><span class="line"><span class="built_in">plot</span>(X(pos, <span class="number">1</span>), X(pos, <span class="number">2</span>), <span class="string">'k+'</span>, <span class="string">'LineWidth'</span>, <span class="number">2</span>, <span class="string">'MarkerSize'</span>, <span class="number">7</span>);</span><br><span class="line"><span class="built_in">plot</span>(X(neg, <span class="number">1</span>), X(neg, <span class="number">2</span>), <span class="string">'ko'</span>, <span class="string">'MarkerFaceColor'</span>, <span class="string">'y'</span>, <span class="string">'MarkerSize'</span>,<span class="number">7</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">hold</span> off;</span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-08-084558.jpg" alt=""></p>
+<ul>
+<li><strong>step2: mapFeature。对特征$X$进行预处理，增加 feature 的个数</strong></li>
+</ul>
+<p>从上图可以猜测出，分类器是非线性的，$\theta_0+\theta_1x_1+\theta_2x_2$ 已无法满足要求，需要对 feature 做些处理，这里将特征的最高维度设为6维。</p>
+<p>$\text{origin feature}:X=\begin{bmatrix} 1 \newline x_1 \newline x_2 \end{bmatrix} \quad \Rightarrow \text{after map feature}:X=\begin{bmatrix} 1 \newline x_1 \newline x_2 \newline x_1^2 \newline x_1x_2 \newline x_2^2 \newline x_1^3 \newline \cdots \newline x_1x_2^5 \newline x_2^6 \end{bmatrix}$</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X = mapFeature(X(:,<span class="number">1</span>), X(:,<span class="number">2</span>));</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中的 <code>mapFeature(X1, X2)</code> 函数的实现代码如下：</p>
+</blockquote>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">out</span> = <span class="title">mapFeature</span><span class="params">(X1, X2)</span></span></span><br><span class="line"><span class="comment">% MAPFEATURE Feature mapping function to polynomial features</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%   MAPFEATURE(X1, X2) maps the two input features</span></span><br><span class="line"><span class="comment">%   to quadratic features used in the regularization exercise.</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%   Returns a new feature array with more features, comprising of </span></span><br><span class="line"><span class="comment">%   X1, X2, X1.^2, X2.^2, X1*X2, X1*X2.^2, etc..</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"><span class="comment">%   Inputs X1, X2 must be the same size</span></span><br><span class="line"><span class="comment">%</span></span><br><span class="line"></span><br><span class="line">degree = <span class="number">6</span>;</span><br><span class="line">out = <span class="built_in">ones</span>(<span class="built_in">size</span>(X1(:,<span class="number">1</span>)));</span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span> = <span class="number">1</span>:degree</span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">j</span> = <span class="number">0</span>:<span class="built_in">i</span></span><br><span class="line">        out(:, <span class="keyword">end</span>+<span class="number">1</span>) = (X1.^(<span class="built_in">i</span>-<span class="built_in">j</span>)).*(X2.^<span class="built_in">j</span>);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>step3: 计算 cost function $J(\Theta)$ 以及 $\nabla J(\Theta)$</strong></li>
+</ul>
+<blockquote>
+<p><strong>note:</strong>此处的$J(\Theta)$以及$\nabla J(\Theta)$是带有正规化项的，即使用的是公式$\eqref{1-2}$</p>
+</blockquote>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% Initialize fitting parameters</span></span><br><span class="line">initial_theta = <span class="built_in">zeros</span>(<span class="built_in">size</span>(X, <span class="number">2</span>), <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Set regularization parameter lambda to 1</span></span><br><span class="line">lambda = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">% Compute and display initial cost and gradient for regularized logistic</span></span><br><span class="line"><span class="comment">% regression</span></span><br><span class="line">[cost, grad] = costFunctionReg(initial_theta, X, y, lambda);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中 <code>costFunctionReg(theta, X, y, lambda)</code> 函数的实现代码如下：</p>
+</blockquote>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[J, grad]</span> = <span class="title">costFunctionReg</span><span class="params">(theta, X, y, lambda)</span></span></span><br><span class="line"><span class="comment">%COSTFUNCTIONREG Compute cost and gradient for logistic regression with regularization</span></span><br><span class="line"><span class="comment">%   J = COSTFUNCTIONREG(theta, X, y, lambda) computes the cost of using</span></span><br><span class="line"><span class="comment">%   theta as the parameter for regularized logistic regression and the</span></span><br><span class="line"><span class="comment">%   gradient of the cost w.r.t. to the parameters. </span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Initialize some useful values</span></span><br><span class="line">m = <span class="built_in">length</span>(y); <span class="comment">% number of training examples</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% You need to return the following variables correctly </span></span><br><span class="line">J = <span class="number">0</span>;</span><br><span class="line">grad = <span class="built_in">zeros</span>(<span class="built_in">size</span>(theta));</span><br><span class="line"></span><br><span class="line">h = sigmoid(X*theta);</span><br><span class="line">J = ( y'*<span class="built_in">log</span>(h)+(<span class="built_in">ones</span>(<span class="built_in">size</span>(y))-y)'*<span class="built_in">log</span>(<span class="built_in">ones</span>(<span class="built_in">size</span>(h))-h) )/(-m) + lambda/(<span class="number">2</span>*m)*(theta(<span class="number">2</span>:<span class="built_in">length</span>(theta)))'*(theta(<span class="number">2</span>:<span class="built_in">length</span>(theta)));</span><br><span class="line">grad = ( X' * ( h-y ) )/m + ( lambda / m ) * ( [<span class="number">0</span>; <span class="built_in">ones</span>( <span class="built_in">length</span>(theta) - <span class="number">1</span> , <span class="number">1</span> )].*theta );</span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中 <code>sigmoid(z)</code> 函数的代码如下：</p>
+</blockquote>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">g</span> = <span class="title">sigmoid</span><span class="params">(z)</span></span></span><br><span class="line"><span class="comment">%SIGMOID Compute sigmoid function</span></span><br><span class="line"><span class="comment">%   g = SIGMOID(z) computes the sigmoid of z.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% You need to return the following variables correctly </span></span><br><span class="line">g = <span class="built_in">zeros</span>(<span class="built_in">size</span>(z));</span><br><span class="line"></span><br><span class="line">g = <span class="number">1</span> ./ (<span class="built_in">ones</span>(<span class="built_in">size</span>(z)) + <span class="built_in">exp</span>(-z));</span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>step4: 调用 Octave/Matalb’s fminunc function 找到 $J(\Theta)$ 的最优解$\Theta$</strong></li>
+</ul>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% Initialize fitting parameters</span></span><br><span class="line">initial_theta = <span class="built_in">zeros</span>(<span class="built_in">size</span>(X, <span class="number">2</span>), <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Set regularization parameter lambda to 1 (you should vary this)</span></span><br><span class="line">lambda = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">% Set Options</span></span><br><span class="line">options = optimset(<span class="string">'GradObj'</span>, <span class="string">'on'</span>, <span class="string">'MaxIter'</span>, <span class="number">400</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">% Optimize</span></span><br><span class="line">[theta, J, exit_flag] = ...</span><br><span class="line">	fminunc(@(t)(costFunctionReg(t, X, y, lambda)), initial_theta, options);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>step5: 绘制 Decision Boundary。</strong></li>
+</ul>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">plotDecisionBoundary(theta, X, y);</span><br><span class="line"><span class="built_in">hold</span> on;</span><br><span class="line">title(sprintf(<span class="string">'lambda = %g'</span>, lambda))</span><br><span class="line"></span><br><span class="line"><span class="comment">% Labels and Legend</span></span><br><span class="line">xlabel(<span class="string">'Microchip Test 1'</span>)</span><br><span class="line">ylabel(<span class="string">'Microchip Test 2'</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">legend</span>(<span class="string">'y = 1'</span>, <span class="string">'y = 0'</span>, <span class="string">'Decision boundary'</span>)</span><br><span class="line"><span class="built_in">hold</span> off;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中 <code>plotDecisionBoundary(theta, X, y)</code> 代码如下：</p>
+</blockquote>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">plotDecisionBoundary</span><span class="params">(theta, X, y)</span></span></span><br><span class="line"><span class="comment">%PLOTDECISIONBOUNDARY Plots the data points X and y into a new figure with</span></span><br><span class="line"><span class="comment">%the decision boundary defined by theta</span></span><br><span class="line"><span class="comment">%   PLOTDECISIONBOUNDARY(theta, X,y) plots the data points with + for the </span></span><br><span class="line"><span class="comment">%   positive examples and o for the negative examples. X is assumed to be </span></span><br><span class="line"><span class="comment">%   a either </span></span><br><span class="line"><span class="comment">%   1) Mx3 matrix, where the first column is an all-ones column for the </span></span><br><span class="line"><span class="comment">%      intercept.</span></span><br><span class="line"><span class="comment">%   2) MxN, N&gt;3 matrix, where the first column is all-ones</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Plot Data</span></span><br><span class="line">plotData(X(:,<span class="number">2</span>:<span class="number">3</span>), y);</span><br><span class="line"><span class="built_in">hold</span> on</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">size</span>(X, <span class="number">2</span>) &lt;= <span class="number">3</span></span><br><span class="line">    <span class="comment">% Only need 2 points to define a line, so choose two endpoints</span></span><br><span class="line">    plot_x = [<span class="built_in">min</span>(X(:,<span class="number">2</span>))<span class="number">-2</span>,  <span class="built_in">max</span>(X(:,<span class="number">2</span>))+<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line">    <span class="comment">% Calculate the decision boundary line</span></span><br><span class="line">    plot_y = (<span class="number">-1.</span>/theta(<span class="number">3</span>)).*(theta(<span class="number">2</span>).*plot_x + theta(<span class="number">1</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">% Plot, and adjust axes for better viewing</span></span><br><span class="line">    <span class="built_in">plot</span>(plot_x, plot_y)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">% Legend, specific for the exercise</span></span><br><span class="line">    <span class="built_in">legend</span>(<span class="string">'Admitted'</span>, <span class="string">'Not admitted'</span>, <span class="string">'Decision Boundary'</span>)</span><br><span class="line">    axis([<span class="number">30</span>, <span class="number">100</span>, <span class="number">30</span>, <span class="number">100</span>])</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="comment">% Here is the grid range</span></span><br><span class="line">    u = <span class="built_in">linspace</span>(<span class="number">-1</span>, <span class="number">1.5</span>, <span class="number">50</span>);</span><br><span class="line">    v = <span class="built_in">linspace</span>(<span class="number">-1</span>, <span class="number">1.5</span>, <span class="number">50</span>);</span><br><span class="line"></span><br><span class="line">    z = <span class="built_in">zeros</span>(<span class="built_in">length</span>(u), <span class="built_in">length</span>(v));</span><br><span class="line">    <span class="comment">% Evaluate z = theta*x over the grid</span></span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">i</span> = <span class="number">1</span>:<span class="built_in">length</span>(u)</span><br><span class="line">        <span class="keyword">for</span> <span class="built_in">j</span> = <span class="number">1</span>:<span class="built_in">length</span>(v)</span><br><span class="line">            z(<span class="built_in">i</span>,<span class="built_in">j</span>) = mapFeature(u(<span class="built_in">i</span>), v(<span class="built_in">j</span>))*theta;</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    z = z'; <span class="comment">% important to transpose z before calling contour</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">% Plot z = 0</span></span><br><span class="line">    <span class="comment">% Notice you need to specify the range [0, 0]</span></span><br><span class="line">    contour(u, v, z, [<span class="number">0</span>, <span class="number">0</span>], <span class="string">'LineWidth'</span>, <span class="number">2</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="built_in">hold</span> off</span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>$\lambda=0$时，训练出来的模型（hypothesis function）如下：Train Accuracy: 86.440678<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-08-124454.jpg" alt=""><br>$\lambda=1$时，训练出来的模型（hypothesis function）如下：Train Accuracy: 83.050847<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-08-084626.jpg" alt=""><br>$\lambda=10$时，训练出来的模型（hypothesis function）如下：Train Accuracy: 74.576271<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-08-131130.jpg" alt=""><br>$\lambda=100$时，训练出来的模型（hypothesis function）如下：Train Accuracy: 61.016949<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-08-124524.jpg" alt=""></p>
+<p>可以看出当 $\lambda=100$ 时，已经出现了欠拟合；当$\lambda=0$时，模型与样本的拟合度最好，准确度 train accuracy 最高，由于评估时使用的是训练集(即原样本，不是新样本)，所以模型的准确度 train accuracy 比 $\lambda=1$ 时还要高，但若使用样本评估模型，其准确度将会有所降低，因为从 decision boundary 可以看出模型已经过拟合了。</p>
+<ul>
+<li><strong>step6: 模型评估</strong></li>
+</ul>
+<p>求得的逻辑回归模型是好还是坏呢？预测效果怎么样？需要拿一组数据测试一下，测试代码如下：</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% Compute accuracy on our training set</span></span><br><span class="line">p = predict(theta, X);<span class="comment">% 调用predict函数测试模型</span></span><br><span class="line">train_accuracy = <span class="built_in">mean</span>(double(p == y)) * <span class="number">100</span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中的 <code>predict(theta, X)</code> 函数的实现代码如下：</p>
+</blockquote>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">p</span> = <span class="title">predict</span><span class="params">(theta, X)</span></span></span><br><span class="line"><span class="comment">%PREDICT Predict whether the label is 0 or 1 using learned logistic </span></span><br><span class="line"><span class="comment">%regression parameters theta</span></span><br><span class="line"><span class="comment">%   p = PREDICT(theta, X) computes the predictions for X using a </span></span><br><span class="line"><span class="comment">%   threshold at 0.5 (i.e., if sigmoid(theta'*x) &gt;= 0.5, predict 1)</span></span><br><span class="line"></span><br><span class="line">m = <span class="built_in">size</span>(X, <span class="number">1</span>); <span class="comment">% Number of training examples</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% You need to return the following variables correctly</span></span><br><span class="line">p = <span class="built_in">zeros</span>(m, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">p = X * theta &gt;= <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>原理如下：<br><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-09-08-010106.jpg" alt=""></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>希望对你有帮助！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-wechatpay.jpg" alt="seyvoue 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-alipay.jpg" alt="seyvoue 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>seyvoue</li>
+  <li class="post-copyright-title">
+    <strong>本文标题：</strong>
+    @过拟合问题
+  </li>
+  <li class="post-copyright-posted">
+    <strong>发布时间：</strong>
+    2017/09/08 - 13:09
+  </li>
+  <li class="post-copyright-modified">
+      <strong>最后更新：</strong>
+      2018/02/01 - 18:02
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://seyvoue.com/algorithms/bec21aa6.html" title="@过拟合问题">http://seyvoue.com/algorithms/bec21aa6.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/machine-learning/" rel="tag"># machine-learning</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+               <div>
+                 
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+               </div>
+            
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/algorithms/309c0b9e.html" rel="next" title="@逻辑回归">
+                <i class="fa fa-chevron-left"></i> @逻辑回归
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/languages/cee620b1.html" rel="prev" title="@神经网络">
+                @神经网络 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div onclick="showGitment()" id="gitment-display-button">显示 Gitment 评论</div>
+        <div id="gitment-container" style="display:none"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-avatar.jpg" alt="seyvoue">
+            
+              <p class="site-author-name" itemprop="name">seyvoue</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">71</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">25</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/seyvoue" title="GitHub &rarr; https://github.com/seyvoue" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:seyvoue@qq.com" title="Mail &rarr; mailto:seyvoue@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#建模"><span class="nav-number">2.</span> <span class="nav-text">建模</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线性回归的过拟合问题"><span class="nav-number">2.1.</span> <span class="nav-text">线性回归的过拟合问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#逻辑回归的过拟合问题"><span class="nav-number">2.2.</span> <span class="nav-text">逻辑回归的过拟合问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用"><span class="nav-number">3.</span> <span class="nav-text">应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#完整代码"><span class="nav-number">3.1.</span> <span class="nav-text">完整代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码分步讲解"><span class="nav-number">3.2.</span> <span class="nav-text">代码分步讲解</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-fighter-jet"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">seyvoue</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">436k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    
+    <span title="站点阅读时长">12:07</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname,
+            owner: 'seyvoue',
+            repo: 'seyvoue.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'd5896ff31d35a036d1e0a74213a66eda2e336ff7',
+            
+                client_id: '09450d7084d9e39d9d43'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      function showGitment(){
+        document.getElementById("gitment-display-button").style.display = "none";
+        document.getElementById("gitment-container").style.display = "block";
+        renderGitment();
+      }
+      
+      </script>
+    
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "Ob6CW7SHh3UDjoiFsCrI7UQu-9Nh9j0Va")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "Ob6CW7SHh3UDjoiFsCrI7UQu-9Nh9j0Va",
+                'X-LC-Key': "cJQr5jP7XftIjd2KOdiEug0F",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {equationNumbers: { autoNumber: "AMS" }}
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+          if(result)$(this).text('复制成功')
+          else $(this).text('复制失败')
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('复制')
+        }, 300)
+      }).append(e)
+    })
+  </script>
+
+
+  
+
+</body>
+</html>

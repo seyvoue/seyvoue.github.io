@@ -1,0 +1,1784 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="baidu-site-verification" content="qTlbubWUyw">
+<meta name="google-site-verification" content="Y9hBxOOKK4YNywVJN3FRwq2Xbry6ouA_XdM14MMdATU">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-alphabet_letter_s-1.ico?v=6.6.0">
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="数据脱敏模式静态数据脱敏(SDM)  通过对源数 据库的克隆来进行脱敏操作，形成目标数据库，脱敏操作面对的是生产数据的镜像。SDM 通常维持两份数据，一份为原始数据，另一份为脱敏后数据。  优点：  可以根据需要调整脱敏规则，灵活性更高 脱敏工具的选择范围更大; 相对动态架构，静态架构对生产系统的压力更小。  缺点：  实时性低 敏感数据落地，安全风险增加  动态数据脱敏(DDM)  系统并不">
+<meta property="og:type" content="article">
+<meta property="og:title" content="@数据脱敏的方法">
+<meta property="og:url" content="http://seyvoue.com/infomation-security/f50560d1.html">
+<meta property="og:site_name" content="seyvoue">
+<meta property="og:description" content="数据脱敏模式静态数据脱敏(SDM)  通过对源数 据库的克隆来进行脱敏操作，形成目标数据库，脱敏操作面对的是生产数据的镜像。SDM 通常维持两份数据，一份为原始数据，另一份为脱敏后数据。  优点：  可以根据需要调整脱敏规则，灵活性更高 脱敏工具的选择范围更大; 相对动态架构，静态架构对生产系统的压力更小。  缺点：  实时性低 敏感数据落地，安全风险增加  动态数据脱敏(DDM)  系统并不">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-07-26-%E6%95%B0%E6%8D%AE%E8%84%B1%E6%95%8F-1.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-07-25-173721.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-07-25-173611.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-07-25-180101.png">
+<meta property="og:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-07-25-142306.png">
+<meta property="og:updated_time" content="2019-06-08T15:25:02.752Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="@数据脱敏的方法">
+<meta name="twitter:description" content="数据脱敏模式静态数据脱敏(SDM)  通过对源数 据库的克隆来进行脱敏操作，形成目标数据库，脱敏操作面对的是生产数据的镜像。SDM 通常维持两份数据，一份为原始数据，另一份为脱敏后数据。  优点：  可以根据需要调整脱敏规则，灵活性更高 脱敏工具的选择范围更大; 相对动态架构，静态架构对生产系统的压力更小。  缺点：  实时性低 敏感数据落地，安全风险增加  动态数据脱敏(DDM)  系统并不">
+<meta name="twitter:image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-07-26-%E6%95%B0%E6%8D%AE%E8%84%B1%E6%95%8F-1.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="seyvoue" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://seyvoue.com/infomation-security/f50560d1.html">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>@数据脱敏的方法 | seyvoue</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">seyvoue</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">ABC-Always Be Coding.</h1>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+
+    
+
+    <a href="/" rel="section">首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+
+    
+
+    <a href="/tags/" rel="section">标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+
+    
+
+    <a href="/categories/" rel="section">分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+
+    
+
+    <a href="/archives/" rel="section">归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-changelog">
+
+    
+    
+    
+
+    
+
+    <a href="/changelog/" rel="section">变更</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://seyvoue.com/infomation-security/f50560d1.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seyvoue">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="seyvoue">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">@数据脱敏的方法
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-08-10 01:10:49" itemprop="dateCreated datePublished" datetime="2018-08-10T01:10:49+08:00">2018-08-10</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-08 23:25:02" itemprop="dateModified" datetime="2019-06-08T23:25:02+08:00">2019-06-08</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/infomation-security/" itemprop="url" rel="index"><span itemprop="name">infomation-security</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/infomation-security/f50560d1.html#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count gitment-comments-count" data-xid="/infomation-security/f50560d1.html" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/infomation-security/f50560d1.html" class="leancloud_visitors" data-flag-title="@数据脱敏的方法">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                <span title="本文字数">3.5k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                <span title="阅读时长">6 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-07-26-%E6%95%B0%E6%8D%AE%E8%84%B1%E6%95%8F-1.png" alt=""></p>
+<hr>
+<h2 id="数据脱敏模式"><a href="#数据脱敏模式" class="headerlink" title="数据脱敏模式"></a>数据脱敏模式</h2><h3 id="静态数据脱敏-SDM"><a href="#静态数据脱敏-SDM" class="headerlink" title="静态数据脱敏(SDM)"></a>静态数据脱敏(SDM)</h3><p><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-07-25-173721.png" alt=""></p>
+<blockquote>
+<p>通过对源数 据库的克隆来进行脱敏操作，形成目标数据库，脱敏操作面对的是生产数据的镜像。SDM 通常维持两份数据，一份为原始数据，另一份为脱敏后数据。</p>
+</blockquote>
+<p>优点：</p>
+<ul>
+<li>可以根据需要调整脱敏规则，灵活性更高</li>
+<li>脱敏工具的选择范围更大;</li>
+<li>相对动态架构，静态架构对生产系统的压力更小。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>实时性低</li>
+<li>敏感数据落地，安全风险增加</li>
+</ul>
+<h3 id="动态数据脱敏-DDM"><a href="#动态数据脱敏-DDM" class="headerlink" title="动态数据脱敏(DDM)"></a>动态数据脱敏(DDM)</h3><p><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-07-25-173611.png" alt=""></p>
+<blockquote>
+<p>系统并不存储脱敏后数据，数据脱敏规则应用于在将数据从源数据库(生产库)导出到目标数据库(脱敏后数据库)的过程中进行脱敏处理，或者在生产系统产生实际数据的同时，也同步产生用于其他环境的脱敏数据。</p>
+</blockquote>
+<p>优点：</p>
+<ul>
+<li>敏感数据不落地</li>
+<li>实时性高</li>
+<li>对生产系统</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>对生产系统产生一定的压力</li>
+<li>脱敏策略可定制性不强，一旦投入持续生产就不能调整，否则会影响现有业务</li>
+<li>脱敏应用会对源数据库到目标数据库链路安全和稳定性有较高要求</li>
+<li>该架构一般都要求脱敏工具和生产库管理软件紧密耦合，限制可用工具的选择范围。</li>
+</ul>
+<h2 id="脱敏方法"><a href="#脱敏方法" class="headerlink" title="脱敏方法"></a>脱敏方法</h2><h3 id="传统脱敏方法"><a href="#传统脱敏方法" class="headerlink" title="传统脱敏方法"></a>传统脱敏方法</h3><p>传统脱敏算法包括：替换、混洗、加密、变换、删除、遮掩等，下图为脱敏算法选择决策树。</p>
+<p><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-07-25-180101.png" alt="脱敏算法选择决策树"></p>
+<blockquote>
+<p>其中，Level 表示敏感级值，ZSX、KYX、KPZ、GLX、SXX、KCX 分别为真实 性、可用性、可配置、关联性、时效性、可重现等 6 个 脱敏算法选择因素。</p>
+</blockquote>
+<h4 id="替换-Replacement，RP"><a href="#替换-Replacement，RP" class="headerlink" title="替换(Replacement，RP)"></a>替换(Replacement，RP)</h4><blockquote>
+<p>是指利用伪装数据对源数据中的敏感数据进行完全替换。为保证安全，一般替换用的数据都不具可逆性。</p>
+</blockquote>
+<p>如：</p>
+<ul>
+<li><strong><em>常数替代：</em></strong>所有敏感数据都替换为唯一的常数值</li>
+<li><strong><em>查表替代：</em></strong>从中间表中随机或按照特定算法选择数据进 行替代</li>
+<li><strong><em>参数化替代：</em></strong>以敏感数据作为输入，通过特定函数形成新的替代数据</li>
+</ul>
+<p>替换方法能够彻底的脱敏单类数据，但往往也会使相关字段失 去业务含义，对于查表替代而言，中间表的设计非常关键。</p>
+<h4 id="加密-Encryption，EC"><a href="#加密-Encryption，EC" class="headerlink" title="加密(Encryption，EC)"></a>加密(Encryption，EC)</h4><blockquote>
+<p>是指对待脱敏 的数据进行加密处理，使外部用户或系统只能够接 触无意义的加密数据。在特定场景下，系统可以提 供解密能力，分发密钥给相关方以恢复原始数据。</p>
+</blockquote>
+<h4 id="遮掩-Masking，MK"><a href="#遮掩-Masking，MK" class="headerlink" title="遮掩(Masking，MK)"></a>遮掩(Masking，MK)</h4><blockquote>
+<p>指对敏感数据的部分内容用掩饰符号(如“X、*”)进行统一替换，从而使得敏感数据保持部分内容公开。</p>
+</blockquote>
+<p>这种方法可以在很大程度上脱敏的同时，保持原有数据感观，也是一种广泛使用的方法。</p>
+<h4 id="删除-Deletion，DL"><a href="#删除-Deletion，DL" class="headerlink" title="删除(Deletion，DL)"></a>删除(Deletion，DL)</h4><blockquote>
+<p>直接删除敏感数据或将其置为空。</p>
+</blockquote>
+<h4 id="变换-Change，CG"><a href="#变换-Change，CG" class="headerlink" title="变换(Change，CG)"></a>变换(Change，CG)</h4><blockquote>
+<p>指对数值和日期类型的源数据，通过随机函数进行可控的调整(例如对于数值类型数据随机增减20%;对于日期数据，随机增减200天)，以便在保持原始数据相关统计特征的同时，完成对具体数值的伪装。</p>
+</blockquote>
+<p>数值变化通过调整变动幅度可以有效控制目标数据的统计特征和真实度，是常用的脱敏方法。</p>
+<h4 id="混洗-Shuffle，SF"><a href="#混洗-Shuffle，SF" class="headerlink" title="混洗(Shuffle，SF)"></a>混洗(Shuffle，SF)</h4><blockquote>
+<p>主要通过对敏感数据进行跨行随机互 换来打破其与本行其他数据的关联关系，从而实现脱敏。</p>
+</blockquote>
+<p>混洗可以在相当大范围内保证部分业务数据信息 (如有效数据范围、数据统计特征等)，使脱敏后数据看起来跟源数据更一致，与此同时也牺牲了一定的安全性。一般混洗方法用于大数据集合、且需要保留待脱敏数据特定特征的场景;对于小数据集，混洗形成的目标数据有可能通过其他信息被还原，在使用的时候需要特别慎重。</p>
+<p><strong>脱敏算法选择因素</strong></p>
+<ul>
+<li>可用性(KYX)。即脱敏后的数据应能满足分析应用 需求，若脱敏后的数据无法用于目标分析及应用，就 不具备使用价值。在特定应用场景中，可能需要保 留部分非关键信息(如身份证号码、手机号码的部分 字段等)才能满足分析需求。</li>
+<li>关联性(GLX)。对于结构化和半结构化数据，在同 一数据表中某字段与另外字段有对应关系，如果脱 敏算法破坏了这种关系，该字段的使用价值将不复 存在。通常在进行数据统计需要参考量的情况下， 对数据的关联性要求较高。</li>
+<li>真实性(ZSX)。脱敏后的数据对原始数据逻辑特征 和统计分布特征的保留程度。为满足这种特性，数 据的原始值需要尽可能地被保留。</li>
+<li>时效性(SXX)。数据提供需要有一定的及时性，超 过一定时间后脱敏数据可能就不再具有进一步分析 挖掘的意义。因此，应尽量避免使用耗时的脱敏算 法，比如加密算法。</li>
+<li>可重现(KCX)。即相同源数据在配置相同算法和参 数的情况下，脱敏后的数据应保持一致，随机类的算 法应避免使用。</li>
+<li>可配置(KPZ)。主要是指可以灵活配置、组合脱敏 算法，可以结合不同需求生成个性化的脱敏数据。</li>
+</ul>
+<h3 id="数据匿名化"><a href="#数据匿名化" class="headerlink" title="数据匿名化"></a>数据匿名化</h3><blockquote>
+<p>数据匿名化主张在不泄露用户隐私的前提下，对数据进行尽可能少的、不可逆的匿名化操作，降低攻击者获取用户敏感信息的概率，同时尽可能地保证数据的可用性和真实性。</p>
+</blockquote>
+<p><strong>匿名化问题的原始数据通常表示如下：</strong></p>
+<p>D（显示标识符 EID，准标识符 QID，敏感数据 SA，非敏感数据 NSA）</p>
+<ul>
+<li>显示标识符：指可以直接识别个人身份的属性，如姓名、身份证号码、社保号等</li>
+<li>准标识符：单个准标识符并不能唯一的确定一个用户，但是多个准标识符的组合可以确定用户的身份。如地区、年龄、性别和血型等。</li>
+</ul>
+<p><strong>匿名化操作的目标是发布如下形式的匿名化数据：</strong></p>
+<p>T（匿名化数据 QID，经过处理的敏感属性 SA’,非敏感数据 NSA）</p>
+<h4 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h4><p>略</p>
+<h4 id="匿名化发布原则"><a href="#匿名化发布原则" class="headerlink" title="匿名化发布原则"></a>匿名化发布原则</h4><p>如果只是简单的对显示标识符 EID，准标识符QID进行模糊化处理，但数据仍然容易受到背景知识攻击和同质攻击，基于此业界提出了以下几种匿名化发布原则。</p>
+<h5 id="K-anonymity"><a href="#K-anonymity" class="headerlink" title="K-anonymity"></a>K-anonymity</h5><p>K-anonymity，要求对于任意一行纪录，其所属的相等集内纪录数量不小于k，即至少有k-1条纪录准标识列属性值与该条纪录相同，目标是让企图识别数据身份的攻击者难以区分具有相同数值的 k 项记录。K-anonymity 虽然对数据进行匿名化操作，但是由于没有对敏感属性数据做任何的约束，导致数据容易遭受同质攻击和背景知识攻击。</p>
+<h5 id="L-diversity"><a href="#L-diversity" class="headerlink" title="L-diversity"></a>L-diversity</h5><p>L-diversity，在 K-anonymity 的基础上进行了一定的改进，能够防止一致性攻击和背景知识攻击，与 K-匿名不同的是，K-anonymity 要求每个准标识符组合具有 k 个条目，L-diversity 要求每个 QID 的组合中需要有 $l$ 个不同的取值，增加了攻击者的攻击难度，使得恶意攻击者最多以 $ \frac {1}{l} $ 的概率成功猜测某元组个体的敏感属性值。</p>
+<h5 id="T-closeness"><a href="#T-closeness" class="headerlink" title="T-closeness"></a>T-closeness</h5><p>T-closeness 对 L-diversity 进行了改进，增加了对敏感属性值分布的改善，它规定所有等价类中的敏感属性值的分布应该尽量接近该属性的全局分布，更大的增加了安全性，但信息损失较大，算法时间复杂度也高。</p>
+<h5 id="M-invariance"><a href="#M-invariance" class="headerlink" title="M-invariance"></a>M-invariance</h5><p>M-invariance，针对动态递增数据集的一种匿名化原则，此原则保证了在任意时刻发布的等价类都包含 M 个不同取值的记录，并且需要保证相同的记录在不同时刻的取值相同，从而保证在动态数据发布环境下的数据一致性。</p>
+<h2 id="数据脱敏工具"><a href="#数据脱敏工具" class="headerlink" title="数据脱敏工具"></a>数据脱敏工具</h2><p>国外，Oracle 的 Data Masking 组件，IBM 的 InfoSphere OptIMData Privacy 产品，Informatica 的Tnformatica Data Masking 产品等，其中 Informatica 的产品可以实现对异构数据的脱敏处理，也可以自己创建脱敏平台或系统进行脱敏处理；国内，网智天元研发的“金蜂巢”数据脱敏系统、网御星云的脱敏系统、比特信安的大数据脱敏系统等。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li>龚奇源. 面向数据发布的数据匿名技术研究[D]. 东南大学, 2016.</li>
+<li>乔宏明, 梁奂. 运营商面向大数据应用的数据脱敏方法探讨[J]. 移动通信, 2015(13):17-20.</li>
+<li>吴行飞. 中小城市商业银行数据脱敏研究——以东营银行为例[D]. 山东大学, 2016.</li>
+<li>王鑫, 王电钢, 母继元,等. 基于机器学习的数据脱敏系统研究与设计[J]. 电力信息与通信技术, 2018(1).</li>
+<li>江堂碧. 支持挖掘的流式数据脱敏关键技术研究[D].电子科技大学,2017.</li>
+<li><a href="http://fsight.qq.com/insight/excellentInfo/10005152791cda9b7443919531f228370edfc6c4.html" target="_blank" rel="noopener">数据脱敏(Data Masking)与大数据脱敏平台设计</a></li>
+<li><a href="https://tech.meituan.com/data_mask.html" target="_blank" rel="noopener">美团数据仓库-数据脱敏</a></li>
+<li><a href="http://www.freebuf.com/column/161463.html" target="_blank" rel="noopener">浅析数据安全脱敏工具</a></li>
+<li><a href="https://policies.google.com/technologies/anonymization?hl=zh-CN" target="_blank" rel="noopener">GOOGLE 如何对数据进行匿名化处理</a></li>
+<li><a href="https://www.intel.com/content/dam/www/public/cn/zh/pdfs/enhancing-cloud-security-using-data-anonymization.pdf" target="_blank" rel="noopener">利用数据匿名化（Data Anonymization）技术增强云的信息安全-Intel白皮书</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/20824603" target="_blank" rel="noopener">大数据与数据脱敏-知乎专栏</a></li>
+</ul>
+<hr>
+<p>常见数据脱敏算法示例</p>
+<p><img src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2018-07-25-142306.png" alt=""></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>希望对你有帮助！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-wechatpay.jpg" alt="seyvoue 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-alipay.jpg" alt="seyvoue 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>seyvoue</li>
+  <li class="post-copyright-title">
+    <strong>本文标题：</strong>
+    @数据脱敏的方法
+  </li>
+  <li class="post-copyright-posted">
+    <strong>发布时间：</strong>
+    2018/08/10 - 01:08
+  </li>
+  <li class="post-copyright-modified">
+      <strong>最后更新：</strong>
+      2019/06/08 - 23:06
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://seyvoue.com/infomation-security/f50560d1.html" title="@数据脱敏的方法">http://seyvoue.com/infomation-security/f50560d1.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+               <div>
+                 
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+               </div>
+            
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/manual/5e99fb6d.html" rel="next" title="@CentOS下MySQL 的安装">
+                <i class="fa fa-chevron-left"></i> @CentOS下MySQL 的安装
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/manual/dea8e8d6.html" rel="prev" title="@mac 常用快捷键">
+                @mac 常用快捷键 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div onclick="showGitment()" id="gitment-display-button">显示 Gitment 评论</div>
+        <div id="gitment-container" style="display:none"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-avatar.jpg" alt="seyvoue">
+            
+              <p class="site-author-name" itemprop="name">seyvoue</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">71</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">25</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/seyvoue" title="GitHub &rarr; https://github.com/seyvoue" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:seyvoue@qq.com" title="Mail &rarr; mailto:seyvoue@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据脱敏模式"><span class="nav-number">1.</span> <span class="nav-text">数据脱敏模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#静态数据脱敏-SDM"><span class="nav-number">1.1.</span> <span class="nav-text">静态数据脱敏(SDM)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态数据脱敏-DDM"><span class="nav-number">1.2.</span> <span class="nav-text">动态数据脱敏(DDM)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#脱敏方法"><span class="nav-number">2.</span> <span class="nav-text">脱敏方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#传统脱敏方法"><span class="nav-number">2.1.</span> <span class="nav-text">传统脱敏方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#替换-Replacement，RP"><span class="nav-number">2.1.1.</span> <span class="nav-text">替换(Replacement，RP)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#加密-Encryption，EC"><span class="nav-number">2.1.2.</span> <span class="nav-text">加密(Encryption，EC)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#遮掩-Masking，MK"><span class="nav-number">2.1.3.</span> <span class="nav-text">遮掩(Masking，MK)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除-Deletion，DL"><span class="nav-number">2.1.4.</span> <span class="nav-text">删除(Deletion，DL)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#变换-Change，CG"><span class="nav-number">2.1.5.</span> <span class="nav-text">变换(Change，CG)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#混洗-Shuffle，SF"><span class="nav-number">2.1.6.</span> <span class="nav-text">混洗(Shuffle，SF)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据匿名化"><span class="nav-number">2.2.</span> <span class="nav-text">数据匿名化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#常用方法"><span class="nav-number">2.2.1.</span> <span class="nav-text">常用方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#匿名化发布原则"><span class="nav-number">2.2.2.</span> <span class="nav-text">匿名化发布原则</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#K-anonymity"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">K-anonymity</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#L-diversity"><span class="nav-number">2.2.2.2.</span> <span class="nav-text">L-diversity</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#T-closeness"><span class="nav-number">2.2.2.3.</span> <span class="nav-text">T-closeness</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#M-invariance"><span class="nav-number">2.2.2.4.</span> <span class="nav-text">M-invariance</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据脱敏工具"><span class="nav-number">3.</span> <span class="nav-text">数据脱敏工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">4.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-fighter-jet"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">seyvoue</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">436k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    
+    <span title="站点阅读时长">12:07</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname,
+            owner: 'seyvoue',
+            repo: 'seyvoue.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'd5896ff31d35a036d1e0a74213a66eda2e336ff7',
+            
+                client_id: '09450d7084d9e39d9d43'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      function showGitment(){
+        document.getElementById("gitment-display-button").style.display = "none";
+        document.getElementById("gitment-container").style.display = "block";
+        renderGitment();
+      }
+      
+      </script>
+    
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "Ob6CW7SHh3UDjoiFsCrI7UQu-9Nh9j0Va")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "Ob6CW7SHh3UDjoiFsCrI7UQu-9Nh9j0Va",
+                'X-LC-Key': "cJQr5jP7XftIjd2KOdiEug0F",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {equationNumbers: { autoNumber: "AMS" }}
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+          if(result)$(this).text('复制成功')
+          else $(this).text('复制失败')
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('复制')
+        }, 300)
+      }).append(e)
+    })
+  </script>
+
+
+  
+
+</body>
+</html>

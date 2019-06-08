@@ -1,0 +1,1782 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="baidu-site-verification" content="qTlbubWUyw">
+<meta name="google-site-verification" content="Y9hBxOOKK4YNywVJN3FRwq2Xbry6ouA_XdM14MMdATU">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-alphabet_letter_s-1.ico?v=6.6.0">
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="概述背景 Python 解释器版本混乱, 2和3差别巨大, 而且细分版本也不尽相同, 难以选择和管理。 不同 Linux 发行版自带 Python 不同, 如 macOSX 自带 2.7 版本, 其中系统许多组件依赖于自带解释器, 一旦删除或者更改都可能会造成系统出问题。 不同的 Python 解释器软件包管理也是问题, 如 pip 和 ipython 等必备包组件, 而且在项目开发中如何保证不同">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="@python多版本管理及虚拟环境策略：homebrew + pyenv + pyenv-virtualenv（macOS Majave）">
+<meta property="og:url" content="http://seyvoue.com/manual/77fe63cf.html">
+<meta property="og:site_name" content="seyvoue">
+<meta property="og:description" content="概述背景 Python 解释器版本混乱, 2和3差别巨大, 而且细分版本也不尽相同, 难以选择和管理。 不同 Linux 发行版自带 Python 不同, 如 macOSX 自带 2.7 版本, 其中系统许多组件依赖于自带解释器, 一旦删除或者更改都可能会造成系统出问题。 不同的 Python 解释器软件包管理也是问题, 如 pip 和 ipython 等必备包组件, 而且在项目开发中如何保证不同">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-08T15:25:02.757Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="@python多版本管理及虚拟环境策略：homebrew + pyenv + pyenv-virtualenv（macOS Majave）">
+<meta name="twitter:description" content="概述背景 Python 解释器版本混乱, 2和3差别巨大, 而且细分版本也不尽相同, 难以选择和管理。 不同 Linux 发行版自带 Python 不同, 如 macOSX 自带 2.7 版本, 其中系统许多组件依赖于自带解释器, 一旦删除或者更改都可能会造成系统出问题。 不同的 Python 解释器软件包管理也是问题, 如 pip 和 ipython 等必备包组件, 而且在项目开发中如何保证不同">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="seyvoue" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://seyvoue.com/manual/77fe63cf.html">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>@python多版本管理及虚拟环境策略：homebrew + pyenv + pyenv-virtualenv（macOS Majave） | seyvoue</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">seyvoue</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">ABC-Always Be Coding.</h1>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+
+    
+
+    <a href="/" rel="section">首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+
+    
+
+    <a href="/tags/" rel="section">标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+
+    
+
+    <a href="/categories/" rel="section">分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+
+    
+
+    <a href="/archives/" rel="section">归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-changelog">
+
+    
+    
+    
+
+    
+
+    <a href="/changelog/" rel="section">变更</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://seyvoue.com/manual/77fe63cf.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="seyvoue">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="seyvoue">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">@python多版本管理及虚拟环境策略：homebrew + pyenv + pyenv-virtualenv（macOS Majave）
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-11-20 02:39:02" itemprop="dateCreated datePublished" datetime="2018-11-20T02:39:02+08:00">2018-11-20</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-08 23:25:02" itemprop="dateModified" datetime="2019-06-08T23:25:02+08:00">2019-06-08</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/manual/" itemprop="url" rel="index"><span itemprop="name">manual</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/manual/77fe63cf.html#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count gitment-comments-count" data-xid="/manual/77fe63cf.html" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/manual/77fe63cf.html" class="leancloud_visitors" data-flag-title="@python多版本管理及虚拟环境策略：homebrew + pyenv + pyenv-virtualenv（macOS Majave）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                <span title="本文字数">8.6k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                <span title="阅读时长">14 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><ul>
+<li>Python 解释器版本混乱, 2和3差别巨大, 而且细分版本也不尽相同, 难以选择和管理。</li>
+<li>不同 Linux 发行版自带 Python 不同, 如 macOSX 自带 2.7 版本, 其中系统许多组件依赖于自带解释器, 一旦删除或者更改都可能会造成系统出问题。</li>
+<li>不同的 Python 解释器软件包管理也是问题, 如 pip 和 ipython 等必备包组件, 而且在项目开发中如何保证不同的包环境互不干扰也是一个问题。</li>
+</ul>
+<p>那么有没有一个终极的解决办法能在管理不同解释器版本的同时控制不同的包环境呢? 有的, 就是 <code>pyenv</code>.</p>
+<a id="more"></a>
+<h3 id="pyenv-是什么-能干什么"><a href="#pyenv-是什么-能干什么" class="headerlink" title="pyenv 是什么? 能干什么?"></a>pyenv 是什么? 能干什么?</h3><blockquote>
+<p><code>pyenv</code> 是一个 forked 自 ruby 社区的简单、低调、遵循 UNIX 哲学的Python 环境管理工具, 它可以轻松切换全局解释器版本, 同时结合 <code>vitualenv</code> 插件可以方便的管理对应的包源。</p>
+</blockquote>
+<p>使用 <code>pyenv</code> 我可以方便的下载指定版本的 python 解释器, pypy, anaconda 等, 可以随时自由的在 “shell环境、本地、全局”切换python解释器。</p>
+<p>开发的时候不需要限定某个版本的虚拟环境, 只需要在部署的时候用 pyenv 指定某个版本就好了。</p>
+<p><code>pyenv</code> 切换解释器版本的时候, pip 和 ipython 以及对应的包环境都是一起切换的, 所以如果你要同时运行 ipython2.x 和 ipython3.x 多个解释器验证一些代码时就很方便。</p>
+<p><code>pyenv</code> 也可以创建好指定的虚拟环境, 但不需要指定具体目录, 自由度更高, 使用也简单。</p>
+<h3 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h3><p>如果要讲解pyenv的工作原理，基本上采用一句话就可以概括，那就是：修改系统环境变量<code>PATH</code>。</p>
+<p>对于系统环境变量<code>PATH</code>，相信大家都不陌生，里面包含了一串由冒号分隔的路径，例如<code>/usr/local/bin:/usr/bin:/bin</code>。每当在系统中执行一个命令时，例如<code>python</code>或<code>pip</code>，操作系统就会在<code>PATH</code>的所有路径中从左至右依次寻找对应的命令。因为是依次寻找，因此排在左边的路径具有更高的优先级。</p>
+<p>而<code>pyenv</code>做的，就是在<code>PATH</code>最前面插入一个<code>$(pyenv root)/shims</code>目录。这样，<code>pyenv</code>就可以通过控制<code>shims</code>目录中的Python版本号，来灵活地切换至我们所需的Python版本。</p>
+<h2 id="如何安装？"><a href="#如何安装？" class="headerlink" title="如何安装？"></a>如何安装？</h2><h3 id="安装-pyenv"><a href="#安装-pyenv" class="headerlink" title="安装 pyenv"></a>安装 pyenv</h3><p>本文只介绍 mac 下利用 homebrew 的安装过程，其它系统安装过程大同小异，具体可参考官方的<a href="https://github.com/pyenv/pyenv#installation" target="_blank" rel="noopener">安装手册</a>。</p>
+<p>step0: preinstall</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>确保本机已安装 xcode 且为最新版</span><br><span class="line">[mac]xcode-select --install</span><br><span class="line"><span class="meta">#</span>确保本机已安装相关依赖</span><br><span class="line">[mac]brew install zlib openssl readline xz sqlite</span><br></pre></td></tr></table></figure>
+<p>step1: 安装 pyenv</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[mac] brew install pyenv</span><br></pre></td></tr></table></figure>
+<p>step2: 在 <code>~/.zshrc</code> 添加以下内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#pyenv</span><br><span class="line">export PYENV_ROOT=$(brew --prefix pyenv)</span><br><span class="line">export PATH=&quot;$PYENV_ROOT/bin:$PATH&quot;</span><br><span class="line">if command -v pyenv 1&gt;/dev/null 2&gt;&amp;1; then</span><br><span class="line">  eval &quot;$(pyenv init -)&quot;</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<p>step3: 使 <code>.zshrc</code> 生效，并重新启动 shell</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[mac] source ~/.zshrc</span><br><span class="line">[mac] exec $SHELL</span><br></pre></td></tr></table></figure>
+<p>step4：验证是否安装成功</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[mac]pyenv -v</span><br><span class="line">pyenv 1.2.8</span><br></pre></td></tr></table></figure>
+<h4 id="可能遇到的问题"><a href="#可能遇到的问题" class="headerlink" title="可能遇到的问题"></a>可能遇到的问题</h4><blockquote>
+<p>若遇到无法安装的问题可参考 <a href="https://medium.com/@pimterry/setting-up-pyenv-on-os-x-with-homebrew-56c7541fd331" target="_blank" rel="noopener">此文1</a> <a href="https://github.com/pyenv/pyenv/wiki/Common-build-problems" target="_blank" rel="noopener">此文2</a>，即可解决。</p>
+</blockquote>
+<p>笔者在使用 <code>brew install pyenv</code> 后遇到以下问题：</p>
+<ul>
+<li>问题1：<br>笔者在安装 pyenv 之前，mac 中已装有以下 python：</li>
+<li>系统自带的 python 2.7</li>
+<li>homebrew 安装的 python@2 和 python3(python 3.7.1)</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[mac]pyenv install -l</span><br><span class="line">Available versions:</span><br><span class="line">/usr/local/bin/python-build: /usr/local/bin/sort: /usr/local/opt/python3/bin/python3.6: bad interpreter: No such file or directory</span><br></pre></td></tr></table></figure>
+<p>于是，笔者便分别查看了文件<code>/usr/local/bin/python-build</code>和文件<code>/usr/local/bin/sort</code>，发现 <code>/usr/local/opt/python3/bin/</code> 中并没有 <code>python3.6</code>，只有 <code>python3.7</code>，于是手动 <code>ln -s [python3.7的 bin 路径] /usr/local/opt/python3/bin/python3.6</code>，修改后发现又出现了问题2。</p>
+<ul>
+<li>问题2</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[mac]pyenv install -l</span><br><span class="line">Available versions:</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File "/usr/local/bin/sort", line 7, in &lt;module&gt;</span><br><span class="line">    from sort import cli</span><br><span class="line">ModuleNotFoundError: No module named 'sort'</span><br></pre></td></tr></table></figure>
+<p>于是，<code>vi /usr/local/bin/sort</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cli</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">'This is suroegin'</span>s package - sort<span class="string">')</span></span><br></pre></td></tr></table></figure>
+<p>没发现有什么问题，试着将<code>print(&#39;This is suroegin&#39;s package - sort&#39;)</code> -&gt; <code>print(&quot;This is suroegin&#39;s package - sort&quot;)</code>，又出现了问题3。</p>
+<ul>
+<li>问题3<br>具体的报错信息忘记了，大致包含以下关键词：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[mac]pyenv install -l</span><br><span class="line">unmatched &apos;</span><br></pre></td></tr></table></figure>
+<p><strong>最后</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[mac]pip3 uninstall sort</span><br></pre></td></tr></table></figure>
+<p>所有问题就解决了。</p>
+<blockquote>
+<p>总结：因为笔者之前有安装 python，导致安装 pyenv 后，pyenv 的相关依赖使用了笔者系统中已安装的模块，以致出现相关依赖问题。所以，一个好的版本管理策略是多么重要，仅仅依赖 homebrew 的 <code>brew switch python 3.x.x</code> 并不能从根本上解决 python 的版本管理问题。</p>
+</blockquote>
+<h3 id="安装-pyenv-virtualenv"><a href="#安装-pyenv-virtualenv" class="headerlink" title="安装 pyenv-virtualenv"></a>安装 pyenv-virtualenv</h3><p>step1: install</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[mac]brew install pyenv-virtualenv</span><br></pre></td></tr></table></figure>
+<p>step2: 修改 <code>~/.zshrc</code>为以下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#pyenv</span><br><span class="line">export PYENV_ROOT=$(brew --prefix pyenv)</span><br><span class="line">export PATH=&quot;$PYENV_ROOT/bin:$PATH&quot;</span><br><span class="line">if which pyenv 1&gt;/dev/null 2&gt;&amp;1; then</span><br><span class="line">  eval &quot;$(pyenv init -)&quot;</span><br><span class="line">fi</span><br><span class="line">if which pyenv-virtualenv-init &gt; /dev/null; then</span><br><span class="line">  eval &quot;$(pyenv virtualenv-init -)&quot;</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<p>step3: 使 <code>.zshrc</code> 生效</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">[mac]$</span> source ~/.zshrc</span><br></pre></td></tr></table></figure>
+<h2 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h2><h3 id="pyenv-常用命令"><a href="#pyenv-常用命令" class="headerlink" title="pyenv 常用命令"></a>pyenv 常用命令</h3><p>pyenv 的主要功能如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> pyenv -h</span><br><span class="line">Usage: pyenv &lt;command&gt; [&lt;args&gt;]</span><br><span class="line"></span><br><span class="line">Some useful pyenv commands are:</span><br><span class="line">   commands    List all available pyenv commands</span><br><span class="line">   local       Set or show the local application-specific Python version</span><br><span class="line">   global      Set or show the global Python version</span><br><span class="line">   shell       Set or show the shell-specific Python version</span><br><span class="line">   install     Install a Python version using python-build</span><br><span class="line">   uninstall   Uninstall a specific Python version</span><br><span class="line">   rehash      Rehash pyenv shims (run this after installing executables)</span><br><span class="line">   version     Show the current Python version and its origin</span><br><span class="line">   versions    List all Python versions available to pyenv</span><br><span class="line">   which       Display the full path to an executable</span><br><span class="line">   whence      List all Python versions that contain the given executable</span><br><span class="line"></span><br><span class="line">See `pyenv help &lt;command&gt;' for information on a specific command.</span><br><span class="line">For full documentation, see: https://github.com/pyenv/pyenv#readme</span><br></pre></td></tr></table></figure>
+<p>比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"># 查看当前激活的是那个版本的Python</span><br><span class="line">pyenv version</span><br><span class="line"></span><br><span class="line"># 查看所有已安装的版本</span><br><span class="line">pyenv versions</span><br><span class="line"></span><br><span class="line"># 查看所有可安装的版本</span><br><span class="line">pyenv install --list</span><br><span class="line"></span><br><span class="line"># 安装指定版本</span><br><span class="line">pyenv install 3.6.5</span><br><span class="line"># 安装完成后必须rehash</span><br><span class="line">pyenv rehash</span><br><span class="line"></span><br><span class="line"># 删除指定版本</span><br><span class="line">pyenv uninstall 3.5.2</span><br><span class="line"></span><br><span class="line"># 指定局部版本，当前目录生效</span><br><span class="line">pyenv local 3.6.5</span><br><span class="line"></span><br><span class="line"># 指定全局版本，整个系统生效</span><br><span class="line">pyenv global 3.6.5</span><br><span class="line"></span><br><span class="line"># 指定多个全局版本, 3版本优先</span><br><span class="line">pyenv global 3.6.5 2.7.14</span><br><span class="line"></span><br><span class="line"># 取消设置</span><br><span class="line">pyenv local --unset</span><br><span class="line"></span><br><span class="line"># 实际上当你切换版本后, 相应的pip和包仓库都是会自动切换过去的</span><br></pre></td></tr></table></figure>
+<h3 id="使用-pyenv：切换-python-版本"><a href="#使用-pyenv：切换-python-版本" class="headerlink" title="使用 pyenv：切换 python 版本"></a>使用 pyenv：切换 python 版本</h3><p><code>pyenv</code> 可以从三个维度来管理Python环境，简称为：<code>当前系统(global)</code>、<code>当前目录(local)</code>、<code>当前shell</code>。这三个维度的优先级从左到右依次升高，即<code>当前系统</code>的优先级最低、<code>当前shell</code>的优先级最高。</p>
+<p>如果想修改系统全局的Python环境，可以采用 <code>pyenv global PYTHON_VERSION</code> 命令。该命令执行后会在 <code>$(pyenv root)</code> 目录中创建一个名为 <code>version</code> 的文件（如果该文件已存在，则修改该文件的内容），里面记录着系统全局的Python版本号。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">[mac]$</span> pyenv global system</span><br><span class="line"><span class="meta">[mac]$</span> cat $(pyenv root)/version</span><br><span class="line">system</span><br><span class="line"><span class="meta">[mac]$</span> pyenv version</span><br><span class="line">system (set by /usr/local/opt/pyenv/version)</span><br></pre></td></tr></table></figure>
+<p>通常情况下，对于特定的项目，我们可能需要切换不同的Python环境，这个时候就可以通过<code>pyenv local PYTHON_VERSION</code> 命令来修改<code>当前目录</code>的Python环境。命令执行后，会在当前目录中生成一个<code>.python-version</code>文件（如果该文件已存在，则修改该文件的内容），里面记录着当前目录使用的Python版本号。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">[mac]$</span> cd ~/workspace/test-pyenv</span><br><span class="line">[mac]pyenv local 2.7.8</span><br><span class="line"><span class="meta">[mac]$</span> cat .python-version</span><br><span class="line">2.7.8</span><br><span class="line"><span class="meta">[mac]$</span> pyenv version</span><br><span class="line">2.7.8 (set by /Users/seyvoue/workspace/test-pyenv/.python-version)</span><br><span class="line"><span class="meta">[mac]$</span> pip -V</span><br><span class="line">pip 18.1 from /usr/local/opt/pyenv/versions/2.7.8/lib/python2.7/site-packages/pip (python 2.7)</span><br></pre></td></tr></table></figure>
+<p>可以看出，<code>当前目录</code>中的<code>.python-version</code>配置优先于系统全局的<code>$(pyenv root)/version</code>配置。</p>
+<p>另外一种情况，通过执行 <code>pyenv shell PYTHON_VERSION</code> 命令，可以修改当前shell的Python环境。执行该命令后，会在当前shell session（Terminal窗口）中创建一个名为<code>PYENV_VERSION</code> 的环境变量，然后在当前shell的任意目录中都会采用该环境变量设定的Python版本。此时，<code>当前系统</code>和<code>当前目录</code>中设定的Python版本均会被忽略。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">[mac]$</span> cd ~/workspace/test-pyenv</span><br><span class="line">[mac]pyenv local 2.7.8</span><br><span class="line"><span class="meta">[mac]$</span> cat .python-version</span><br><span class="line">2.7.8</span><br><span class="line"><span class="meta">[mac]$</span> pyenv version</span><br><span class="line">2.7.8 (set by /Users/seyvoue/workspace/test-pyenv/.python-version)</span><br><span class="line"><span class="meta">[mac]$</span> echo $PYENV_VERSION</span><br><span class="line"></span><br><span class="line"><span class="meta">[mac]$</span> pyenv shell 3.7.1</span><br><span class="line"><span class="meta">[mac]$</span> echo $PYENV_VERSION</span><br><span class="line">3.7.1</span><br><span class="line"><span class="meta">[mac]$</span> cat .python-version</span><br><span class="line">2.7.8</span><br><span class="line"><span class="meta">[mac]$</span> pyenv version</span><br><span class="line">3.7.1 (set by PYENV_VERSION environment variable)</span><br></pre></td></tr></table></figure>
+<p>顾名思义，<code>当前shell</code>的Python环境仅在当前shell中生效，重新打开一个新的shell后，该环境也就失效了。如果想在<code>当前shell</code>中取消shell级别的Python环境，采用<code>unset</code>命令重置<code>PYENV_VERSION</code>环境变量即可。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cat .python-version</span><br><span class="line">2.7.8</span><br><span class="line"><span class="meta">[mac]$</span> pyenv version</span><br><span class="line">3.7.1 (set by PYENV_VERSION environment variable)</span><br><span class="line"><span class="meta">[mac]$</span> unset PYENV_VERSION</span><br><span class="line">2.7.8 (set by /Users/seyvoue/workspace/test-pyenv/.python-version)</span><br></pre></td></tr></table></figure>
+<p>特别建议：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">系统全局用系统默认的Python比较好，不建议直接对其操作</span><br><span class="line">pyenv global system</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">用local进行指定版本切换，一般开发环境使用。</span><br><span class="line">pyenv local 2.7.10</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">对当前用户的临时设定Python版本，退出后失效</span><br><span class="line">pyenv shell 3.5.0</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">取消某版本切换</span><br><span class="line">pyenv local 3.5.0 --unset</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>输入python即可使用新版本的python<br>系统自带的脚本会以 <code>/usr/bin/python</code> 的方式直接调用老版本的python，因而不会对系统脚本产生影响；<br>如果通过homebrew安装python，那么pip会同时安装。</p>
+</blockquote>
+<h3 id="使用-pyenv-virtualenv：管理多个依赖库环境"><a href="#使用-pyenv-virtualenv：管理多个依赖库环境" class="headerlink" title="使用 pyenv-virtualenv：管理多个依赖库环境"></a>使用 pyenv-virtualenv：管理多个依赖库环境</h3><p>经过以上操作，我们在本地计算机中就可以安装多个版本的Python运行环境，并可以按照实际需求进行灵活地切换。然而，很多时候在同一个Python版本下，我们仍然希望能根据项目进行环境分离，在pyenv中，pyenv-virtualenv 插件可以实现这个功能。</p>
+<p>使用方式如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> pyenv virtualenv PYTHON_VERSION PROJECT_NAME</span><br></pre></td></tr></table></figure>
+<p>其中，<code>PYTHON_VERSION</code>是具体的Python版本号，例如，<code>3.7.1</code>，<code>PROJECT_NAME</code>是我们自定义的项目名称。比较好的实践方式是，在<code>PROJECT_NAME</code>也带上Python的版本号，以便于识别。</p>
+<p>现假设我们有<code>test-pyenv</code>这么一个项目，想针对<code>Python 2.7.8</code>和<code>Python 3.7.1</code>分别创建一个虚拟环境，那就可以依次执行如下命令。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> pyenv virtualenv 3.7.1 py37_test-pyenv</span><br><span class="line"><span class="meta">$</span> pyenv virtualenv 2.7.8 py27_test-pyenv</span><br></pre></td></tr></table></figure>
+<p>创建完成后，通过执行<code>pyenv virtualenvs</code>命令，就可以看到本地所有的项目环境。 </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> pyenv virtualenvs </span><br><span class="line">2.7.8/envs/py27_test-pyenv (created from /usr/local/opt/pyenv/versions/2.7.8)</span><br><span class="line">3.7.1/envs/py37_test-pyenv (created from /usr/local/opt/pyenv/versions/3.7.1)</span><br><span class="line">py27_test-pyenv (created from /usr/local/opt/pyenv/versions/2.7.8)</span><br><span class="line">py37_test-pyenv (created from /usr/local/opt/pyenv/versions/3.7.1)</span><br></pre></td></tr></table></figure>
+<p>通过这种方式，在同一个Python版本下我们也可以创建多个虚拟环境，然后在各个虚拟环境中分别维护依赖库环境。</p>
+<p>例如，<code>py37_test-pyenv</code>虚拟环境位于<code>$(pyenv root)/versions/3.7.1/envs</code>目录下，而其依赖库位于<code>$(pyenv root)/versions/3.7.1/lib/python3.7/site-packages</code>中。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> cd ~/workspace/test-pyenv</span><br><span class="line"><span class="meta">$</span> pyenv version</span><br><span class="line">2.7.8 (set by /Users/seyvoue/workspace/test-pyenv/.python-version)</span><br><span class="line"><span class="meta">$</span> pip -V</span><br><span class="line">pip 18.1 from /usr/local/opt/pyenv/versions/2.7.8/lib/python2.7/site-packages/pip (python 2.7)</span><br></pre></td></tr></table></figure>
+<p>后续在项目开发过程中，我们就可以通过<code>pyenv local XXX</code>或<code>pyenv activate PROJECT_NAME</code>命令来切换项目的Python环境。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> cd ~/workspace/test-pyenv</span><br><span class="line"><span class="meta">$</span> pyenv local py37_test-pyenv</span><br><span class="line"><span class="meta">$</span> pyenv version</span><br><span class="line">py37_test-pyenv (set by /Users/seyvoue/workspace/test-pyenv/.python-version)</span><br><span class="line"><span class="meta">$</span> python -V</span><br><span class="line">Python 3.7.1</span><br><span class="line"><span class="meta">$</span> pip -V</span><br><span class="line">pip 10.0.1 from /usr/local/opt/pyenv/versions/3.7.1/envs/py37_test-pyenv/lib/python3.7/site-packages/pip (python 3.7)</span><br></pre></td></tr></table></figure>
+<p>可以看出，切换环境后，pip命令对应的目录也随之改变，即始终对应着当前的Python虚拟环境。</p>
+<p>对应的，采用<code>pyenv deactivate</code>命令退出当前项目的Python虚拟环境。</p>
+<p>如果想移除某个项目环境，可以通过如下命令实现。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> pyenv uninstall PROJECT_NAME</span><br></pre></td></tr></table></figure>
+<p>以上便是日常开发工作中常用的pyenv命令，基本可以满足绝大多数依赖库环境管理方面的需求。</p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><a href="https://debugtalk.com/post/use-pyenv-manage-multiple-python-virtualenvs/#%E7%AE%A1%E7%90%86%E5%A4%9A%E4%B8%AA%E4%BE%9D%E8%B5%96%E5%BA%93%E7%8E%AF%E5%A2%83" target="_blank" rel="noopener">使用pyenv管理多个Python版本依赖环境</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/36402791" target="_blank" rel="noopener">Python版本管理神器-pyenv</a></li>
+<li><a href="https://github.com/pyenv/pyenv#pyenv-does" target="_blank" rel="noopener">Simple Python Version Management: pyenv, from github</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>希望对你有帮助！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-wechatpay.jpg" alt="seyvoue 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-alipay.jpg" alt="seyvoue 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>seyvoue</li>
+  <li class="post-copyright-title">
+    <strong>本文标题：</strong>
+    @python多版本管理及虚拟环境策略：homebrew + pyenv + pyenv-virtualenv（macOS Majave）
+  </li>
+  <li class="post-copyright-posted">
+    <strong>发布时间：</strong>
+    2018/11/20 - 02:11
+  </li>
+  <li class="post-copyright-modified">
+      <strong>最后更新：</strong>
+      2019/06/08 - 23:06
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://seyvoue.com/manual/77fe63cf.html" title="@python多版本管理及虚拟环境策略：homebrew + pyenv + pyenv-virtualenv（macOS Majave）">http://seyvoue.com/manual/77fe63cf.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+               <div>
+                 
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+               </div>
+            
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/manual/428b54b1.html" rel="next" title="@解决 Oracle Net Configuration Assistant Failed 问题">
+                <i class="fa fa-chevron-left"></i> @解决 Oracle Net Configuration Assistant Failed 问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/manual/bb3e57d7.html" rel="prev" title="@手把手教你如何搭建个人博客系列教程">
+                @手把手教你如何搭建个人博客系列教程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div onclick="showGitment()" id="gitment-display-button">显示 Gitment 评论</div>
+        <div id="gitment-container" style="display:none"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="http://ipic-markdown.oss-cn-shanghai.aliyuncs.com/blog/2017-08-08-avatar.jpg" alt="seyvoue">
+            
+              <p class="site-author-name" itemprop="name">seyvoue</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">71</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">25</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/seyvoue" title="GitHub &rarr; https://github.com/seyvoue" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:seyvoue@qq.com" title="Mail &rarr; mailto:seyvoue@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pyenv-是什么-能干什么"><span class="nav-number">1.2.</span> <span class="nav-text">pyenv 是什么? 能干什么?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本原理"><span class="nav-number">1.3.</span> <span class="nav-text">基本原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何安装？"><span class="nav-number">2.</span> <span class="nav-text">如何安装？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-pyenv"><span class="nav-number">2.1.</span> <span class="nav-text">安装 pyenv</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#可能遇到的问题"><span class="nav-number">2.1.1.</span> <span class="nav-text">可能遇到的问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-pyenv-virtualenv"><span class="nav-number">2.2.</span> <span class="nav-text">安装 pyenv-virtualenv</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何使用"><span class="nav-number">3.</span> <span class="nav-text">如何使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#pyenv-常用命令"><span class="nav-number">3.1.</span> <span class="nav-text">pyenv 常用命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-pyenv：切换-python-版本"><span class="nav-number">3.2.</span> <span class="nav-text">使用 pyenv：切换 python 版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-pyenv-virtualenv：管理多个依赖库环境"><span class="nav-number">3.3.</span> <span class="nav-text">使用 pyenv-virtualenv：管理多个依赖库环境</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考链接"><span class="nav-number">4.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-fighter-jet"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">seyvoue</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">436k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    
+    <span title="站点阅读时长">12:07</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname,
+            owner: 'seyvoue',
+            repo: 'seyvoue.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'd5896ff31d35a036d1e0a74213a66eda2e336ff7',
+            
+                client_id: '09450d7084d9e39d9d43'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      function showGitment(){
+        document.getElementById("gitment-display-button").style.display = "none";
+        document.getElementById("gitment-container").style.display = "block";
+        renderGitment();
+      }
+      
+      </script>
+    
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function ({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+            
+          }
+        })
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + "Ob6CW7SHh3UDjoiFsCrI7UQu-9Nh9j0Va")
+        .done(function ({ api_server }) {
+          var Counter = function (method, url, data) {
+            return $.ajax({
+              method: method,
+              url: `https://${api_server}/1.1${url}`,
+              headers: {
+                'X-LC-Id': "Ob6CW7SHh3UDjoiFsCrI7UQu-9Nh9j0Va",
+                'X-LC-Key': "cJQr5jP7XftIjd2KOdiEug0F",
+                'Content-Type': 'application/json',
+              },
+              data: data,
+            });
+          };
+          
+          addCount(Counter);
+          
+        })
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {equationNumbers: { autoNumber: "AMS" }}
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+          if(result)$(this).text('复制成功')
+          else $(this).text('复制失败')
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('复制')
+        }, 300)
+      }).append(e)
+    })
+  </script>
+
+
+  
+
+</body>
+</html>
