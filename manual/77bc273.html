@@ -105,18 +105,18 @@
 
 
 
-  <meta name="description" content="step1. 安装 Jenkins123[root@localhost ~]# yum install jenkins#查看 Jenkins 安装路径[root@localhost ~]# rpm -ql jenkins step2. 修改默认端口 80801234[root@localhost ~]# vi /etc/sysconfig/jenkins:set ignorecase/jenkin">
+  <meta name="description" content="step1. 安装 Jenkins123[root@localhost ~]# yum install jenkins#查看 Jenkins 安装路径[root@localhost ~]# rpm -ql jenkins step2. 修改默认端口 80801234[root@localhost ~]# vi /etc/sysconfig/jenkins:set ignorecase/jenki">
 <meta name="keywords" content="jenkins">
 <meta property="og:type" content="article">
 <meta property="og:title" content="@CentOS6下安装配置jenkins">
 <meta property="og:url" content="http://seyvoue.com/manual/77bc273.html">
 <meta property="og:site_name" content="seyvoue">
-<meta property="og:description" content="step1. 安装 Jenkins123[root@localhost ~]# yum install jenkins#查看 Jenkins 安装路径[root@localhost ~]# rpm -ql jenkins step2. 修改默认端口 80801234[root@localhost ~]# vi /etc/sysconfig/jenkins:set ignorecase/jenkin">
+<meta property="og:description" content="step1. 安装 Jenkins123[root@localhost ~]# yum install jenkins#查看 Jenkins 安装路径[root@localhost ~]# rpm -ql jenkins step2. 修改默认端口 80801234[root@localhost ~]# vi /etc/sysconfig/jenkins:set ignorecase/jenki">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-06-08T15:25:02.762Z">
+<meta property="og:updated_time" content="2019-06-09T04:56:22.646Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="@CentOS6下安装配置jenkins">
-<meta name="twitter:description" content="step1. 安装 Jenkins123[root@localhost ~]# yum install jenkins#查看 Jenkins 安装路径[root@localhost ~]# rpm -ql jenkins step2. 修改默认端口 80801234[root@localhost ~]# vi /etc/sysconfig/jenkins:set ignorecase/jenkin">
+<meta name="twitter:description" content="step1. 安装 Jenkins123[root@localhost ~]# yum install jenkins#查看 Jenkins 安装路径[root@localhost ~]# rpm -ql jenkins step2. 修改默认端口 80801234[root@localhost ~]# vi /etc/sysconfig/jenkins:set ignorecase/jenki">
 
 
 
@@ -415,12 +415,24 @@
                 
               
 
-              <time title="创建时间：2019-06-08 20:55:39 / 修改时间：23:25:02" itemprop="dateCreated datePublished" datetime="2019-06-08T20:55:39+08:00">2019-06-08</time>
+              <time title="创建时间：2019-06-08 20:55:39" itemprop="dateCreated datePublished" datetime="2019-06-08T20:55:39+08:00">2019-06-08</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-06-09 12:56:22" itemprop="dateModified" datetime="2019-06-09T12:56:22+08:00">2019-06-09</time>
               
             
           </span>
@@ -484,7 +496,7 @@
                   <i class="fa fa-file-word-o"></i>
                 </span>
                 
-                <span title="本文字数">624</span>
+                <span title="本文字数">625</span>
               
 
               
@@ -516,7 +528,8 @@
       
 
       
-        <p>step1. 安装 Jenkins<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# yum install jenkins</span><br><span class="line"><span class="meta">#</span>查看 Jenkins 安装路径</span><br><span class="line">[root@localhost ~]# rpm -ql jenkins</span><br></pre></td></tr></table></figure></p>
+        <a id="more"></a>
+<p>step1. 安装 Jenkins<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# yum install jenkins</span><br><span class="line"><span class="meta">#</span>查看 Jenkins 安装路径</span><br><span class="line">[root@localhost ~]# rpm -ql jenkins</span><br></pre></td></tr></table></figure></p>
 <p>step2. 修改默认端口 <code>8080</code><br><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# <span class="keyword">vi</span> /etc/sysconfig/jenkins</span><br><span class="line">:<span class="keyword">set</span> ignorecase</span><br><span class="line">/jenkins_port</span><br><span class="line">JENKINS_PORT=“<span class="number">8000</span>”</span><br></pre></td></tr></table></figure></p>
 <p>注：若本机的 jdk 环境并非使用的是系统自带的 openjdk，而是通过在 /etc/profile 等中配置环境变量的方式安装的 jdk 环境的话，需要在 <code>/etc/init.d/jenkins</code> 中添加你自己安装的 jdk 路劲，<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# <span class="keyword">vi</span> /etc/init.d/jenkins</span><br><span class="line">candidates=<span class="comment">"</span></span><br><span class="line">/usr/local/jdk1.<span class="number">8.0</span>_121/bin/java &lt;==在这里添加你的 jdk 路径</span><br><span class="line">/etc/alternatives/java</span><br><span class="line">/usr/lib/jvm/java-<span class="number">1.8</span>.<span class="number">0</span>/bin/java</span><br><span class="line">/usr/lib/jvm/jre-<span class="number">1.8</span>.<span class="number">0</span>/bin/java</span><br><span class="line">/usr/lib/jvm/java-<span class="number">1.7</span>.<span class="number">0</span>/bin/java</span><br><span class="line">/usr/lib/jvm/jre-<span class="number">1.7</span>.<span class="number">0</span>/bin/java</span><br><span class="line">/usr/bin/java</span><br><span class="line"><span class="comment">"</span></span><br></pre></td></tr></table></figure></p>
 
@@ -588,7 +601,7 @@
   </li>
   <li class="post-copyright-modified">
       <strong>最后更新：</strong>
-      2019/06/08 - 23:06
+      2019/06/09 - 12:06
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
