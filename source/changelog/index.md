@@ -1,4 +1,5 @@
-# [3.2.0](https://github.com/seyvoue/seyvoue.github.io/compare/v3.1.0...v3.2.0) (2019-06-08)
+<a name="3.2.0"></a>
+# [3.2.0](https://github.com/seyvoue/seyvoue.github.io/compare/v3.1.0...v3.2.0) (2019-06-09)
 
 
 ### Features
@@ -8,10 +9,12 @@
 
 
 
+<a name="3.1.0"></a>
 # [3.1.0](https://github.com/seyvoue/seyvoue.github.io/compare/v3.0.0...v3.1.0) (2018-11-28)
 
 
 
+<a name="3.0.0"></a>
 # [3.0.0](https://github.com/seyvoue/seyvoue.github.io/compare/v2.0.0...v3.0.0) (2018-11-27)
 
 
@@ -21,6 +24,7 @@
 
 
 
+<a name="2.0.0"></a>
 # [2.0.0](https://github.com/seyvoue/seyvoue.github.io/compare/v1.0.0...v2.0.0) (2018-11-26)
 
 
@@ -30,6 +34,7 @@
 
 
 
+<a name="1.0.0"></a>
 # [1.0.0](https://github.com/seyvoue/seyvoue.github.io/compare/af6b67f...v1.0.0) (2018-11-26)
 
 
