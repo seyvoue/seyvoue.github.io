@@ -11,6 +11,8 @@ keywords:
 description:
 ---
 
+<!--more-->
+
 step1. 安装 Jenkins
 ```shell
 [root@localhost ~]# yum install jenkins

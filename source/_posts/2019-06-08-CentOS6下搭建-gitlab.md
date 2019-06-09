@@ -11,6 +11,8 @@ keywords:
 description:
 ---
 
+<!--more-->
+
 step1. 安装相关的依赖
 ```shell
 [root@localhost ~]# yum install -y curl policycoreutils-python openssh-server cronie

@@ -11,6 +11,8 @@ keywords:
 description:
 ---
 
+ <!--more-->
+
 step1. 创建用户 `user`，用于之后 docker 启动、停止、运行的默认用户
 ```shell
 #创建用户 user
