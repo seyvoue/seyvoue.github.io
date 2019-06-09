@@ -41,6 +41,7 @@
     }
   },
   "scripts": {
+    "commit": "git-cz"
     "changelog": "conventional-changelog -p angular -i /Users/seyvoue/personal/data/blog/source/changelog/index.md -s -r 0",
     "addChangeLog": "conventional-changelog -p angular -i /Users/seyvoue/personal/data/blog/source/changelog/index.md -s"
   },
