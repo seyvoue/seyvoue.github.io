@@ -32,7 +32,7 @@ name=Docker Repo
 baseurl=https://yum.dockerproject.org/repo/main/centos/$releasever/
 enabled=1
 gpgcheck=1
-gpgkey=https://yum.dockerproject.org/gpg[docker-repo]
+gpgkey=https://yum.dockerproject.org/gpg
 ```
 
 step3. 安装 `docker-engine`，并将其配置为系统服务
