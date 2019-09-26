@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[@CentOS7下安装Nginx]]></title>
+    <url>%2F%E6%9C%AA%E5%88%86%E7%B1%BB%2Fe3099e01.html</url>
+    <content type="text"></content>
+      <categories>
+        <category>未分类</category>
+      </categories>
+  </entry>
+  <entry>
     <title><![CDATA[@yum离线下载安装软件包]]></title>
     <url>%2Fmanual%2F1281edc4.html</url>
     <content type="text"><![CDATA[问题：如何在不能联网且缺少 yum 源的 redhat/centos 机器中搭建 gitlab 服务器？如何才能解决安装 gitlab 时，缺失相关依赖包的问题？ 解决方案：在一台可以联网的机器中，下载好所有安装包，再导入到不可联网的机器中，通过 rpm -ivh 的方式进行安装。（这台可联网的机器应该与不可联网的机器操作系统版本及其内核版本一致，且最好是初始安装的系统，可通过 docker/虚拟机的方式临时配置一台） step1. 安装 yum-plugin-downloadonly 插件1[root@localhost ~]# yum install -y yum-plugin-downloadonly 安装完成后，在使用 yum 的时候使用 --downloadonly 参数。这个参数将告诉yum只下载程序包，不进行安装，而且可在控制台中看到安装该包所需要的所有依赖，如，下载 openssh-server包：1[root@localhost ~]# yum install --downloadonly openssh-server -y 注：--downloadonly参数将自动下载程序包安装时所需要的所有依赖，所以建议在全新的系统中使用本命令，因为在已经安装过部分依赖的系统上，yum 不会将所有需要的依赖下载完全此时要下载的程序包已经被放置到了 yum 的默认存放位置，在 CentOS 6 x86_64 下，这个默认路径是：/var/cache/yum/x86_64/6/&lt;repo&gt;/packages/如果要指定 yum 的下载目录，还需要一个 --downloaddir 参数，如：1[root@localhost~ ]# yum install —downloadonly —downloaddir=. openssh-server -y 结果如下： 可以看到安装包已经下载到当前目录下了： 下载完成后，在不可联网的机器执行下面的命令进行安装：12345[root@localhost ~]# rpm -ivh openssh-server-5.3p1-124.el6_10.x86_64.rpm \openssh-5.3p1-124.el6_10.x86_64.rpm \openssh-askpass-5.3p1-124.el6_10.x86_64.rpm \openssh-clients-5.3p1-124.el6_10.x86_64.rpm \openssl-1.0.1e-57.el6.x86_64.rpm 参考文献 CentOS 7 Yum离线下载安装软件包]]></content>
@@ -311,9 +319,9 @@
       </categories>
   </entry>
   <entry>
-    <title><![CDATA[@CentOS下MySQL 的安装]]></title>
+    <title><![CDATA[@CentOS7下MySQL 的安装]]></title>
     <url>%2Fmanual%2F5e99fb6d.html</url>
-    <content type="text"><![CDATA[12345678910111213# 下载链接可从官网获得[root@localhost ~]# wget https://repo.mysql.com//mysql80-community-release-el7-1.noarch.rpm[root@localhost ~]# rpm -ivh mysql80-community-release-el7-1.noarch.rpm[root@localhost ~]# yum install mysql-community-server# 启动 MySQL 服务[root@localhost ~]# service mysqld start# 检查 MySQL 服务是否已正常启动[root@localhost ~]# service mysqld status# 找到 MySQL 安装时给的默认密码[root@localhost ~]# grep 'temporary password' /var/log/mysqld.log[root@localhost ~]# mysql -uroot -p# 修改密码，密码得包含大小写数字和符号，不然可能过不了[root@localhost ~]# ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyNewPass4!' 参考链接 Installing MySQL on Linux Using the MySQL Yum Repository]]></content>
+    <content type="text"><![CDATA[123456789101112131415# 下载链接可从官网获得[root@localhost ~]# wget -i -c http://dev.mysql.com/get/mysql57-community-release-el7-10.noarch.rpm[root@localhost ~]# yum install mysql57-community-release-el7-10.noarch.rpm# 激活与 mysql-community 相关的 yum 源[root@localhost ~]# yum repolist enabled | grep "mysql.*-community.*"[root@localhost ~]# yum -y install mysql-community-server# 启动 MySQL 服务[root@localhost ~]# systemctl start mysqld.service# 检查 MySQL 服务是否已正常启动[root@localhost ~]# systemctl status mysqld.service# 找到 MySQL 安装时给的默认密码[root@localhost ~]# grep 'temporary password' /var/log/mysqld.log[root@localhost ~]# mysql -uroot -p# 修改密码，密码得包含大小写数字和符号，不然可能过不了[root@localhost ~]# ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyNewPass4!' 参考链接 Installing MySQL on Linux Using the MySQL Yum Repository CentOS7安装MySQL7详解]]></content>
       <categories>
         <category>manual</category>
       </categories>
