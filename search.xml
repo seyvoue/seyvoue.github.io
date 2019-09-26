@@ -2,11 +2,14 @@
 <search>
   <entry>
     <title><![CDATA[@CentOS7下安装Nginx]]></title>
-    <url>%2F%E6%9C%AA%E5%88%86%E7%B1%BB%2Fe3099e01.html</url>
-    <content type="text"></content>
+    <url>%2Fmanual%2Fe3099e01.html</url>
+    <content type="text"><![CDATA[环境：centos7.5 step1: 安装依赖 1yum install -y gcc gcc-c++ prce prce-devel zlib zlib-devel openssl openssl-devel step2: 下载 stable 版 nginx，下载地址：http://nginx.org/en/download.html step3：解压编译安装下载下来的为源码包，如：nginx-1.16.1.tar.gz，需要编译才可安装，编译安装时，若不指定任何参数，以默认方式安装，nginx 将被安装在 /usr/local/nginx 12345tar -xzf nginx-1.16.1.tar.gzcd nginx-1.16.1./configuremakemake install 常用命令123456789101112131415161718cd /usr/local/nginx/sbin# 指定配置文件启动 nginxnginx -c xxx.conf# 不启动 nginx 下，验证nginx 配置文件是否有错误nginx -t# 显示版本信息nginx -v# 显示详细版本信息，包括 gcc 版本，系统版本等nginx -V# 停止服务，处理完当前所有请求再停止服务nginx -s quit# 强制停止 nginxnginx -s stop# 使正在运行的 nginx 重新加载配置文件nginx -s reload# 日志文件回滚，会将当前日志改名或转移备份，再打开一个新的日志文件，可防止日志文件过大nginx -s reopen]]></content>
       <categories>
-        <category>未分类</category>
+        <category>manual</category>
       </categories>
+      <tags>
+        <tag>nginx</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[@yum离线下载安装软件包]]></title>
